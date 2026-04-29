@@ -2,10 +2,13 @@ import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import { DndContext, closestCenter, type DragEndEvent } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { db } from '../../db'
 import { useFilterStore } from '../../stores/filterStore'
 import { useTaskCount } from '../../hooks/useTaskCount'
 import { TaskItem } from './TaskItem'
+import { TaskItemSortable } from './TaskItemSortable'
 import { CategoryFilter } from './CategoryFilter'
 import { EmptyState } from '../common/EmptyState'
 
@@ -40,6 +43,23 @@ export function TaskList() {
 
   const hasNoTasks = topLevelActiveTasks.length === 0 && topLevelCompletedTasks.length === 0
 
+  async function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    const oldIndex = filtered.findIndex((t) => t.id === active.id)
+    const newIndex = filtered.findIndex((t) => t.id === over.id)
+    if (oldIndex === -1 || newIndex === -1) return
+
+    const reordered = arrayMove(filtered, oldIndex, newIndex)
+
+    await db.transaction('rw', db.tasks, async () => {
+      for (let i = 0; i < reordered.length; i++) {
+        await db.tasks.update(reordered[i].id, { sortOrder: i })
+      }
+    })
+  }
+
   if (hasNoTasks) {
     return (
       <EmptyState
@@ -53,11 +73,18 @@ export function TaskList() {
     <div>
       {taskCount >= 3 && <CategoryFilter />}
 
-      <AnimatePresence mode="popLayout">
-        {filtered.map((task) => (
-          <TaskItem key={task.id} task={task} />
-        ))}
-      </AnimatePresence>
+      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext
+          items={filtered.map((t) => t.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <AnimatePresence mode="popLayout">
+            {filtered.map((task) => (
+              <TaskItemSortable key={task.id} task={task} />
+            ))}
+          </AnimatePresence>
+        </SortableContext>
+      </DndContext>
 
       {filtered.length === 0 && topLevelActiveTasks.length > 0 && (
         <p className="text-sm text-text-secondary text-center py-4">
