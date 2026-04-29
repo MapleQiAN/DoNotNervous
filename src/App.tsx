@@ -1,8 +1,14 @@
+import { AppShell } from './components/layout/AppShell'
+import { EmptyState } from './components/common/EmptyState'
+
 function App() {
   return (
-    <div>
-      <h1>DoNotNervous</h1>
-    </div>
+    <AppShell>
+      <EmptyState
+        heading="Nothing here yet"
+        body="Add your first task to get started. One small step counts."
+      />
+    </AppShell>
   )
 }
 
