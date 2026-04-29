@@ -1,13 +1,12 @@
 import { AppShell } from './components/layout/AppShell'
-import { EmptyState } from './components/common/EmptyState'
+import { TaskInput } from './components/tasks/TaskInput'
+import { TaskList } from './components/tasks/TaskList'
 
 function App() {
   return (
     <AppShell>
-      <EmptyState
-        heading="Nothing here yet"
-        body="Add your first task to get started. One small step counts."
-      />
+      <TaskInput />
+      <TaskList />
     </AppShell>
   )
 }
