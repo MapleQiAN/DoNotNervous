@@ -10,6 +10,13 @@
 
 **Requirements:** TASK-01~08, DATA-01~05, ONBD-01~03
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffold, data layer & foundation components
+- [ ] 01-02-PLAN.md — Task management UI — input, list, item, categories, subtasks
+- [ ] 01-03-PLAN.md — Drag reorder, export/import & settings drawer
+
 **Success Criteria:**
 - User can add a task and see it in a list within 5 seconds of opening the app
 - Completing a task shows satisfying check animation (no points yet, just task done)
@@ -92,7 +99,7 @@
 
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
-| 1 | ○ | 0/- | 0% |
+| 1 | [ ] | 3/- | 0% |
 | 2 | ○ | 0/- | 0% |
 | 3 | ○ | 0/- | 0% |
 | 4 | ○ | 0/- | 0% |
@@ -102,4 +109,4 @@
 
 ---
 *Roadmap created: 2026-04-28*
-*Last updated: 2026-04-28*
+*Last updated: 2026-04-29*
