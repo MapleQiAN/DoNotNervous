@@ -66,9 +66,9 @@ describe('calculatePoints', () => {
   })
 
   it('calculates bonus with Math.round for medium at 1.5x', () => {
-    // Math.round(25 * 0.5) = 12 (not 12.5)
+    // Math.round(25 * 0.5) = Math.round(12.5) = 13
     const result = calculatePoints('medium', 10)
-    expect(result).toEqual({ base: 25, bonus: 12, multiplier: 1.5 })
+    expect(result).toEqual({ base: 25, bonus: 13, multiplier: 1.5 })
   })
 
   it('calculates bonus with Math.round for medium at 2x', () => {
