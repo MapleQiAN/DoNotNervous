@@ -1,7 +1,8 @@
 ---
 phase: 1
 slug: foundation-tasks-data-layer
-status: draft
+status: approved
+reviewed_at: 2026-04-29
 shadcn_initialized: false
 preset: none
 created: 2026-04-29
@@ -57,13 +58,13 @@ Exceptions: Touch targets must be minimum 44px height on interactive elements (c
 | Role | Size | Weight | Line Height | Tailwind Class |
 |------|------|--------|-------------|----------------|
 | Body | 16px (1rem) | 400 (regular) | 1.5 (24px) | `text-base leading-relaxed font-normal` |
-| Label | 14px (0.875rem) | 500 (medium) | 1.4 (19.6px) | `text-sm leading-snug font-medium` |
+| Label | 14px (0.875rem) | 600 (semibold) | 1.4 (19.6px) | `text-sm leading-snug font-semibold` |
 | Heading | 20px (1.25rem) | 600 (semibold) | 1.2 (24px) | `text-xl leading-tight font-semibold` |
 | Display | 28px (1.75rem) | 600 (semibold) | 1.2 (33.6px) | `text-2xl leading-tight font-semibold` |
 
 **Rules:**
 - Exactly 4 sizes declared. No intermediate sizes.
-- Exactly 2 weights: 400 (body text) and 600 (headings, labels, emphasis). Weight 500 is used only for small labels to create subtle hierarchy without adding a third conceptual weight.
+- Exactly 2 weights: 400 (body text) and 600 (headings, labels, emphasis). Labels use weight 600 at 14px — size + weight combo creates distinct hierarchy from 16px body.
 - Completed task titles use `line-through` decoration + `opacity-60` for visual demotion.
 - Task difficulty badges use Label size (14px) with colored backgrounds, never larger.
 
