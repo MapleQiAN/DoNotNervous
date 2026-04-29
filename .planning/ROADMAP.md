@@ -14,7 +14,7 @@
 
 Plans:
 - [x] 01-01-PLAN.md — Project scaffold, data layer & foundation components
-- [ ] 01-02-PLAN.md — Task management UI — input, list, item, categories, subtasks
+- [x] 01-02-PLAN.md — Task management UI — input, list, item, categories, subtasks
 - [ ] 01-03-PLAN.md — Drag reorder, export/import & settings drawer
 
 **Wave 1** *(foundation — no dependencies)*: Plan 01-01
@@ -103,15 +103,15 @@ Plans:
 
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
-| 1 | ▶ In Progress | 1/3 | 33% |
+| 1 | ▶ In Progress | 2/3 | 67% |
 | 2 | ○ | 0/- | 0% |
 | 3 | ○ | 0/- | 0% |
 | 4 | ○ | 0/- | 0% |
 | 5 | ○ | 0/- | 0% |
 
-**Overall:** 7%
+**Overall:** 13%
 
 ---
 *Roadmap created: 2026-04-28*
 *Last updated: 2026-04-29*
-*Plan 01-01 completed: 2026-04-29*
+*Plan 01-02 completed: 2026-04-29*

@@ -7,14 +7,14 @@
 
 ### Task Management
 
-- [ ] **TASK-01**: User can create simple tasks with title and optional description
-- [ ] **TASK-02**: User can complete tasks with satisfying visual + animation feedback
-- [ ] **TASK-03**: User can edit and delete tasks
-- [ ] **TASK-04**: User can organize tasks with categories (tags)
-- [ ] **TASK-05**: User can create subtasks under a task
+- [x] **TASK-01**: User can create simple tasks with title and optional description
+- [x] **TASK-02**: User can complete tasks with satisfying visual + animation feedback
+- [x] **TASK-03**: User can edit and delete tasks
+- [x] **TASK-04**: User can organize tasks with categories (tags)
+- [x] **TASK-05**: User can create subtasks under a task
 - [ ] **TASK-06**: User can reorder tasks via drag and drop
-- [ ] **TASK-07**: User can assign difficulty level (easy/medium/hard) to tasks
-- [ ] **TASK-08**: User can archive completed tasks to keep list clean
+- [x] **TASK-07**: User can assign difficulty level (easy/medium/hard) to tasks
+- [x] **TASK-08**: User can archive completed tasks to keep list clean
 
 ### Points System
 
@@ -65,18 +65,18 @@
 
 ### Data & Infrastructure
 
-- [ ] **DATA-01**: All data stored locally in IndexedDB via Dexie.js
+- [x] **DATA-01**: All data stored locally in IndexedDB via Dexie.js
 - [ ] **DATA-02**: No account or login required — works immediately on first visit
-- [ ] **DATA-03**: Data persists across page refreshes and browser restarts
+- [x] **DATA-03**: Data persists across page refreshes and browser restarts
 - [ ] **DATA-04**: User can export data as JSON (backup against Safari ITP data loss)
 - [ ] **DATA-05**: User can import data from JSON backup
 - [ ] **DATA-06**: Responsive design works on mobile and desktop browsers
 
 ### Gentle Onboarding
 
-- [ ] **ONBD-01**: First screen is task input — start using in 5 seconds
-- [ ] **ONBD-02**: Features discovered progressively, no setup wizard
-- [ ] **ONBD-03**: No "what's your name?" or mandatory profile creation
+- [x] **ONBD-01**: First screen is task input — start using in 5 seconds
+- [x] **ONBD-02**: Features discovered progressively, no setup wizard
+- [x] **ONBD-03**: No "what's your name?" or mandatory profile creation
 
 ## v2 Requirements
 
@@ -124,14 +124,14 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TASK-01 | Phase 1 | Pending |
-| TASK-02 | Phase 1 | Pending |
-| TASK-03 | Phase 1 | Pending |
-| TASK-04 | Phase 1 | Pending |
-| TASK-05 | Phase 1 | Pending |
+| TASK-01 | Phase 1 | Complete |
+| TASK-02 | Phase 1 | Complete |
+| TASK-03 | Phase 1 | Complete |
+| TASK-04 | Phase 1 | Complete |
+| TASK-05 | Phase 1 | Complete |
 | TASK-06 | Phase 1 | Pending |
-| TASK-07 | Phase 1 | Pending |
-| TASK-08 | Phase 1 | Pending |
+| TASK-07 | Phase 1 | Complete |
+| TASK-08 | Phase 1 | Complete |
 | POINT-01 | Phase 2 | Pending |
 | POINT-02 | Phase 2 | Pending |
 | POINT-03 | Phase 2 | Pending |
@@ -161,15 +161,15 @@
 | SUMM-02 | Phase 5 | Pending |
 | SUMM-03 | Phase 5 | Pending |
 | SUMM-04 | Phase 5 | Pending |
-| DATA-01 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Complete |
 | DATA-02 | Phase 1 | Pending |
-| DATA-03 | Phase 1 | Pending |
+| DATA-03 | Phase 1 | Complete |
 | DATA-04 | Phase 1 | Pending |
 | DATA-05 | Phase 1 | Pending |
 | DATA-06 | Phase 4 | Pending |
-| ONBD-01 | Phase 1 | Pending |
-| ONBD-02 | Phase 1 | Pending |
-| ONBD-03 | Phase 1 | Pending |
+| ONBD-01 | Phase 1 | Complete |
+| ONBD-02 | Phase 1 | Complete |
+| ONBD-03 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 35 total
@@ -178,4 +178,4 @@
 
 ---
 *Requirements defined: 2026-04-28*
-*Last updated: 2026-04-28 after initial definition*
+*Last updated: 2026-04-29 after Plan 01-02 completion*
