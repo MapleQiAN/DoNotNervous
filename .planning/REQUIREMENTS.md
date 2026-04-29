@@ -12,7 +12,7 @@
 - [x] **TASK-03**: User can edit and delete tasks
 - [x] **TASK-04**: User can organize tasks with categories (tags)
 - [x] **TASK-05**: User can create subtasks under a task
-- [ ] **TASK-06**: User can reorder tasks via drag and drop
+- [x] **TASK-06**: User can reorder tasks via drag and drop
 - [x] **TASK-07**: User can assign difficulty level (easy/medium/hard) to tasks
 - [x] **TASK-08**: User can archive completed tasks to keep list clean
 
@@ -68,8 +68,8 @@
 - [x] **DATA-01**: All data stored locally in IndexedDB via Dexie.js
 - [ ] **DATA-02**: No account or login required — works immediately on first visit
 - [x] **DATA-03**: Data persists across page refreshes and browser restarts
-- [ ] **DATA-04**: User can export data as JSON (backup against Safari ITP data loss)
-- [ ] **DATA-05**: User can import data from JSON backup
+- [x] **DATA-04**: User can export data as JSON (backup against Safari ITP data loss)
+- [x] **DATA-05**: User can import data from JSON backup
 - [ ] **DATA-06**: Responsive design works on mobile and desktop browsers
 
 ### Gentle Onboarding
@@ -129,7 +129,7 @@
 | TASK-03 | Phase 1 | Complete |
 | TASK-04 | Phase 1 | Complete |
 | TASK-05 | Phase 1 | Complete |
-| TASK-06 | Phase 1 | Pending |
+| TASK-06 | Phase 1 | Complete |
 | TASK-07 | Phase 1 | Complete |
 | TASK-08 | Phase 1 | Complete |
 | POINT-01 | Phase 2 | Pending |
@@ -164,8 +164,8 @@
 | DATA-01 | Phase 1 | Complete |
 | DATA-02 | Phase 1 | Pending |
 | DATA-03 | Phase 1 | Complete |
-| DATA-04 | Phase 1 | Pending |
-| DATA-05 | Phase 1 | Pending |
+| DATA-04 | Phase 1 | Complete |
+| DATA-05 | Phase 1 | Complete |
 | DATA-06 | Phase 4 | Pending |
 | ONBD-01 | Phase 1 | Complete |
 | ONBD-02 | Phase 1 | Complete |
@@ -178,4 +178,4 @@
 
 ---
 *Requirements defined: 2026-04-28*
-*Last updated: 2026-04-29 after Plan 01-02 completion*
+*Last updated: 2026-04-29 after Plan 01-03 completion*
