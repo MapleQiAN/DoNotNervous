@@ -41,9 +41,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Data layer: types, schema v2, point/streak domain functions & tests
-- [ ] 02-02-PLAN.md — Integration: completeTask atomic transaction, usePoints/useStreaks hooks, freeze auto-apply & tests
-- [ ] 02-03-PLAN.md — UI: PointBadge animation, TransactionPopover, StreakDisplay, Header integration & human verify
+- [x] 02-01-PLAN.md — Data layer: types, schema v2, point/streak domain functions & tests
+- [x] 02-02-PLAN.md — Integration: completeTask atomic transaction, usePoints/useStreaks hooks, freeze auto-apply & tests
+- [x] 02-03-PLAN.md — UI: PointBadge animation, TransactionPopover, StreakDisplay, Header integration & human verify
 
 **Wave 1** *(data layer — no dependencies)*: Plan 02-01
 **Wave 2** *(blocked on Wave 1)*: Plan 02-02
@@ -115,14 +115,15 @@ Plans:
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
 | 1 | ✓ Complete | 3/3 | 100% |
-| 2 | ▶ Planned | 3/3 | 0% |
+| 2 | ✓ Complete | 3/3 | 100% |
 | 3 | ○ Pending | 0/- | 0% |
 | 4 | ○ Pending | 0/- | 0% |
 | 5 | ○ Pending | 0/- | 0% |
 
-**Overall:** 20%
+**Overall:** 40%
 
 ---
 *Roadmap created: 2026-04-28*
 *Last updated: 2026-04-29*
+*Phase 2 complete: 2026-04-29*
 *Phase 2 planned: 2026-04-29*
