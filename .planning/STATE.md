@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** 完成任务 → 赚积分 → 奖励自己。正向激励循环，反焦虑，慢生活。
-**Current focus:** Phase 1 — Foundation (Tasks & Data Layer)
+**Current focus:** Phase 2 — Gamification Core (Points & Streaks)
 
 ## Session Context
 
@@ -16,8 +16,8 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 | Phase | Status | Last Activity |
 |-------|--------|---------------|
-| Phase 1: Foundation | ▶ Plan 03 complete | 2026-04-29 |
-| Phase 2: Gamification Core | ○ Pending | — |
+| Phase 1: Foundation | ✓ Complete | 2026-04-29 |
+| Phase 2: Gamification Core | ▶ Ready to plan | — |
 | Phase 3: Mood & Rewards | ○ Pending | — |
 | Phase 4: Mascot & Animations | ○ Pending | — |
 | Phase 5: Summaries | ○ Pending | — |
@@ -53,8 +53,8 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Session Continuity
 
 **Last session:** 2026-04-29
-**Stopped at:** Completed 01-03-PLAN.md (Plan 03: Drag reorder, export/import & settings drawer)
-**Resume file:** .planning/phases/02-gamification-core/02-01-PLAN.md
+**Stopped at:** Phase 1 complete — verified, human-approved
+**Resume file:** .planning/phases/02-gamification-core/ (needs discuss/plan)
 
 ---
 ## Planning Completed
