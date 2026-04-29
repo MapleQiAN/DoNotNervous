@@ -17,6 +17,10 @@ Plans:
 - [ ] 01-02-PLAN.md — Task management UI — input, list, item, categories, subtasks
 - [ ] 01-03-PLAN.md — Drag reorder, export/import & settings drawer
 
+**Wave 1** *(foundation — no dependencies)*: Plan 01-01
+**Wave 2** *(blocked on Wave 1 completion)*: Plan 01-02
+**Wave 3** *(blocked on Wave 2 completion)*: Plan 01-03
+
 **Success Criteria:**
 - User can add a task and see it in a list within 5 seconds of opening the app
 - Completing a task shows satisfying check animation (no points yet, just task done)
@@ -99,7 +103,7 @@ Plans:
 
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
-| 1 | [ ] | 3/- | 0% |
+| 1 | ▶ Planned | 3/- | 0% |
 | 2 | ○ | 0/- | 0% |
 | 3 | ○ | 0/- | 0% |
 | 4 | ○ | 0/- | 0% |

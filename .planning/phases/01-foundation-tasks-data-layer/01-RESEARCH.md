@@ -678,14 +678,16 @@ export default defineConfig({
 | A4 | React Router 7 in SPA mode does not require framework mode configuration | Standard Stack | May need react-router config adjustment if SPA mode has specific requirements |
 | A5 | Zod v4 API is compatible with the schemas shown in code examples | Code Examples | Zod v4 (4.3.6) may have breaking changes from v3; syntax shown may need adjustment |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **@dnd-kit API choice: classic vs new**
+   - RESOLVED: Use classic @dnd-kit/core + @dnd-kit/sortable. Confirmed in plan (Plan 03 Step 1-2).
    - What we know: `@dnd-kit/react` (v0.4.0) is the newer API with cleaner hooks. `@dnd-kit/core` + `@dnd-kit/sortable` is stable and well-documented. Official docs now reference the new API.
    - What's unclear: Whether @dnd-kit/react will have breaking changes before 1.0.
    - Recommendation: Use the classic `@dnd-kit/core` + `@dnd-kit/sortable` for Phase 1 stability. The new API is an option for later phases.
 
 2. **Multi-view routing in Phase 1**
+   - RESOLVED: No React Router in Phase 1. Single-view app with settings drawer. Confirmed in Plan 01 Step 2 note.
    - What we know: ONBD-01 says first screen is task input. The app needs at least export/import UI somewhere.
    - What's unclear: Whether Phase 1 needs React Router at all, or if it's a single-page view with a settings drawer.
    - Recommendation: Include React Router in setup but keep Phase 1 as a single main view with a drawer/modal for settings/export. Router becomes essential in later phases.

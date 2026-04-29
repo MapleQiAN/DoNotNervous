@@ -2,9 +2,10 @@
 phase: 1
 slug: foundation-tasks-data-layer
 status: draft
-nyquist_compliant: false
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-04-29
+updated: 2026-04-29
 ---
 
 # Phase 1 — Validation Strategy
@@ -40,6 +41,7 @@ created: 2026-04-29
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
 | 01-01-01 | 01 | 1 | TASK-01 | T-1-05 | Zod validates title (max 200 chars, no HTML) | unit | `npx vitest run src/domain/__tests__/task.test.ts` | W0 | pending |
 | 01-01-02 | 01 | 1 | TASK-01 | — | Task persists in IndexedDB via Dexie | integration | `npx vitest run src/db/__tests__/task-crud.test.ts` | W0 | pending |
+| 01-01-03 | 01 | 1 | UI components | — | All shared UI components render without error | unit (smoke) | `npx vitest run src/components/__tests__/smoke.test.tsx` | W0 | pending |
 | 01-02-01 | 02 | 1 | TASK-02 | — | Completion triggers visual feedback | unit | `npx vitest run src/components/tasks/__tests__/TaskItem.test.tsx` | W0 | pending |
 | 01-03-01 | 02 | 1 | TASK-03 | — | Edit and delete tasks via Dexie | integration | `npx vitest run src/db/__tests__/task-crud.test.ts` | W0 | pending |
 | 01-04-01 | 02 | 1 | TASK-04 | — | Category tag validation | unit | `npx vitest run src/domain/__tests__/task.test.ts` | W0 | pending |
@@ -58,6 +60,7 @@ created: 2026-04-29
 
 - [ ] `vitest.config.ts` — Vitest config with happy-dom environment
 - [ ] `src/domain/__tests__/task.test.ts` — TASK-01, TASK-04, TASK-07 (Zod validation)
+- [ ] `src/components/__tests__/smoke.test.tsx` — Component render smoke tests for Button, Input, Textarea, ConfirmDialog, EmptyState, Toast, DifficultyBadge, Header, AppShell
 - [ ] `src/db/__tests__/task-crud.test.ts` — TASK-01, TASK-03, TASK-08 (Dexie CRUD)
 - [ ] `src/db/__tests__/task-hierarchy.test.ts` — TASK-05 (subtask parent-child)
 - [ ] `src/db/__tests__/database.test.ts` — DATA-01, DATA-03 (persistence)
@@ -81,11 +84,11 @@ created: 2026-04-29
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 10s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 10s
+- [x] `nyquist_compliant: true` set in frontmatter
 
 **Approval:** pending
