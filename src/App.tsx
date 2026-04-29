@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-      <AppShell>
+      <AppShell showToast={showToast}>
         <TaskInput />
         <TaskList />
       </AppShell>

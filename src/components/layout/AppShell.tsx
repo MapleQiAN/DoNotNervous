@@ -1,13 +1,20 @@
+import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { Header } from './Header'
 import { useUIStore } from '../../stores/uiStore'
+import { checkAndApplyFreezes } from '../../hooks/useStreaks'
 
 interface AppShellProps {
   children: ReactNode
+  showToast: (message: string, type?: 'success' | 'error') => void
 }
 
-export function AppShell({ children }: AppShellProps) {
+export function AppShell({ children, showToast }: AppShellProps) {
   const setSettingsOpen = useUIStore((s) => s.setSettingsOpen)
+
+  useEffect(() => {
+    checkAndApplyFreezes(showToast)
+  }, [showToast])
 
   return (
     <div className="min-h-screen bg-cream-50">
