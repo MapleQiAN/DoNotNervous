@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream-50: oklch(0.98 0.008 280);
+  --color-cream-100: oklch(0.94 0.015 280);
+  --color-lavender-500: oklch(0.72 0.14 300);
+  --color-lavender-100: oklch(0.92 0.04 300);
+  --color-sage-500: oklch(0.72 0.14 160);
+  --color-sage-100: oklch(0.78 0.10 160);
+  --color-amber-500: oklch(0.78 0.08 80);
+  --color-coral-500: oklch(0.72 0.12 25);
+  --color-text-primary: oklch(0.22 0.02 280);
+  --color-text-secondary: oklch(0.48 0.02 280);
+  --color-border: oklch(0.90 0.01 280);
+}
