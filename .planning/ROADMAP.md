@@ -115,7 +115,7 @@ Plans:
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
 | 1 | ✓ Complete | 3/3 | 100% |
-| 2 | ▶ Planning | 3/3 | 0% |
+| 2 | ▶ Planned | 3/3 | 0% |
 | 3 | ○ Pending | 0/- | 0% |
 | 4 | ○ Pending | 0/- | 0% |
 | 5 | ○ Pending | 0/- | 0% |

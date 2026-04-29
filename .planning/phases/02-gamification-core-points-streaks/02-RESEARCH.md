@@ -567,7 +567,7 @@ describe('Point Ledger integration', () => {
 | A4 | Point bonus is recorded as a separate ledger entry from base points | Pattern 5 | If combined into one entry, transaction history is less transparent. Separate entries show bonus clearly. |
 | A5 | Streak milestones at 7, 14, 30 days -- the milestone triggers on the day the streak reaches that count, not at the start of the next day | Phase Requirements | If milestone is off by one day, user sees wrong celebration. Need to verify in implementation. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **When should streak freeze check run?**
    - What we know: D-08 says auto-apply when a day is missed. Task completion is the primary trigger.

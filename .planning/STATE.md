@@ -17,7 +17,7 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 | Phase | Status | Last Activity |
 |-------|--------|---------------|
 | Phase 1: Foundation | ✓ Complete | 2026-04-29 |
-| Phase 2: Gamification Core | ▶ Ready to plan | — |
+| Phase 2: Gamification Core | ▶ Ready to execute | 2026-04-29 |
 | Phase 3: Mood & Rewards | ○ Pending | — |
 | Phase 4: Mascot & Animations | ○ Pending | — |
 | Phase 5: Summaries | ○ Pending | — |
