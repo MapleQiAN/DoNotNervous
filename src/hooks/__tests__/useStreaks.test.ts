@@ -64,8 +64,17 @@ describe('completeTask point awarding and streak tracking', () => {
 
   describe('Streak Bonus (with multiplier > 1)', () => {
     it('completeTask with streakLength >= 7 creates a second pointLedger entry with type=streak_bonus', async () => {
-      // Seed 7 consecutive days of streak records
-      for (let i = 7; i >= 1; i--) {
+      // Seed 7 consecutive days of streak records ending yesterday
+      // (today + 6 prior days = 7 consecutive, computeCurrentStreak starts from today)
+      const todayKey = toDayKey(new Date())
+      await db.streakRecords.put({
+        date: todayKey,
+        completedTaskIds: ['seeded-today'],
+        freezeUsed: false,
+        freezeCountRemaining: 2,
+        createdAt: new Date(),
+      })
+      for (let i = 1; i <= 6; i++) {
         await db.streakRecords.put({
           date: daysAgo(i),
           completedTaskIds: ['seeded'],
