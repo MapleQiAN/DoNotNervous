@@ -94,6 +94,17 @@ Plans:
 
 **Requirements:** MASC-01~05, DATA-06
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Mascot foundation: lottie-react, mascot store, celebrate utility, Mascot component with 4 Lottie states
+- [ ] 04-02-PLAN.md — Integration: wire mascot + confetti into completeTask, streak milestones, reward redemption, mood logging
+- [ ] 04-03-PLAN.md — UI polish: task micro-interactions, page transitions, responsive fixes, 5-tab mobile nav & human verify
+
+**Wave 1** *(mascot foundation — no dependencies)*: Plan 04-01
+**Wave 2** *(blocked on Wave 1)*: Plan 04-02
+**Wave 3** *(blocked on Wave 2)*: Plan 04-03 (has human verification checkpoint)
+
 **Success Criteria:**
 - Mascot visible on main screen with idle breathing/bobbing animation
 - Completing a task triggers mascot celebration + confetti
@@ -128,7 +139,7 @@ Plans:
 | 1 | ✓ Complete | 3/3 | 100% |
 | 2 | ✓ Complete | 3/3 | 100% |
 | 3 | ✓ Complete | 3/3 | 100% |
-| 4 | ○ Pending | 0/- | 0% |
+| 4 | ◐ Planned | 3/3 | 0% |
 | 5 | ○ Pending | 0/- | 0% |
 
 **Overall:** 60%
@@ -140,3 +151,4 @@ Plans:
 *Phase 2 planned: 2026-04-29*
 *Phase 3 planned: 2026-05-04*
 *Phase 3 complete: 2026-05-04*
+*Phase 4 planned: 2026-05-04*
