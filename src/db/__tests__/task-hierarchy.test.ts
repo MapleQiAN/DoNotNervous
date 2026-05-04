@@ -68,7 +68,7 @@ describe('task hierarchy', () => {
     await createTask({ title: 'Subtask', type: 'simple', difficulty: 'easy', parentId: parent.id })
     await createTask({ title: 'Another top-level', type: 'simple', difficulty: 'easy' })
 
-    const topLevel = await db.tasks
+    await db.tasks
       .where('parentId').equals('')
       .toArray()
 

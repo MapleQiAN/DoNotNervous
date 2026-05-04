@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { AnimatePresence } from 'framer-motion'
+import { CalendarDays, ChevronDown, ChevronUp, Grid2X2, Leaf, ListChecks } from 'lucide-react'
 import { DndContext, closestCenter, type DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { db } from '../../db'
@@ -62,59 +62,85 @@ export function TaskList() {
 
   if (hasNoTasks) {
     return (
-      <EmptyState
-        heading="Nothing here yet"
-        body="Add your first task to get started. One small step counts."
-      />
+      <div className="content-card">
+        <EmptyState
+          heading="今天还没有任务"
+          body="先写下一件小事。慢慢来，也是在往前走。"
+        />
+      </div>
     )
   }
 
   return (
-    <div>
+    <div className="space-y-5">
+      <section className="hero-panel task-hero">
+        <div className="hero-copy">
+          <h1>今天也温柔地推进一下吧 <span>🌿</span></h1>
+          <p>把大目标拆成小行动，给自己一点点成就感。</p>
+        </div>
+        <img className="hero-illustration notebook-illustration" src="/illustrations/task-hero.png" alt="" aria-hidden="true" />
+      </section>
+
+      <div className="section-title-row">
+        <h2>我的任务清单</h2>
+        <div className="view-toggle" aria-label="视图切换">
+          <button type="button" className="is-active"><ListChecks size={18} /></button>
+          <button type="button"><Grid2X2 size={17} /></button>
+        </div>
+      </div>
+
       {taskCount >= 3 && <CategoryFilter />}
 
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext
-          items={filtered.map((t) => t.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((task) => (
-              <TaskItemSortable key={task.id} task={task} />
-            ))}
-          </AnimatePresence>
-        </SortableContext>
-      </DndContext>
+      <section className="content-card grouped-list">
+        <div className="group-title">
+          <span><Leaf size={18} /> 今日任务（{filtered.length}）</span>
+          <ChevronUp size={17} />
+        </div>
 
-      {filtered.length === 0 && topLevelActiveTasks.length > 0 && (
-        <p className="text-sm text-text-secondary text-center py-4">
-          No tasks in this category.
-        </p>
-      )}
+        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext
+            items={filtered.map((t) => t.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <AnimatePresence mode="popLayout">
+              {filtered.map((task) => (
+                <TaskItemSortable key={task.id} task={task} />
+              ))}
+            </AnimatePresence>
+          </SortableContext>
+        </DndContext>
+
+        {filtered.length === 0 && topLevelActiveTasks.length > 0 && (
+          <p className="py-4 text-center text-sm text-text-secondary">
+            这个分类暂时没有任务。
+          </p>
+        )}
+      </section>
 
       {topLevelCompletedTasks.length > 0 && (
-        <div className="mt-4">
+        <section className="content-card grouped-list">
           <button
             type="button"
             onClick={() => setShowCompleted(!showCompleted)}
-            className="flex items-center gap-2 text-sm font-semibold text-text-secondary hover:text-text-primary transition-colors min-h-[44px] cursor-pointer"
+            className="group-title w-full"
           >
-            {showCompleted ? (
-              <ChevronUp className="w-4 h-4" />
-            ) : (
-              <ChevronDown className="w-4 h-4" />
-            )}
-            Completed ({topLevelCompletedTasks.length})
+            <span><CalendarDays size={18} /> 已完成（{topLevelCompletedTasks.length}）</span>
+            {showCompleted ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
           </button>
 
           <AnimatePresence mode="popLayout">
             {showCompleted &&
-              topLevelCompletedTasks.map((task) => (
+              topLevelCompletedTasks.slice(0, 6).map((task) => (
                 <TaskItem key={task.id} task={task} />
               ))}
           </AnimatePresence>
-        </div>
+        </section>
       )}
+
+      <div className="gentle-footer">
+        <Leaf size={20} />
+        <span>你正在成为更稳定、更温柔的自己。慢慢来，比较快。</span>
+      </div>
     </div>
   )
 }

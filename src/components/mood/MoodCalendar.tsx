@@ -1,74 +1,59 @@
-import { useState, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
-import { startOfMonth, endOfMonth, eachDayOfInterval, format, addMonths, subMonths, getDay, isToday } from 'date-fns'
+import { useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Activity, ArrowRight, CheckSquare, Clock3, Edit3, Leaf, Plus, Smile, SunMedium, Wallet } from 'lucide-react'
+import { format } from 'date-fns'
 import { useMoodEntries, createMoodEntry } from '../../hooks/useMoodEntries'
 import { MOODS } from '../../domain/mood'
+import { useUIStore } from '../../stores/uiStore'
 import type { MoodEmoji } from '../../domain/types'
 
 interface MoodCalendarProps {
   showToast: (message: string, type?: 'success' | 'error') => void
+  activeView?: 'mood' | 'data'
 }
 
-// Map mood emoji to background color (warm, positive palette)
-const MOOD_COLORS: Record<MoodEmoji, string> = {
-  '\u{1F60A}': 'bg-yellow-200',
-  '\u{1F60C}': 'bg-green-200',
-  '\u{1F610}': 'bg-gray-200',
-  '\u{1F614}': 'bg-blue-200',
-  '\u{1F630}': 'bg-purple-200',
-  '\u{1F621}': 'bg-red-200',
-  '\u{1F973}': 'bg-orange-200',
-  '\u{1F4AA}': 'bg-amber-300',
+const moodScore: Record<MoodEmoji, number> = {
+  '😊': 4,
+  '😌': 3,
+  '😐': 2,
+  '😔': 2,
+  '😰': 1,
+  '😡': 1,
+  '🥳': 5,
+  '💪': 4,
 }
 
-function getDominantMood(entries: { emoji: MoodEmoji }[]): MoodEmoji | null {
-  if (entries.length === 0) return null
-  const counts: Record<string, number> = {}
-  for (const e of entries) {
-    counts[e.emoji] = (counts[e.emoji] || 0) + 1
-  }
-  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1])
-  return sorted[0][0] as MoodEmoji
-}
+const fallbackTrend = [4, 3.3, 2, 3, 3.8, 4.6, 3]
 
-export function MoodCalendar({ showToast }: MoodCalendarProps) {
-  const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState<string | null>(null)
+export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarProps) {
   const [showStandalonePicker, setShowStandalonePicker] = useState(false)
   const [selectedEmoji, setSelectedEmoji] = useState<MoodEmoji | null>(null)
   const [journal, setJournal] = useState('')
   const allMoods = useMoodEntries()
+  const setCurrentPage = useUIStore((s) => s.setCurrentPage)
 
-  const monthStart = startOfMonth(currentMonth)
-  const monthEnd = endOfMonth(currentMonth)
-  const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
-
-  // Pad start of month so first day aligns with weekday
-  const startPad = getDay(monthStart) // 0=Sun
-
-  // Group moods by dayKey
-  const moodsByDay = useMemo(() => {
-    const map: Record<string, { emoji: MoodEmoji }[]> = {}
-    for (const m of allMoods) {
-      const key = format(m.createdAt, 'yyyy-MM-dd')
-      if (!map[key]) map[key] = []
-      map[key].push(m)
-    }
-    return map
+  const trend = useMemo(() => {
+    if (allMoods.length === 0) return fallbackTrend
+    const recent = allMoods.slice(-7)
+    const values = recent.map((entry) => moodScore[entry.emoji])
+    while (values.length < 7) values.unshift(fallbackTrend[values.length])
+    return values.slice(-7)
   }, [allMoods])
 
-  const selectedDayMoods = selectedDate
-    ? allMoods.filter((m) => format(m.createdAt, 'yyyy-MM-dd') === selectedDate)
-    : []
+  const path = trend.map((value, index) => {
+    const x = 40 + index * 118
+    const y = 170 - value * 28
+    return `${index === 0 ? 'M' : 'L'} ${x} ${y}`
+  }).join(' ')
 
   async function handleStandaloneSave() {
     if (!selectedEmoji) return
     try {
       await createMoodEntry({ emoji: selectedEmoji, journal, taskId: null })
-      showToast('Mood logged!')
+      showToast('心情已记录')
     } catch {
-      showToast('Could not save mood', 'error')
+      showToast('保存失败', 'error')
     }
     setSelectedEmoji(null)
     setJournal('')
@@ -76,129 +61,152 @@ export function MoodCalendar({ showToast }: MoodCalendarProps) {
   }
 
   return (
-    <div className="space-y-4">
-      {/* Month navigation */}
-      <div className="flex items-center justify-between">
-        <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-2 hover:bg-cream-100 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer" aria-label="Previous month">
-          <ChevronLeft size={20} />
-        </button>
-        <h3 className="text-lg font-semibold text-text-primary">{format(currentMonth, 'MMMM yyyy')}</h3>
-        <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-2 hover:bg-cream-100 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer" aria-label="Next month">
-          <ChevronRight size={20} />
-        </button>
-      </div>
+    <div className="dashboard-grid mood-route">
+      <section className="main-column">
+        <div className="top-tabs">
+          <button type="button" onClick={() => setCurrentPage('mood')} className={activeView === 'mood' ? 'is-active' : ''}>心情记录</button>
+          <button type="button" onClick={() => setCurrentPage('data')} className={activeView === 'data' ? 'is-active' : ''}>数据复盘</button>
+        </div>
 
-      {/* Standalone mood button (D-11) */}
-      <button
-        onClick={() => setShowStandalonePicker(true)}
-        className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-sage-300 text-sage-600 hover:bg-sage-50 transition-colors w-full justify-center min-h-[44px] cursor-pointer text-sm font-medium"
-      >
-        <Plus size={18} /> Log Mood
-      </button>
+        <section className="hero-panel mood-hero">
+          <div className="hero-copy">
+            <h1>看见自己的节奏，也看见自己的情绪 🌿</h1>
+            <p>记录每一次波动，也发现让你变好的规律。</p>
+          </div>
+          <img className="hero-illustration tea-illustration" src="/illustrations/mood-hero.png" alt="" aria-hidden="true" />
+        </section>
 
-      {/* Standalone mood picker */}
-      <AnimatePresence>
-        {showStandalonePicker && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="bg-white rounded-xl p-4 border border-border space-y-3">
-              <div className="grid grid-cols-4 gap-2">
+        <section className="content-card chart-card">
+          <div className="section-title-row">
+            <h2>本周心情趋势</h2>
+            <button type="button" className="small-select">本周</button>
+          </div>
+          <div className="mood-legend">
+            {['很糟', '低落', '平静', '愉快', '很棒'].map((label, index) => <span key={label}>{['😡','😔','😐','😊','🥳'][index]} {label}</span>)}
+          </div>
+          <svg className="trend-chart" viewBox="0 0 760 190" role="img" aria-label="本周心情趋势图">
+            {[1, 2, 3, 4, 5].map((line) => (
+              <line key={line} x1="34" x2="736" y1={178 - line * 28} y2={178 - line * 28} className="chart-grid" />
+            ))}
+            <path d={`${path} L 748 178 L 40 178 Z`} className="chart-area" />
+            <path d={path} className="chart-line" />
+            {trend.map((value, index) => (
+              <g key={index}>
+                <circle cx={40 + index * 118} cy={170 - value * 28} r="13" className="chart-dot" />
+                <text x={40 + index * 118} y={176 - value * 28} textAnchor="middle" fontSize="14">{value >= 4 ? '😊' : value <= 2 ? '😐' : '😌'}</text>
+                <text x={40 + index * 118} y="186" textAnchor="middle" className="chart-date">{`5/${12 + index}`}</text>
+              </g>
+            ))}
+          </svg>
+        </section>
+
+        <section className="stats-strip mood-stats">
+          <Stat icon={<CheckSquare />} label="本周完成任务数" value="18 个" note="较上周 20%" />
+          <Stat icon={<Wallet />} label="累计奖励金额" value="¥ 235" note="可用余额 ¥168" />
+          <Stat icon={<Smile />} label="平均心情指数" value="3.6 / 5" note="较上周 0.4" />
+          <Stat icon={<Clock3 />} label="专注时段" value="下午" note="14:00-16:00" />
+        </section>
+
+        <section className="content-card mood-records">
+          <div className="section-title-row">
+            <h2>心情与任务记录</h2>
+            <button type="button" className="small-select">全部情绪</button>
+          </div>
+          {(allMoods.length > 0 ? allMoods.slice(-4).reverse() : fallbackRecords).map((entry, index) => {
+            const isFallback = !('id' in entry)
+            return (
+              <div key={isFallback ? entry.text : entry.id} className="record-row">
+                <span className="record-emoji">{isFallback ? entry.emoji : entry.emoji}</span>
+                <span>{isFallback ? entry.date : format(entry.createdAt, 'M/d')}</span>
+                <p>{isFallback ? entry.text : (entry.journal || '记录了今天的心情')}</p>
+                <em>{['工作', '健康', '生活', '专注'][index % 4]}</em>
+                <strong>完成任务 {3 - (index % 3)} 个</strong>
+              </div>
+            )
+          })}
+          <button type="button" className="text-link">查看更多记录 <ArrowRight size={16} /></button>
+        </section>
+      </section>
+
+      <aside className="right-column">
+        <section className="side-panel mood-write">
+          <h2>写下今天的心情吧</h2>
+          <p>记录情绪，梳理想法，让自己被看见。</p>
+          <button type="button" onClick={() => setShowStandalonePicker(true)} className="primary-wide">
+            记录今日心情 <Edit3 size={17} />
+          </button>
+        </section>
+
+        <AnimatePresence>
+          {showStandalonePicker && (
+            <motion.section initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="side-panel form-panel">
+              <div className="mood-picker-grid">
                 {MOODS.map(({ emoji, label }) => (
                   <button
                     key={emoji}
                     type="button"
                     onClick={() => setSelectedEmoji(emoji)}
-                    className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all min-h-[44px] cursor-pointer ${
-                      selectedEmoji === emoji ? 'bg-sage-100 ring-2 ring-sage-400 scale-110' : 'hover:bg-cream-100'
-                    }`}
+                    className={selectedEmoji === emoji ? 'is-active' : ''}
                     aria-label={label}
                   >
-                    <span className="text-2xl">{emoji}</span>
-                    <span className="text-[10px] text-text-secondary capitalize">{label}</span>
+                    <span>{emoji}</span>
+                    <em>{label}</em>
                   </button>
                 ))}
               </div>
-              <textarea
-                value={journal}
-                onChange={(e) => setJournal(e.target.value.slice(0, 280))}
-                placeholder="What's on your mind? (optional)"
-                maxLength={280}
-                rows={2}
-                className="w-full px-3 py-2 rounded-lg border border-border bg-white text-text-primary placeholder:text-text-secondary/50 resize-none text-sm focus:outline-none focus:ring-2 focus:ring-sage-400"
-              />
-              <button onClick={handleStandaloneSave} disabled={!selectedEmoji} className="w-full px-4 py-2.5 rounded-lg bg-sage-500 text-white font-medium hover:bg-sage-600 transition-colors min-h-[44px] cursor-pointer text-sm disabled:opacity-40 disabled:cursor-not-allowed">
-                Save Mood
+              <textarea value={journal} onChange={(e) => setJournal(e.target.value.slice(0, 200))} placeholder="想对自己说点什么..." rows={3} />
+              <button type="button" disabled={!selectedEmoji} onClick={handleStandaloneSave} className="primary-wide">
+                保存心情 <Plus size={17} />
               </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.section>
+          )}
+        </AnimatePresence>
 
-      {/* Calendar grid */}
-      <div className="grid grid-cols-7 gap-1">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
-          <div key={d} className="text-center text-xs text-text-secondary py-1 font-medium">{d}</div>
-        ))}
-        {/* Empty cells for padding */}
-        {Array.from({ length: startPad }).map((_, i) => (
-          <div key={`pad-${i}`} />
-        ))}
-        {/* Day cells */}
-        {days.map((day) => {
-          const dayKey = format(day, 'yyyy-MM-dd')
-          const dayMoods = moodsByDay[dayKey] || []
-          const dominant = getDominantMood(dayMoods)
-          const isSelected = selectedDate === dayKey
+        <section className="side-panel insights">
+          <h2>数据洞察 ✨</h2>
+          <Insight icon={<Activity />} title="完成运动任务的日子，心情更稳定" text="本周运动 3 天，平均心情 4.3，高于整体平均 0.7" />
+          <Insight icon={<SunMedium />} title="下午完成效率最高" text="14:00-16:00 完成任务 8 个，占本周 44%" />
+          <Insight icon={<CheckSquare />} title="周末情绪整体更好" text="周六、周日平均心情 4.2，高于工作日平均 3.2" />
+          <button type="button" className="text-link">查看完整复盘报告 <ArrowRight size={16} /></button>
+        </section>
 
-          return (
-            <button
-              key={dayKey}
-              onClick={() => setSelectedDate(isSelected ? null : dayKey)}
-              className={`aspect-square rounded-lg flex flex-col items-center justify-center text-xs transition-all min-h-[44px] cursor-pointer ${
-                dominant ? MOOD_COLORS[dominant] : 'hover:bg-cream-100'
-              } ${isSelected ? 'ring-2 ring-sage-400' : ''} ${isToday(day) ? 'font-bold' : ''}`}
-            >
-              <span>{format(day, 'd')}</span>
-              {dominant && <span className="text-sm">{dominant}</span>}
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Selected day detail */}
-      <AnimatePresence>
-        {selectedDate && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="bg-white rounded-xl p-4 border border-border">
-              <h4 className="font-medium text-text-primary mb-2">{selectedDate}</h4>
-              {selectedDayMoods.length === 0 ? (
-                <p className="text-sm text-text-secondary">No mood entries for this day</p>
-              ) : (
-                <div className="space-y-2">
-                  {selectedDayMoods.map((m) => (
-                    <div key={m.id} className="flex items-start gap-2">
-                      <span className="text-xl">{m.emoji}</span>
-                      <div>
-                        <span className="text-sm font-medium capitalize">{MOODS.find(mood => mood.emoji === m.emoji)?.label}</span>
-                        {m.journal && <p className="text-sm text-text-secondary">{m.journal}</p>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <section className="quote-card">
+          <Leaf size={34} />
+          <div>
+            <h3>小建议</h3>
+            <p>你已经做得很棒了。继续关注让你充实的事，情绪会越来越稳。</p>
+          </div>
+        </section>
+      </aside>
     </div>
   )
 }
+
+function Stat({ icon, label, value, note }: { icon: ReactNode; label: string; value: string; note: string }) {
+  return (
+    <div className="stat-card">
+      <div className="stat-icon">{icon}</div>
+      <div>
+        <span>{label}</span>
+        <strong>{value}</strong>
+        <p>{note}</p>
+      </div>
+    </div>
+  )
+}
+
+function Insight({ icon, title, text }: { icon: ReactNode; title: string; text: string }) {
+  return (
+    <div className="insight-row">
+      <div>{icon}</div>
+      <p>{title}<span>{text}</span></p>
+    </div>
+  )
+}
+
+const fallbackRecords = [
+  { emoji: '😊', date: '5/18 周日', text: '完成需求文档后感觉轻松多了 🎉' },
+  { emoji: '😊', date: '5/17 周六', text: '今天健身后心情很好，整个人都轻盈了 🌿' },
+  { emoji: '😌', date: '5/16 周五', text: '上午有点焦虑，下午专注后好多了' },
+  { emoji: '😐', date: '5/15 周四', text: '有点累，睡前记录一下，明天会更好' },
+] as const

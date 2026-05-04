@@ -1,5 +1,4 @@
 import { AppShell } from './components/layout/AppShell'
-import { TaskInput } from './components/tasks/TaskInput'
 import { TaskList } from './components/tasks/TaskList'
 import { SettingsDrawer } from './components/layout/SettingsDrawer'
 import { MoodPicker } from './components/mood/MoodPicker'
@@ -15,7 +14,6 @@ function App() {
   return (
     <>
       <AppShell showToast={showToast}>
-        <TaskInput />
         <TaskList />
       </AppShell>
       <SettingsDrawer

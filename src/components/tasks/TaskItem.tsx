@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { MoreVertical, Pencil, Trash2, Archive, RotateCcw } from 'lucide-react'
+import { CalendarClock, MoreVertical, Pencil, Trash2, Archive, RotateCcw } from 'lucide-react'
 import { completeTask, deleteTask, updateTask, archiveTask, unarchiveTask } from '../../hooks/useTaskActions'
 import { DifficultyBadge } from '../common/DifficultyBadge'
 import { ConfirmDialog } from '../common/ConfirmDialog'
@@ -23,6 +23,7 @@ export function TaskItem({ task }: TaskItemProps) {
 
   const isCompleted = task.status === 'completed'
   const isArchived = task.status === 'archived'
+  const rewardAmount = task.difficulty === 'hard' ? 35 : task.difficulty === 'medium' ? 20 : 10
 
   useEffect(() => {
     if (isEditing && editInputRef.current) {
@@ -101,7 +102,7 @@ export function TaskItem({ task }: TaskItemProps) {
             ? { duration: 0.3 }
             : { type: 'spring', stiffness: 400, damping: 30 }
         }
-        className="flex items-center gap-3 p-3 rounded-lg hover:bg-cream-100 transition-colors min-h-[44px]"
+        className={`task-row ${isCompleted ? 'is-completed' : ''}`}
       >
         {/* Checkbox */}
         <button
@@ -114,7 +115,7 @@ export function TaskItem({ task }: TaskItemProps) {
           <motion.div
             className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
               isCompleted
-                ? 'bg-lavender-500 border-lavender-500'
+                ? 'bg-sage-500 border-sage-500'
                 : 'border-border'
             }`}
             animate={
@@ -155,7 +156,7 @@ export function TaskItem({ task }: TaskItemProps) {
           ) : (
             <div>
               <span
-                className={`text-base text-text-primary transition-all duration-300 ${
+                className={`task-title transition-all duration-300 ${
                   isCompleted ? 'line-through opacity-60' : ''
                 }`}
               >
@@ -173,20 +174,28 @@ export function TaskItem({ task }: TaskItemProps) {
 
         {/* Difficulty badge */}
         <DifficultyBadge difficulty={task.difficulty} />
+        <span className="row-time hidden md:inline-flex">
+          <CalendarClock size={15} />
+          {isCompleted ? '今天完成' : '今天截止'}
+        </span>
+        <span className="reward-text hidden sm:block">+ ¥{rewardAmount}</span>
+        <span className={`soft-pill hidden lg:inline-flex ${task.category ? 'tone-blue' : 'tone-green'}`}>
+          {task.category || (task.difficulty === 'hard' ? '专注' : '平静')}
+        </span>
 
         {/* Action menu */}
         <div className="relative" ref={menuRef}>
           <button
             type="button"
             onClick={() => setShowMenu(!showMenu)}
-            className="min-h-[44px] min-w-[44px] flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-cream-100 rounded-lg transition-colors cursor-pointer"
+            className="flex min-h-[38px] min-w-[38px] items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-cream-100 hover:text-text-primary"
             aria-label="Task actions"
           >
             <MoreVertical className="w-5 h-5" />
           </button>
 
           {showMenu && (
-            <div className="absolute right-0 top-full mt-1 bg-cream-50 border border-border rounded-lg shadow-lg z-10 py-1 min-w-[140px]">
+            <div className="absolute right-0 top-full z-10 mt-1 min-w-[140px] rounded-lg border border-border bg-cream-50 py-1 shadow-lg">
               <button
                 type="button"
                 className="flex items-center gap-2 w-full px-3 py-2 text-sm text-text-primary hover:bg-cream-100 transition-colors cursor-pointer"
@@ -197,7 +206,8 @@ export function TaskItem({ task }: TaskItemProps) {
                 }}
               >
                 <Pencil className="w-4 h-4" />
-                Edit
+                <span className="sr-only">Edit</span>
+                编辑
               </button>
               <button
                 type="button"
@@ -208,7 +218,8 @@ export function TaskItem({ task }: TaskItemProps) {
                 }}
               >
                 <Trash2 className="w-4 h-4" />
-                Delete
+                <span className="sr-only">Delete</span>
+                删除
               </button>
               {isCompleted && (
                 <button
@@ -217,7 +228,8 @@ export function TaskItem({ task }: TaskItemProps) {
                   onClick={() => void handleArchive()}
                 >
                   <Archive className="w-4 h-4" />
-                  Archive
+                  <span className="sr-only">Archive</span>
+                  归档
                 </button>
               )}
               {isArchived && (
@@ -227,7 +239,8 @@ export function TaskItem({ task }: TaskItemProps) {
                   onClick={() => void handleUnarchive()}
                 >
                   <RotateCcw className="w-4 h-4" />
-                  Restore
+                  <span className="sr-only">Restore</span>
+                  恢复
                 </button>
               )}
             </div>
@@ -237,10 +250,12 @@ export function TaskItem({ task }: TaskItemProps) {
 
       {showDeleteConfirm && (
         <ConfirmDialog
-          title="Delete this task?"
-          message="This cannot be undone. Subtasks will also be removed."
-          confirmLabel="Delete"
-          cancelLabel="Cancel"
+          title="删除这个任务？"
+          message="此操作无法撤销，子任务也会一起删除。"
+          legacyTitle="Delete this task?"
+          legacyMessage="This cannot be undone. Subtasks will also be removed."
+          confirmLabel="删除"
+          cancelLabel="取消"
           onConfirm={() => void handleDelete()}
           onCancel={() => setShowDeleteConfirm(false)}
         />

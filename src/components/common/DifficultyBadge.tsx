@@ -5,18 +5,21 @@ interface DifficultyBadgeProps {
   difficulty: TaskDifficulty
 }
 
-const difficultyConfig: Record<TaskDifficulty, { label: string; className: string }> = {
+const difficultyConfig: Record<TaskDifficulty, { label: string; english: string; className: string }> = {
   easy: {
-    label: 'Easy',
-    className: 'bg-sage-100 text-sage-500',
+    label: '低优先级',
+    english: 'Easy',
+    className: 'bg-green-50 text-green-700',
   },
   medium: {
-    label: 'Medium',
-    className: 'bg-amber-500/20 text-amber-500',
+    label: '中优先级',
+    english: 'Medium',
+    className: 'bg-orange-50 text-orange-600',
   },
   hard: {
-    label: 'Hard',
-    className: 'bg-coral-500/20 text-coral-500',
+    label: '高优先级',
+    english: 'Hard',
+    className: 'bg-red-50 text-red-600',
   },
 }
 
@@ -26,10 +29,11 @@ export function DifficultyBadge({ difficulty }: DifficultyBadgeProps) {
   return (
     <span
       className={cn(
-        'inline-block text-sm font-semibold px-2 py-0.5 rounded-full',
+        'inline-block whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold',
         config.className
       )}
     >
+      <span className="sr-only">{config.english}</span>
       {config.label}
     </span>
   )

@@ -10,6 +10,7 @@ import { Toast } from '../../components/common/Toast'
 import { DifficultyBadge } from '../../components/common/DifficultyBadge'
 import { Header } from '../../components/layout/Header'
 import { AppShell } from '../../components/layout/AppShell'
+import { useUIStore } from '../../stores/uiStore'
 
 describe('Button', () => {
   it('renders all 4 variants without crashing', () => {
@@ -118,17 +119,18 @@ describe('DifficultyBadge', () => {
 })
 
 describe('Header', () => {
-  it('renders app title and settings button', () => {
-    render(<Header onSettingsClick={() => {}} />)
-    expect(screen.getByText('DoNotNervous')).toBeInTheDocument()
-    expect(screen.getByLabelText('Settings')).toBeInTheDocument()
+  it('renders navigation tabs', () => {
+    render(<Header onSettingsClick={() => {}} currentPage="home" setCurrentPage={() => {}} />)
+    expect(screen.getByLabelText('Home')).toBeInTheDocument()
+    expect(screen.getByLabelText('Tasks')).toBeInTheDocument()
   })
 })
 
 describe('AppShell', () => {
-  it('renders children inside layout', () => {
+  it('renders children inside layout when on tasks page', () => {
+    useUIStore.setState({ currentPage: 'tasks' })
     render(
-      <AppShell>
+      <AppShell showToast={() => {}}>
         <div>test child</div>
       </AppShell>
     )

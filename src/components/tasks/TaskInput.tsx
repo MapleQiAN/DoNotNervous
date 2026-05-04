@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, PlusCircle } from 'lucide-react'
 import { createTask } from '../../hooks/useTaskActions'
 import { taskCreateSchema } from '../../domain/task'
 import { useUIStore } from '../../stores/uiStore'
@@ -42,7 +42,7 @@ export function TaskInput() {
   const handleSubmit = useCallback(async () => {
     const trimmedTitle = title.trim()
     if (trimmedTitle.length === 0) {
-      setError('Task title is required')
+      setError('请先写下任务名称')
       return
     }
 
@@ -75,9 +75,9 @@ export function TaskInput() {
     } catch (err) {
       if (err && typeof err === 'object' && 'issues' in err) {
         const zodError = err as { issues: Array<{ message: string }> }
-        setError(zodError.issues[0]?.message ?? 'Invalid input')
+        setError(zodError.issues[0]?.message ?? '输入内容不完整')
       } else {
-        setError('Failed to create task')
+        setError('创建任务失败')
       }
     }
   }, [title, description, category, difficulty, subtasks, setMoreOptionsOpen])
@@ -103,11 +103,12 @@ export function TaskInput() {
   )
 
   return (
-    <div className="bg-cream-50 rounded-xl p-4 mb-4">
-      <div className="flex gap-2">
-        <div className="flex-1">
+    <div className="quick-card task-input-card">
+      <h3>快速添加任务 ✨</h3>
+      <div className="space-y-3">
+        <div>
           <Input
-            placeholder="What would you like to do?"
+            placeholder="输入任务名称..."
             value={title}
             onChange={(e) => {
               setTitle(e.target.value)
@@ -117,26 +118,22 @@ export function TaskInput() {
             error={error}
           />
         </div>
-        <Button variant="primary" onClick={() => void handleSubmit()}>
-          Add Task
-        </Button>
-      </div>
 
       <button
         type="button"
-        className="flex items-center gap-1 mt-2 text-sm text-text-secondary hover:text-text-primary transition-colors min-h-[44px] cursor-pointer"
+        className="flex min-h-[36px] items-center gap-1 text-sm text-text-secondary transition-colors hover:text-text-primary"
         onClick={() => setMoreOptionsOpen(!isMoreOptionsOpen)}
       >
         <ChevronDown
           className={`w-4 h-4 transition-transform ${isMoreOptionsOpen ? 'rotate-180' : ''}`}
         />
-        More options
+        更多设置
       </button>
 
       {isMoreOptionsOpen && (
         <div className="mt-3 space-y-3">
           <Input
-            placeholder="Type a category name..."
+            placeholder="分类，例如：工作、健康"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           />
@@ -150,14 +147,14 @@ export function TaskInput() {
                   size="sm"
                   onClick={() => setDifficulty(level)}
                 >
-                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                  {level === 'easy' ? '低优先级' : level === 'medium' ? '中优先级' : '高优先级'}
                 </Button>
               ))}
             </div>
           </div>
 
           <Textarea
-            placeholder="Add a note (optional)"
+            placeholder="备注（可选）"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -166,7 +163,7 @@ export function TaskInput() {
             <div className="flex gap-2">
               <div className="flex-1">
                 <Input
-                  placeholder="Add a subtask..."
+                  placeholder="添加子任务..."
                   value={subtaskInput}
                   onChange={(e) => setSubtaskInput(e.target.value)}
                   onKeyDown={handleSubtaskKeyDown}
@@ -178,7 +175,7 @@ export function TaskInput() {
                 onClick={addSubtask}
                 type="button"
               >
-                Add
+                添加
               </Button>
             </div>
             {subtasks.length > 0 && (
@@ -203,6 +200,10 @@ export function TaskInput() {
           </div>
         </div>
       )}
+      <Button variant="primary" onClick={() => void handleSubmit()} className="w-full bg-sage-500 hover:bg-sage-600">
+        添加任务 <PlusCircle size={17} />
+      </Button>
+      </div>
     </div>
   )
 }
