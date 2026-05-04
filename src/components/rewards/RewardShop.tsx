@@ -2,7 +2,8 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Gift, Plus, Wallet, Trophy, BadgeCheck, Coins } from 'lucide-react'
-import confetti from 'canvas-confetti'
+import { useMascotStore } from '../../stores/mascotStore'
+import { celebrateRedemption } from '../../lib/celebrate'
 import { useRewards, useRedemptions, createReward, redeemReward, deleteReward } from '../../hooks/useRewards'
 import { usePointBalance } from '../../hooks/usePoints'
 import { RewardCard } from './RewardCard'
@@ -50,12 +51,8 @@ export function RewardShop({ showToast }: RewardShopProps) {
       const redeemedName = redeemTarget.name
       setRedeemTarget(null)
       showToast(`兑换成功：${redeemedName}`)
-      confetti({
-        particleCount: 90,
-        spread: 68,
-        origin: { y: 0.7 },
-        colors: ['#f7b955', '#f08a55', '#fbd58b', '#4f915b'],
-      })
+      useMascotStore.getState().setAnimation('celebrate')
+      celebrateRedemption()
     } catch (err) {
       const message = err instanceof Error ? err.message : '兑换失败'
       showToast(message, 'error')

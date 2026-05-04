@@ -2,6 +2,8 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { differenceInCalendarDays } from 'date-fns'
 import { db } from '../db'
 import { toDayKey } from '../lib/date-utils'
+import { useMascotStore } from '../stores/mascotStore'
+import { celebrateStreakMilestone } from '../lib/celebrate'
 
 /**
  * Compute the current streak length by walking backward from today
@@ -28,6 +30,23 @@ export async function computeCurrentStreak(now: Date = new Date()): Promise<numb
   }
 
   return streak
+}
+
+const STREAK_MILESTONES = [7, 14, 30]
+
+/**
+ * Check if the current streak hits a milestone (7, 14, or 30 days).
+ * If so, trigger mascot encourage animation and streak milestone confetti.
+ * Returns true if a milestone was hit.
+ */
+export async function checkStreakMilestone(now: Date = new Date()): Promise<boolean> {
+  const streak = await computeCurrentStreak(now)
+  if (STREAK_MILESTONES.includes(streak)) {
+    useMascotStore.getState().setAnimation('encourage')
+    celebrateStreakMilestone()
+    return true
+  }
+  return false
 }
 
 /**

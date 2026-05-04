@@ -2,7 +2,7 @@ import { db } from '../db'
 import { generateId } from '../lib/id'
 import { taskCreateSchema } from '../domain/task'
 import { calculatePoints } from '../domain/points'
-import { computeCurrentStreak } from './useStreaks'
+import { computeCurrentStreak, checkStreakMilestone } from './useStreaks'
 import { toDayKey } from '../lib/date-utils'
 import { useUIStore } from '../stores/uiStore'
 import { useMascotStore } from '../stores/mascotStore'
@@ -97,6 +97,9 @@ export async function completeTask(id: string): Promise<Task> {
   // Trigger mascot celebration + confetti per D-07
   useMascotStore.getState().setAnimation('celebrate')
   celebrateTaskComplete()
+
+  // Check streak milestone (non-blocking — celebration is best-effort)
+  checkStreakMilestone(now).catch(() => { /* non-blocking */ })
 
   useUIStore.getState().setMoodPickerTaskId(task.id)
   return task
