@@ -127,7 +127,7 @@ Plans:
 |-------|--------|-------|----------|
 | 1 | ✓ Complete | 3/3 | 100% |
 | 2 | ✓ Complete | 3/3 | 100% |
-| 3 | ▶ Planning | 3/3 | 0% |
+| 3 | ◆ Planned | 3/3 | 0% |
 | 4 | ○ Pending | 0/- | 0% |
 | 5 | ○ Pending | 0/- | 0% |
 
@@ -135,7 +135,7 @@ Plans:
 
 ---
 *Roadmap created: 2026-04-28*
-*Last updated: 2026-04-29*
+*Last updated: 2026-05-04*
 *Phase 2 complete: 2026-04-29*
 *Phase 2 planned: 2026-04-29*
 *Phase 3 planned: 2026-05-04*
