@@ -37,3 +37,31 @@ export interface StreakRecord {
   freezeCountRemaining: number
   createdAt: Date
 }
+
+export type MoodEmoji = '😊' | '😌' | '😐' | '😔' | '😰' | '😡' | '🥳' | '💪'
+
+export interface MoodEntry {
+  id: string
+  emoji: MoodEmoji
+  label: string
+  journal: string
+  taskId: string | null
+  createdAt: Date
+}
+
+export interface Reward {
+  id: string
+  name: string
+  description: string
+  pointCost: number
+  active: boolean
+  createdAt: Date
+}
+
+export interface Redemption {
+  id: string
+  rewardId: string
+  rewardName: string
+  pointsSpent: number
+  createdAt: Date
+}

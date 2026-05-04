@@ -1,10 +1,13 @@
 import { Dexie, type EntityTable } from 'dexie'
-import type { Task, PointLedgerEntry, StreakRecord } from '../domain/types'
+import type { Task, PointLedgerEntry, StreakRecord, MoodEntry, Reward, Redemption } from '../domain/types'
 
 class DoNotNervousDB extends Dexie {
   tasks!: EntityTable<Task, 'id'>
   pointLedger!: EntityTable<PointLedgerEntry, 'id'>
   streakRecords!: EntityTable<StreakRecord, 'date'>
+  moodEntries!: EntityTable<MoodEntry, 'id'>
+  rewards!: EntityTable<Reward, 'id'>
+  redemptions!: EntityTable<Redemption, 'id'>
 
   constructor() {
     super('DoNotNervousDB')
@@ -14,6 +17,11 @@ class DoNotNervousDB extends Dexie {
     this.version(2).stores({
       pointLedger: 'id, type, taskId, createdAt',
       streakRecords: 'date',
+    })
+    this.version(3).stores({
+      moodEntries: 'id, emoji, taskId, createdAt',
+      rewards: 'id, createdAt',
+      redemptions: 'id, rewardId, createdAt',
     })
   }
 }
