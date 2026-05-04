@@ -4,6 +4,7 @@ import { taskCreateSchema } from '../domain/task'
 import { calculatePoints } from '../domain/points'
 import { computeCurrentStreak } from './useStreaks'
 import { toDayKey } from '../lib/date-utils'
+import { useUIStore } from '../stores/uiStore'
 import type { Task } from '../domain/types'
 
 export async function createTask(input: unknown): Promise<Task> {
@@ -26,7 +27,7 @@ export async function createTask(input: unknown): Promise<Task> {
   return task
 }
 
-export async function completeTask(id: string): Promise<void> {
+export async function completeTask(id: string): Promise<Task> {
   const now = new Date()
   const task = await db.tasks.get(id)
 
@@ -90,6 +91,9 @@ export async function completeTask(id: string): Promise<void> {
       })
     }
   })
+
+  useUIStore.getState().setMoodPickerTaskId(task.id)
+  return task
 }
 
 export async function uncompleteTask(id: string): Promise<void> {
