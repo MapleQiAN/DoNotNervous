@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Bell, ChevronDown } from 'lucide-react'
 import { Header } from './Header'
 import { useUIStore } from '../../stores/uiStore'
@@ -59,19 +60,29 @@ export function AppShell({ children, showToast }: AppShellProps) {
           </header>
 
           <main className="page-shell">
-            {currentPage === 'home' && <HomePage showToast={showToast} />}
-            {currentPage === 'tasks' && (
-              <div className="dashboard-grid task-route">
-                <section className="main-column">{children}</section>
-                <aside className="right-column">
-                  <TaskInput />
-                </aside>
-              </div>
-            )}
-            {currentPage === 'rewards' && <RewardShop showToast={showToast} />}
-            {(currentPage === 'mood' || currentPage === 'data') && (
-              <MoodCalendar showToast={showToast} activeView={currentPage} />
-            )}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentPage}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+              >
+                {currentPage === 'home' && <HomePage showToast={showToast} />}
+                {currentPage === 'tasks' && (
+                  <div className="dashboard-grid task-route">
+                    <section className="main-column">{children}</section>
+                    <aside className="right-column">
+                      <TaskInput />
+                    </aside>
+                  </div>
+                )}
+                {currentPage === 'rewards' && <RewardShop showToast={showToast} />}
+                {(currentPage === 'mood' || currentPage === 'data') && (
+                  <MoodCalendar showToast={showToast} activeView={currentPage} />
+                )}
+              </motion.div>
+            </AnimatePresence>
           </main>
         </div>
       </div>

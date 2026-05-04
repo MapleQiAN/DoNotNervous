@@ -94,12 +94,12 @@ export function TaskItem({ task }: TaskItemProps) {
     <>
       <motion.div
         layout
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, height: 0, marginTop: 0, marginBottom: 0 }}
+        initial={{ opacity: 0, y: -10, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, x: -30, scale: 0.95, height: 0, marginTop: 0, marginBottom: 0, transition: { duration: 0.3 } }}
         transition={
           isCompleting
-            ? { duration: 0.3 }
+            ? { duration: 0.4 }
             : { type: 'spring', stiffness: 400, damping: 30 }
         }
         className={`task-row ${isCompleted ? 'is-completed' : ''}`}
@@ -120,10 +120,10 @@ export function TaskItem({ task }: TaskItemProps) {
             }`}
             animate={
               isCompleting
-                ? { scale: [1, 1.2, 1] }
+                ? { scale: [1, 1.3, 0.9, 1.1, 1] }
                 : { scale: 1 }
             }
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.4 }}
           >
             {isCompleted && (
               <svg
@@ -155,13 +155,15 @@ export function TaskItem({ task }: TaskItemProps) {
             />
           ) : (
             <div>
-              <span
+              <motion.span
                 className={`task-title transition-all duration-300 ${
                   isCompleted ? 'line-through opacity-60' : ''
                 }`}
+                animate={isCompleted ? { opacity: 0.6 } : { opacity: 1 }}
+                transition={{ duration: 0.4 }}
               >
                 {task.title}
-              </span>
+              </motion.span>
               {task.description && (
                 <p className="text-sm text-text-secondary truncate">
                   {task.description}

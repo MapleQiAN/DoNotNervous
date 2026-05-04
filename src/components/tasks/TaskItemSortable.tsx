@@ -21,6 +21,14 @@ export function TaskItemSortable({ task }: TaskItemSortableProps) {
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
+    ...(isDragging
+      ? {
+          boxShadow: '0 12px 28px rgba(80, 60, 34, 0.15)',
+          scale: '1.02',
+          borderRadius: '14px',
+          background: 'rgba(255, 255, 255, 0.95)',
+        }
+      : {}),
   }
 
   return (
