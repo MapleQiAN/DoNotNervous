@@ -66,6 +66,17 @@ Plans:
 
 **Requirements:** REWD-01~05, MOOD-01~05
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Data layer: MoodEntry/Reward/Redemption types, Dexie v3, Zod schemas & tests
+- [ ] 03-02-PLAN.md — Integration: useMoodEntries/useRewards hooks, completeTask mood trigger, atomic redemption & tests
+- [ ] 03-03-PLAN.md — UI: MoodPicker popup, RewardShop page, MoodCalendar, confetti celebration & human verify
+
+**Wave 1** *(data layer — no dependencies)*: Plan 03-01
+**Wave 2** *(blocked on Wave 1)*: Plan 03-02
+**Wave 3** *(blocked on Wave 2)*: Plan 03-03 (has human verification checkpoint)
+
 **Success Criteria:**
 - Mood picker appears after task completion (opt-in, < 3 seconds to use)
 - Can write short journal note with mood
@@ -116,7 +127,7 @@ Plans:
 |-------|--------|-------|----------|
 | 1 | ✓ Complete | 3/3 | 100% |
 | 2 | ✓ Complete | 3/3 | 100% |
-| 3 | ○ Pending | 0/- | 0% |
+| 3 | ▶ Planning | 3/3 | 0% |
 | 4 | ○ Pending | 0/- | 0% |
 | 5 | ○ Pending | 0/- | 0% |
 
@@ -127,3 +138,4 @@ Plans:
 *Last updated: 2026-04-29*
 *Phase 2 complete: 2026-04-29*
 *Phase 2 planned: 2026-04-29*
+*Phase 3 planned: 2026-05-04*
