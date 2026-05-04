@@ -4,6 +4,7 @@ import { Header } from './Header'
 import { useUIStore } from '../../stores/uiStore'
 import { checkAndApplyFreezes } from '../../hooks/useStreaks'
 import { RewardShop } from '../rewards/RewardShop'
+import { MoodCalendar } from '../mood/MoodCalendar'
 
 interface AppShellProps {
   children: ReactNode
@@ -23,7 +24,9 @@ export function AppShell({ children, showToast }: AppShellProps) {
     <div className="min-h-screen bg-cream-50">
       <Header onSettingsClick={() => setSettingsOpen(true)} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       <main className="max-w-[640px] mx-auto px-4 py-6 lg:px-6 lg:py-8">
-        {currentPage === 'tasks' ? children : <RewardShop showToast={showToast} />}
+        {currentPage === 'tasks' && children}
+        {currentPage === 'rewards' && <RewardShop showToast={showToast} />}
+        {currentPage === 'mood' && <MoodCalendar showToast={showToast} />}
       </main>
     </div>
   )

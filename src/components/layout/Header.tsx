@@ -1,12 +1,12 @@
-import { Settings, Gift } from 'lucide-react'
+import { Settings, Gift, Smile } from 'lucide-react'
 import { PointBadge } from '../gamification/PointBadge'
 import { TransactionPopover } from '../gamification/TransactionPopover'
 import { StreakDisplay } from '../gamification/StreakDisplay'
 
 interface HeaderProps {
   onSettingsClick: () => void
-  currentPage: 'tasks' | 'rewards'
-  setCurrentPage: (page: 'tasks' | 'rewards') => void
+  currentPage: 'tasks' | 'rewards' | 'mood'
+  setCurrentPage: (page: 'tasks' | 'rewards' | 'mood') => void
 }
 
 export function Header({ onSettingsClick, currentPage, setCurrentPage }: HeaderProps) {
@@ -29,6 +29,16 @@ export function Header({ onSettingsClick, currentPage, setCurrentPage }: HeaderP
             aria-label="Reward Shop"
           >
             <Gift size={20} />
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setCurrentPage(currentPage === 'mood' ? 'tasks' : 'mood')
+            }}
+            className={`text-text-secondary hover:bg-cream-100 rounded-lg transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer ${currentPage === 'mood' ? 'bg-sage-100 text-sage-600' : ''}`}
+            aria-label="Mood Calendar"
+          >
+            <Smile size={20} />
           </button>
           <button
             type="button"

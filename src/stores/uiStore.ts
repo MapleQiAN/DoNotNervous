@@ -7,13 +7,13 @@ interface UIState {
   isMoreOptionsOpen: boolean
   isPointsPopoverOpen: boolean
   moodPickerTaskId: string | null
-  currentPage: 'tasks' | 'rewards'
+  currentPage: 'tasks' | 'rewards' | 'mood'
   setSelectedTaskId: (id: string | null) => void
   setSettingsOpen: (open: boolean) => void
   setMoreOptionsOpen: (open: boolean) => void
   setPointsPopoverOpen: (open: boolean) => void
   setMoodPickerTaskId: (id: string | null) => void
-  setCurrentPage: (page: 'tasks' | 'rewards') => void
+  setCurrentPage: (page: 'tasks' | 'rewards' | 'mood') => void
 }
 
 export const useUIStore = create<UIState>()(
