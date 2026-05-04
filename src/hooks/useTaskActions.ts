@@ -5,6 +5,8 @@ import { calculatePoints } from '../domain/points'
 import { computeCurrentStreak } from './useStreaks'
 import { toDayKey } from '../lib/date-utils'
 import { useUIStore } from '../stores/uiStore'
+import { useMascotStore } from '../stores/mascotStore'
+import { celebrateTaskComplete } from '../lib/celebrate'
 import type { Task } from '../domain/types'
 
 export async function createTask(input: unknown): Promise<Task> {
@@ -91,6 +93,10 @@ export async function completeTask(id: string): Promise<Task> {
       })
     }
   })
+
+  // Trigger mascot celebration + confetti per D-07
+  useMascotStore.getState().setAnimation('celebrate')
+  celebrateTaskComplete()
 
   useUIStore.getState().setMoodPickerTaskId(task.id)
   return task

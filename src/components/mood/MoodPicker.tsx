@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useUIStore } from '../../stores/uiStore'
+import { useMascotStore } from '../../stores/mascotStore'
+import { celebrateMoodLog } from '../../lib/celebrate'
 import { createMoodEntry } from '../../hooks/useMoodEntries'
 import { MOODS } from '../../domain/mood'
 import type { MoodEmoji } from '../../domain/types'
@@ -33,6 +35,8 @@ export function MoodPicker({ showToast }: MoodPickerProps) {
         taskId: moodPickerTaskId,
       })
       showToast('Mood logged!')
+      useMascotStore.getState().setAnimation('celebrate')
+      celebrateMoodLog()
     } catch {
       showToast('Could not save mood', 'error')
     }
