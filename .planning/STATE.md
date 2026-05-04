@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** 完成任务 → 赚积分 → 奖励自己。正向激励循环，反焦虑，慢生活。
-**Current focus:** Phase 4 — Mascot & Animations (executing plan 01 complete)
+**Current focus:** Phase 4 — Mascot & Animations (executing plan 02 complete)
 
 ## Session Context
 
@@ -32,6 +32,7 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 - **Animations:** Framer Motion for UI, Lottie for mascot, canvas-confetti for celebrations
 - **Mascot store:** Not persisted (animation state resets on reload, correct UX)
 - **Celebration pattern:** Centralized celebrate.ts with event-specific helpers, warm palette, mascot origin
+- **Streak milestones:** Non-blocking checkStreakMilestone in completeTask, encourage animation at 7/14/30 days
 - **Anti-anxiety:** No punitive messaging, streak freeze from day one, positive framing only
 
 ## Research Completed
@@ -55,8 +56,8 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Session Continuity
 
 **Last session:** 2026-05-04
-**Stopped at:** Completed 04-01-PLAN.md (Mascot Foundation)
-**Resume file:** .planning/phases/04-mascot-animations/04-02-PLAN.md
+**Stopped at:** Completed 04-02-PLAN.md (Mascot Celebration Triggers)
+**Resume file:** .planning/phases/04-mascot-animations/04-03-PLAN.md
 
 ---
 ## Planning Completed
@@ -76,3 +77,4 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 *Phase 4 context gathered: 2026-05-04*
 *Phase 4 planned: 2026-05-04*
 *Phase 4 plan 01 complete: 2026-05-04*
+*Phase 4 plan 02 complete: 2026-05-04*

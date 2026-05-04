@@ -98,7 +98,7 @@ Plans:
 
 Plans:
 - [x] 04-01-PLAN.md — Mascot foundation: lottie-react, mascot store, celebrate utility, Mascot component with 4 Lottie states
-- [ ] 04-02-PLAN.md — Integration: wire mascot + confetti into completeTask, streak milestones, reward redemption, mood logging
+- [x] 04-02-PLAN.md — Integration: wire mascot + confetti into completeTask, streak milestones, reward redemption, mood logging
 - [ ] 04-03-PLAN.md — UI polish: task micro-interactions, page transitions, responsive fixes, 5-tab mobile nav & human verify
 
 **Wave 1** *(mascot foundation — no dependencies)*: Plan 04-01
@@ -139,7 +139,7 @@ Plans:
 | 1 | ✓ Complete | 3/3 | 100% |
 | 2 | ✓ Complete | 3/3 | 100% |
 | 3 | ✓ Complete | 3/3 | 100% |
-| 4 | ◐ In Progress | 1/3 | 33% |
+| 4 | ◐ In Progress | 2/3 | 67% |
 | 5 | ○ Pending | 0/- | 0% |
 
 **Overall:** 67%
@@ -153,3 +153,4 @@ Plans:
 *Phase 3 complete: 2026-05-04*
 *Phase 4 planned: 2026-05-04*
 *Phase 4 plan 01 complete: 2026-05-04*
+*Phase 4 plan 02 complete: 2026-05-04*
