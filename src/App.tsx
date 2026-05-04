@@ -3,6 +3,7 @@ import { TaskList } from './components/tasks/TaskList'
 import { SettingsDrawer } from './components/layout/SettingsDrawer'
 import { MoodPicker } from './components/mood/MoodPicker'
 import { Toast } from './components/common/Toast'
+import { Mascot } from './components/mascot/Mascot'
 import { useToast } from './hooks/useToast'
 import { useUIStore } from './stores/uiStore'
 
@@ -23,6 +24,7 @@ function App() {
       />
       <MoodPicker showToast={showToast} />
       <Toast message={toast.message} type={toast.type} visible={toast.visible} />
+      <Mascot />
     </>
   )
 }
