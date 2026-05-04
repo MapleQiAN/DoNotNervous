@@ -62,21 +62,21 @@ export function Header({ onSettingsClick, currentPage, setCurrentPage }: HeaderP
 
       <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-white/95 backdrop-blur-md lg:hidden">
         <div className="mx-auto flex max-w-[640px] items-center justify-around px-2 pb-2 pt-1">
-          {navItems.slice(0, 4).map(({ key, label, Icon }) => {
+          {navItems.map(({ key, label, Icon }) => {
             const active = currentPage === key
             return (
               <button
                 key={key}
                 type="button"
                 onClick={() => setCurrentPage(key)}
-                className={`flex min-h-[52px] min-w-[64px] flex-col items-center gap-0.5 rounded-2xl px-4 py-1.5 transition-all ${
+                className={`flex min-h-[52px] min-w-[52px] flex-col items-center gap-0.5 rounded-2xl px-2 py-1.5 transition-all ${
                   active ? 'text-sage-500' : 'text-text-secondary/60 hover:text-text-secondary'
                 }`}
                 aria-label={label}
               >
                 <Icon size={20} strokeWidth={active ? 2.5 : 1.8} />
-                <span className={`text-[10px] ${active ? 'font-bold' : 'font-medium'}`}>
-                  {label.replace('任务清单', '任务').replace('奖励金库', '奖励').replace('心情记录', '心情')}
+                <span className={`text-[9px] ${active ? 'font-bold' : 'font-medium'}`}>
+                  {label.replace('任务清单', '任务').replace('奖励金库', '奖励').replace('心情记录', '心情').replace('数据复盘', '数据')}
                 </span>
               </button>
             )

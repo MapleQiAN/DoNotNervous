@@ -40,3 +40,23 @@
   border-right: 8px solid transparent;
   border-top: 8px solid white;
 }
+
+@media (max-width: 640px) {
+  .mascot-container {
+    width: 72px;
+    height: 72px;
+    bottom: 70px;
+    right: 12px;
+  }
+
+  .mascot-lottie {
+    width: 72px;
+    height: 72px;
+  }
+
+  .mascot-speech-bubble {
+    max-width: 160px;
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+}

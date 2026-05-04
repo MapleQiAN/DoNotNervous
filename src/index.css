@@ -52,6 +52,12 @@
     font: inherit;
   }
 
+  /* D-20: Responsive images */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
   button {
     cursor: pointer;
   }
@@ -1204,6 +1210,16 @@
   }
 }
 
+@media (max-width: 1100px) {
+  .app-frame {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr) 280px;
+  }
+}
+
 @media (max-width: 1023px) {
   .app-canvas {
     padding: 0;
@@ -1280,7 +1296,36 @@
   .metric-card,
   .quick-card,
   .quote-card {
-    padding: 18px;
+    padding: 16px;
+  }
+
+  /* D-18: Touch target sizing */
+  .task-row button,
+  .sidebar-link,
+  .category-cloud button,
+  .small-select,
+  .view-toggle button {
+    min-height: 44px;
+  }
+
+  /* D-19: Responsive font scaling */
+  .hero-copy h1 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .hero-copy p {
+    font-size: 14px;
+  }
+
+  .section-title-row h2,
+  .side-panel h2,
+  .quick-card h3,
+  .quote-card h3 {
+    font-size: 17px;
+  }
+
+  .stat-card strong {
+    font-size: 20px;
   }
 
   .stats-strip {
