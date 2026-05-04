@@ -23,6 +23,7 @@
     "dexie-export-import": "^4.4.0",
     "dexie-react-hooks": "^4.4.0",
     "framer-motion": "^12.38.0",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^1.12.0",
     "nanoid": "^5.1.9",
     "react": "^19.2.5",
