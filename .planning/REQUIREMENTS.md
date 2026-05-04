@@ -50,7 +50,7 @@
 
 ### Mascot & Animations
 
-- [ ] **MASC-01**: Cute mascot character displayed on main screen with idle animation
+- [x] **MASC-01**: Cute mascot character displayed on main screen with idle animation
 - [ ] **MASC-02**: Mascot reacts to task completion with celebration animation
 - [ ] **MASC-03**: Mascot shows encouragement on streak milestones
 - [ ] **MASC-04**: Task completion triggers confetti effect
@@ -152,7 +152,7 @@
 | MOOD-03 | Phase 3 | Pending |
 | MOOD-04 | Phase 3 | Pending |
 | MOOD-05 | Phase 3 | Pending |
-| MASC-01 | Phase 4 | Pending |
+| MASC-01 | Phase 4 | Complete |
 | MASC-02 | Phase 4 | Pending |
 | MASC-03 | Phase 4 | Pending |
 | MASC-04 | Phase 4 | Pending |
@@ -179,3 +179,4 @@
 ---
 *Requirements defined: 2026-04-28*
 *Last updated: 2026-04-29 after Plan 01-03 completion*
+*MASC-01 completed: 2026-05-04*
