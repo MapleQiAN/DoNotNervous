@@ -69,9 +69,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Data layer: MoodEntry/Reward/Redemption types, Dexie v3, Zod schemas & tests
-- [ ] 03-02-PLAN.md — Integration: useMoodEntries/useRewards hooks, completeTask mood trigger, atomic redemption & tests
-- [ ] 03-03-PLAN.md — UI: MoodPicker popup, RewardShop page, MoodCalendar, confetti celebration & human verify
+- [x] 03-01-PLAN.md — Data layer: MoodEntry/Reward/Redemption types, Dexie v3, Zod schemas & tests
+- [x] 03-02-PLAN.md — Integration: useMoodEntries/useRewards hooks, completeTask mood trigger, atomic redemption & tests
+- [x] 03-03-PLAN.md — UI: MoodPicker popup, RewardShop page, MoodCalendar, confetti celebration & human verify
 
 **Wave 1** *(data layer — no dependencies)*: Plan 03-01
 **Wave 2** *(blocked on Wave 1)*: Plan 03-02
@@ -127,11 +127,11 @@ Plans:
 |-------|--------|-------|----------|
 | 1 | ✓ Complete | 3/3 | 100% |
 | 2 | ✓ Complete | 3/3 | 100% |
-| 3 | ◆ Planned | 3/3 | 0% |
+| 3 | ✓ Complete | 3/3 | 100% |
 | 4 | ○ Pending | 0/- | 0% |
 | 5 | ○ Pending | 0/- | 0% |
 
-**Overall:** 40%
+**Overall:** 60%
 
 ---
 *Roadmap created: 2026-04-28*
@@ -139,3 +139,4 @@ Plans:
 *Phase 2 complete: 2026-04-29*
 *Phase 2 planned: 2026-04-29*
 *Phase 3 planned: 2026-05-04*
+*Phase 3 complete: 2026-05-04*
