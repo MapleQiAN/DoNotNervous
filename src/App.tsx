@@ -2,6 +2,7 @@ import { AppShell } from './components/layout/AppShell'
 import { TaskInput } from './components/tasks/TaskInput'
 import { TaskList } from './components/tasks/TaskList'
 import { SettingsDrawer } from './components/layout/SettingsDrawer'
+import { MoodPicker } from './components/mood/MoodPicker'
 import { Toast } from './components/common/Toast'
 import { useToast } from './hooks/useToast'
 import { useUIStore } from './stores/uiStore'
@@ -22,6 +23,7 @@ function App() {
         onClose={() => setSettingsOpen(false)}
         showToast={showToast}
       />
+      <MoodPicker showToast={showToast} />
       <Toast message={toast.message} type={toast.type} visible={toast.visible} />
     </>
   )
