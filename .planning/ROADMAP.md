@@ -196,7 +196,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 08-01-PLAN.md — Mock canvas-confetti globally, create Lottie placeholder docs, keep streaks.ts for v2
+- [x] 08-01-PLAN.md — Mock canvas-confetti globally, create Lottie placeholder docs, keep streaks.ts for v2
 
 **Gap Closure:** Closes warnings from v1.0 audit — orphaned code and test noise
 
@@ -246,3 +246,4 @@ Plans:
 *Phase 6 complete: 2026-05-05*
 *Phase 7 planned: 2026-05-05*
 *Phase 8 planned: 2026-05-05*
+*Phase 8 complete: 2026-05-05*

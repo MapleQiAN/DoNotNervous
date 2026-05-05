@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** 完成任务 → 赚积分 → 奖励自己。正向激励循环，反焦虑，慢生活。
-**Current focus:** Phase 8 — planned. Ready to execute.
+**Current focus:** Phase 8 — complete. MVP shipped.
 
 ## Session Context
 
@@ -23,7 +23,7 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 | Phase 5: Summaries | ✓ Complete (3/3) | 2026-05-05 |
 | Phase 6: Mount Gamification UI | ✓ Complete (1/1) | 2026-05-05 |
 | Phase 7: Fix Mood Data Consistency | ✓ Complete (1/1) | 2026-05-05 |
-| Phase 8: Codebase Cleanup | ◆ Planned (1/1) | 2026-05-05 |
+| Phase 8: Codebase Cleanup | ✓ Complete (1/1) | 2026-05-05 |
 
 ## Key Decisions
 
@@ -69,8 +69,8 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Session Continuity
 
 **Last session:** 2026-05-05
-**Stopped at:** Phase 8 planned — ready to execute
-**Resume file:** .planning/phases/08-codebase-cleanup/
+**Stopped at:** All phases complete — MVP v1.0 shipped
+**Resume file:** .planning/
 
 ---
 ## Planning Completed
@@ -103,3 +103,4 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 *Phase 6 complete: 2026-05-05*
 *Phase 7 planned: 2026-05-05*
 *Phase 8 planned: 2026-05-05*
+*Phase 8 complete: 2026-05-05*
