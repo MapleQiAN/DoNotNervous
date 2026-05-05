@@ -7,6 +7,7 @@ import { toDayKey } from '../lib/date-utils'
 import { useUIStore } from '../stores/uiStore'
 import { useMascotStore } from '../stores/mascotStore'
 import { celebrateTaskComplete } from '../lib/celebrate'
+import { refreshDailySummaryForToday } from './useSummary'
 import type { Task } from '../domain/types'
 
 export async function createTask(input: unknown): Promise<Task> {
@@ -93,6 +94,9 @@ export async function completeTask(id: string): Promise<Task> {
       })
     }
   })
+
+  // Eager refresh: update daily/weekly summary (D-02)
+  refreshDailySummaryForToday().catch(() => { /* non-blocking */ })
 
   // Trigger mascot celebration + confetti per D-07
   useMascotStore.getState().setAnimation('celebrate')

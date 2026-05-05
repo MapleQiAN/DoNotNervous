@@ -2,6 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
 import { generateId } from '../lib/id'
 import { rewardCreateSchema, rewardEditSchema } from '../domain/reward'
+import { refreshDailySummaryForToday } from './useSummary'
 import type { Reward, Redemption } from '../domain/types'
 
 export async function createReward(input: unknown): Promise<Reward> {
@@ -64,6 +65,9 @@ export async function redeemReward(rewardId: string): Promise<Redemption> {
     })
     await db.redemptions.add(redemption)
   })
+
+  // Eager refresh: update daily/weekly summary (D-02)
+  refreshDailySummaryForToday().catch(() => { /* non-blocking */ })
 
   return redemption
 }

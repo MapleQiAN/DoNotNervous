@@ -2,6 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
 import { generateId } from '../lib/id'
 import { moodCreateSchema, MOODS } from '../domain/mood'
+import { refreshDailySummaryForToday } from './useSummary'
 import type { MoodEntry } from '../domain/types'
 
 export async function createMoodEntry(input: unknown): Promise<MoodEntry> {
@@ -20,6 +21,10 @@ export async function createMoodEntry(input: unknown): Promise<MoodEntry> {
   }
 
   await db.moodEntries.add(entry)
+
+  // Eager refresh: update daily/weekly summary (D-02)
+  refreshDailySummaryForToday().catch(() => { /* non-blocking */ })
+
   return entry
 }
 
