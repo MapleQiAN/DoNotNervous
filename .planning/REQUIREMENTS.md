@@ -61,7 +61,7 @@
 - [ ] **SUMM-01**: Daily summary shows tasks completed, points earned, dominant mood
 - [ ] **SUMM-02**: Weekly summary shows trends, best day, mood trajectory
 - [ ] **SUMM-03**: Mood trend chart visualizes mood changes over time
-- [ ] **SUMM-04**: Summaries are pre-computed for instant loading
+- [x] **SUMM-04**: Summaries are pre-computed for instant loading
 
 ### Data & Infrastructure
 
@@ -158,9 +158,9 @@
 | MASC-04 | Phase 4 | Complete |
 | MASC-05 | Phase 4 | Pending |
 | SUMM-01 | Phase 5 | Pending |
-| SUMM-02 | Phase 5 | Pending |
+| SUMM-02 | Phase 5 | Complete |
 | SUMM-03 | Phase 5 | Pending |
-| SUMM-04 | Phase 5 | Pending |
+| SUMM-04 | Phase 5 | Complete |
 | DATA-01 | Phase 1 | Complete |
 | DATA-02 | Phase 1 | Pending |
 | DATA-03 | Phase 1 | Complete |

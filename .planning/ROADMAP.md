@@ -126,7 +126,7 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md — Data layer: DailySummary/WeeklySummary types, Dexie v4, summary computation logic & tests
-- [ ] 05-02-PLAN.md — Integration: useDailySummary/useWeeklySummary/useMoodChartDays hooks, eager refresh triggers wired into completeTask/createMoodEntry/redeemReward & tests
+- [x] 05-02-PLAN.md — Integration: useDailySummary/useWeeklySummary/useMoodChartDays hooks, eager refresh triggers wired into completeTask/createMoodEntry/redeemReward & tests
 - [ ] 05-03-PLAN.md — UI: SummaryPage with 3 tabs, DailySummary with arrow nav, WeeklySummary with best day override, MoodTrendChart (Recharts) & human verify
 
 **Wave 1** *(data layer — no dependencies)*: Plan 05-01
@@ -151,9 +151,9 @@ Plans:
 | 2 | ✓ Complete | 3/3 | 100% |
 | 3 | ✓ Complete | 3/3 | 100% |
 | 4 | ✓ Complete | 3/3 | 100% |
-| 5 | ◐ In Progress | 1/3 | 33% |
+| 5 | ◐ In Progress | 2/3 | 67% |
 
-**Overall:** 87%
+**Overall:** 93%
 
 ---
 *Roadmap created: 2026-04-28*
@@ -169,3 +169,4 @@ Plans:
 *Phase 4 plan 03 auto tasks complete: 2026-05-05*
 *Phase 5 planned: 2026-05-05*
 *Phase 5 plan 01 complete: 2026-05-05*
+*Phase 5 plan 02 complete: 2026-05-05*

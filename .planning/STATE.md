@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** 完成任务 → 赚积分 → 奖励自己。正向激励循环，反焦虑，慢生活。
-**Current focus:** Phase 5 — Summaries & Insights (executing plan 01)
+**Current focus:** Phase 5 — Summaries & Insights (executing plan 02)
 
 ## Session Context
 
@@ -20,7 +20,7 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 | Phase 2: Gamification Core | ✓ Complete | 2026-04-29 |
 | Phase 3: Mood & Rewards | ✓ Complete | 2026-05-04 |
 | Phase 4: Mascot & Animations | ✓ Complete | 2026-05-05 |
-| Phase 5: Summaries | ◐ Plan 01 complete (1/3) | 2026-05-05 |
+| Phase 5: Summaries | ◐ Plan 02 complete (2/3) | 2026-05-05 |
 
 ## Key Decisions
 
@@ -39,6 +39,8 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 - **Responsive:** Fluid grid at 1100px breakpoint, 44px touch targets, font scaling below 640px
 - **Summary scoring:** Composite best-day = tasks*0.4 + mood/5*0.3 + min(points/50,1)*0.3, ties by task count
 - **Points spent tracking:** Includes both negative ledger entries and redemption amounts
+- **Eager refresh:** Every data change (task complete, mood log, reward redeem) triggers summary recomputation (D-02)
+- **Cascade refresh:** refreshDailySummary also triggers refreshWeeklySummary for the containing week
 
 ## Research Completed
 
@@ -61,8 +63,8 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Session Continuity
 
 **Last session:** 2026-05-05
-**Stopped at:** Completed 05-01-PLAN — Summary types & computation
-**Resume file:** .planning/phases/05-summaries/05-01-SUMMARY.md
+**Stopped at:** Completed 05-02-PLAN — Summary hooks & eager refresh
+**Resume file:** .planning/phases/05-summaries/05-02-SUMMARY.md
 
 ---
 ## Planning Completed
@@ -88,3 +90,4 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 *Phase 5 context gathered: 2026-05-05*
 *Phase 5 planned: 2026-05-05*
 *Phase 5 plan 01 complete: 2026-05-05*
+*Phase 5 plan 02 complete: 2026-05-05*
