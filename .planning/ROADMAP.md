@@ -122,6 +122,17 @@ Plans:
 
 **Requirements:** SUMM-01~04
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Data layer: DailySummary/WeeklySummary types, Dexie v4, summary computation logic & tests
+- [ ] 05-02-PLAN.md — Integration: useDailySummary/useWeeklySummary/useMoodChartDays hooks, eager refresh triggers wired into completeTask/createMoodEntry/redeemReward & tests
+- [ ] 05-03-PLAN.md — UI: SummaryPage with 3 tabs, DailySummary with arrow nav, WeeklySummary with best day override, MoodTrendChart (Recharts) & human verify
+
+**Wave 1** *(data layer — no dependencies)*: Plan 05-01
+**Wave 2** *(blocked on Wave 1)*: Plan 05-02
+**Wave 3** *(blocked on Wave 2)*: Plan 05-03 (has human verification checkpoint)
+
 **Success Criteria:**
 - Daily summary loads instantly (pre-computed)
 - Weekly summary shows mood trend, completion rate, highlight
@@ -140,7 +151,7 @@ Plans:
 | 2 | ✓ Complete | 3/3 | 100% |
 | 3 | ✓ Complete | 3/3 | 100% |
 | 4 | ✓ Complete | 3/3 | 100% |
-| 5 | ○ Pending | 0/- | 0% |
+| 5 | ◐ Planned | 0/3 | 0% |
 
 **Overall:** 80%
 
@@ -156,3 +167,4 @@ Plans:
 *Phase 4 complete: 2026-05-05*
 *Phase 4 plan 02 complete: 2026-05-04*
 *Phase 4 plan 03 auto tasks complete: 2026-05-05*
+*Phase 5 planned: 2026-05-05*
