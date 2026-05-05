@@ -10,6 +10,9 @@ import { MoodCalendar } from '../mood/MoodCalendar'
 import { SummaryPage } from '../summary/SummaryPage'
 import { HomePage } from '../home/HomePage'
 import { TaskInput } from '../tasks/TaskInput'
+import { PointBadge } from '../gamification/PointBadge'
+import { StreakDisplay } from '../gamification/StreakDisplay'
+import { TransactionPopover } from '../gamification/TransactionPopover'
 
 interface AppShellProps {
   children: ReactNode
@@ -48,6 +51,13 @@ export function AppShell({ children, showToast }: AppShellProps) {
               <p className="topbar-subtitle">{subtitles[currentPage]}</p>
             </div>
             <div className="topbar-actions">
+              <div className="flex items-center gap-2">
+                <StreakDisplay />
+                <div className="relative">
+                  <PointBadge />
+                  <TransactionPopover />
+                </div>
+              </div>
               <button type="button" className="icon-button" aria-label="通知">
                 <Bell size={21} />
                 <span className="notify-dot" />
