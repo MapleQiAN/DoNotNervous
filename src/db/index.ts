@@ -29,6 +29,14 @@ class DoNotNervousDB extends Dexie {
       dailySummaries: 'date, computedAt',
       weeklySummaries: 'weekStart, weekEnd, computedAt',
     })
+    this.version(5).stores({
+      streakRecords: 'date',
+    }).upgrade(tx => {
+      return tx.table('streakRecords').toCollection().modify(record => {
+        if (record.recoveredFrom === undefined) record.recoveredFrom = false
+        if (record.recoveryTaskId === undefined) record.recoveryTaskId = null
+      })
+    })
   }
 }
 

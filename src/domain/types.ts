@@ -36,6 +36,8 @@ export interface StreakRecord {
   freezeUsed: boolean
   freezeCountRemaining: number
   createdAt: Date
+  recoveredFrom?: boolean       // true if this gap day was recovered via earn-back
+  recoveryTaskId?: string | null // taskId of the extra task that triggered recovery
 }
 
 export type MoodEmoji = '😊' | '😌' | '😐' | '😔' | '😰' | '😡' | '🥳' | '💪'

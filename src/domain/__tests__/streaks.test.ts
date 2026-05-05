@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest'
-import { getStreakMilestone, STREAK_MILESTONES } from '../streaks'
+import { describe, it, expect, beforeEach } from 'vitest'
+import { getStreakMilestone, STREAK_MILESTONES, detectEarnBackOpportunity, applyEarnBackRecovery, EARN_BACK_WINDOW_HOURS } from '../streaks'
 import { toDayKey, daysAgo } from '../../lib/date-utils'
+import { db } from '../../db'
 
 describe('getStreakMilestone', () => {
   it('returns null for day 6 (not a milestone)', () => {
@@ -82,5 +83,150 @@ describe('daysAgo', () => {
     const yesterday = new Date(Date.now() - 86400000)
     const expected = toDayKey(yesterday)
     expect(daysAgo(1)).toBe(expected)
+  })
+})
+
+describe('detectEarnBackOpportunity', () => {
+  beforeEach(async () => {
+    await db.streakRecords.clear()
+  })
+
+  it('returns null when streak is active (no gap)', async () => {
+    const now = new Date('2026-01-10T14:00:00')
+    // Today has a record with tasks
+    await db.streakRecords.put({
+      date: toDayKey(now),
+      completedTaskIds: ['task-1'],
+      freezeUsed: false,
+      freezeCountRemaining: 2,
+      createdAt: new Date(),
+    })
+
+    const result = await detectEarnBackOpportunity(now)
+    expect(result).toBeNull()
+  })
+
+  it('returns null when freezes still available (gap days < 2)', async () => {
+    const now = new Date('2026-01-10T14:00:00')
+    // 2 days ago was last active, freezes should cover 1 gap day
+    await db.streakRecords.put({
+      date: '2026-01-08',
+      completedTaskIds: ['task-1'],
+      freezeUsed: false,
+      freezeCountRemaining: 2,
+      createdAt: new Date(),
+    })
+    // Yesterday has a freeze record
+    await db.streakRecords.put({
+      date: '2026-01-09',
+      completedTaskIds: [],
+      freezeUsed: true,
+      freezeCountRemaining: 1,
+      createdAt: new Date(),
+    })
+
+    const result = await detectEarnBackOpportunity(now)
+    expect(result).toBeNull()
+  })
+
+  it('returns opportunity with correct data when gap exists within 24h window', async () => {
+    const gapDayStart = new Date('2026-01-09T12:00:00')
+    const now = new Date('2026-01-10T06:00:00') // 18h after gap day noon, within 24h
+
+    await db.streakRecords.put({
+      date: '2026-01-08',
+      completedTaskIds: ['task-1'],
+      freezeUsed: false,
+      freezeCountRemaining: 0,
+      createdAt: new Date(),
+    })
+
+    const result = await detectEarnBackOpportunity(now)
+    expect(result).not.toBeNull()
+    expect(result!.gapDay).toBe('2026-01-09')
+    expect(result!.previousStreakLength).toBeGreaterThanOrEqual(1)
+  })
+
+  it('returns null when 24h window has expired', async () => {
+    const now = new Date('2026-01-10T14:00:00') // >24h after Jan 9 noon
+
+    await db.streakRecords.put({
+      date: '2026-01-08',
+      completedTaskIds: ['task-1'],
+      freezeUsed: false,
+      freezeCountRemaining: 0,
+      createdAt: new Date(),
+    })
+
+    const result = await detectEarnBackOpportunity(now)
+    expect(result).toBeNull()
+  })
+
+  it('returns null when no streak records exist at all', async () => {
+    const now = new Date('2026-01-10T14:00:00')
+    const result = await detectEarnBackOpportunity(now)
+    expect(result).toBeNull()
+  })
+})
+
+describe('applyEarnBackRecovery', () => {
+  beforeEach(async () => {
+    await db.streakRecords.clear()
+  })
+
+  it('creates a streakRecord with recoveredFrom=true and correct recoveryTaskId', async () => {
+    await applyEarnBackRecovery('task-recovery-1', '2026-01-09')
+
+    const record = await db.streakRecords.get('2026-01-09')
+    expect(record).toBeDefined()
+    expect(record!.recoveredFrom).toBe(true)
+    expect(record!.recoveryTaskId).toBe('task-recovery-1')
+    expect(record!.completedTaskIds).toContain('task-recovery-1')
+  })
+
+  it('is idempotent -- calling twice does not create duplicate records', async () => {
+    await applyEarnBackRecovery('task-recovery-1', '2026-01-09')
+    await applyEarnBackRecovery('task-recovery-2', '2026-01-09')
+
+    const record = await db.streakRecords.get('2026-01-09')
+    expect(record).toBeDefined()
+    expect(record!.recoveredFrom).toBe(true)
+    // Second call should be blocked by idempotent guard
+    expect(record!.recoveryTaskId).toBe('task-recovery-1')
+    expect(record!.completedTaskIds).toEqual(['task-recovery-1'])
+  })
+
+  it('recovery record is counted by computeCurrentStreak as a valid day', async () => {
+    const now = new Date('2026-01-10T14:00:00')
+
+    // Build a streak: Jan 7, 8 active, Jan 9 recovered, Jan 10 (today) active
+    await db.streakRecords.put({
+      date: '2026-01-07',
+      completedTaskIds: ['t1'],
+      freezeUsed: false,
+      freezeCountRemaining: 0,
+      createdAt: new Date(),
+    })
+    await db.streakRecords.put({
+      date: '2026-01-08',
+      completedTaskIds: ['t2'],
+      freezeUsed: false,
+      freezeCountRemaining: 0,
+      createdAt: new Date(),
+    })
+    await applyEarnBackRecovery('task-recovery', '2026-01-09')
+    await db.streakRecords.put({
+      date: '2026-01-10',
+      completedTaskIds: ['t3'],
+      freezeUsed: false,
+      freezeCountRemaining: 0,
+      createdAt: new Date(),
+    })
+
+    // Dynamic import to get computeCurrentStreak from useStreaks
+    const { computeCurrentStreak } = await import('../../hooks/useStreaks')
+    const streak = await computeCurrentStreak(now)
+    // Should count all 4 days including the recovered one
+    expect(streak).toBe(4)
   })
 })

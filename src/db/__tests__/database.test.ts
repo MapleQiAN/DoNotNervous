@@ -27,6 +27,46 @@ describe('Database', () => {
     expect(indexNames).toContain('completedAt')
   })
 
+  describe('version 5 migration', () => {
+    beforeEach(async () => {
+      await db.streakRecords.clear()
+    })
+
+    it('accepts streak records with recovery fields', async () => {
+      await db.streakRecords.put({
+        date: '2026-01-15',
+        completedTaskIds: ['task-1'],
+        freezeUsed: false,
+        freezeCountRemaining: 2,
+        createdAt: new Date(),
+        recoveredFrom: true,
+        recoveryTaskId: 'task-recovery',
+      })
+
+      const record = await db.streakRecords.get('2026-01-15')
+      expect(record).toBeDefined()
+      expect(record!.recoveredFrom).toBe(true)
+      expect(record!.recoveryTaskId).toBe('task-recovery')
+    })
+
+    it('accepts streak records without recovery fields (backward compatible)', async () => {
+      await db.streakRecords.put({
+        date: '2026-01-16',
+        completedTaskIds: ['task-a', 'task-b'],
+        freezeUsed: true,
+        freezeCountRemaining: 1,
+        createdAt: new Date('2026-01-16T10:00:00'),
+      })
+
+      const record = await db.streakRecords.get('2026-01-16')
+      expect(record).toBeDefined()
+      expect(record!.completedTaskIds).toEqual(['task-a', 'task-b'])
+      expect(record!.freezeUsed).toBe(true)
+      expect(record!.recoveredFrom).toBeUndefined()
+      expect(record!.recoveryTaskId).toBeUndefined()
+    })
+  })
+
   it('data survives close/reopen', async () => {
     await db.tasks.add({
       id: 'test-persist-1',
