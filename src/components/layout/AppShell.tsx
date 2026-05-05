@@ -7,6 +7,7 @@ import { useUIStore } from '../../stores/uiStore'
 import { checkAndApplyFreezes } from '../../hooks/useStreaks'
 import { RewardShop } from '../rewards/RewardShop'
 import { MoodCalendar } from '../mood/MoodCalendar'
+import { SummaryPage } from '../summary/SummaryPage'
 import { HomePage } from '../home/HomePage'
 import { TaskInput } from '../tasks/TaskInput'
 
@@ -78,8 +79,11 @@ export function AppShell({ children, showToast }: AppShellProps) {
                   </div>
                 )}
                 {currentPage === 'rewards' && <RewardShop showToast={showToast} />}
-                {(currentPage === 'mood' || currentPage === 'data') && (
-                  <MoodCalendar showToast={showToast} activeView={currentPage} />
+                {currentPage === 'mood' && (
+                  <MoodCalendar showToast={showToast} activeView="mood" />
+                )}
+                {currentPage === 'data' && (
+                  <SummaryPage showToast={showToast} />
                 )}
               </motion.div>
             </AnimatePresence>

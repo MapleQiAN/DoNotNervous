@@ -28,6 +28,7 @@
     "nanoid": "^5.1.9",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "recharts": "^3.8.1",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.4",
     "zod": "^4.3.6",
