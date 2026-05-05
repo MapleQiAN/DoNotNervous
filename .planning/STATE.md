@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** 完成任务 → 赚积分 → 奖励自己。正向激励循环，反焦虑，慢生活。
-**Current focus:** Phase 5 — Summaries & Insights (planned, ready to execute)
+**Current focus:** Phase 5 — Summaries & Insights (executing plan 01)
 
 ## Session Context
 
@@ -20,7 +20,7 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 | Phase 2: Gamification Core | ✓ Complete | 2026-04-29 |
 | Phase 3: Mood & Rewards | ✓ Complete | 2026-05-04 |
 | Phase 4: Mascot & Animations | ✓ Complete | 2026-05-05 |
-| Phase 5: Summaries | ◐ Planned (3 plans) | 2026-05-05 |
+| Phase 5: Summaries | ◐ Plan 01 complete (1/3) | 2026-05-05 |
 
 ## Key Decisions
 
@@ -37,6 +37,8 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 - **Page transitions:** AnimatePresence mode=wait with 0.2s fade+slide for clean navigation
 - **Mobile nav:** 5-tab bottom nav with compressed sizing (min-w-52px, text-9px) to fit all pages
 - **Responsive:** Fluid grid at 1100px breakpoint, 44px touch targets, font scaling below 640px
+- **Summary scoring:** Composite best-day = tasks*0.4 + mood/5*0.3 + min(points/50,1)*0.3, ties by task count
+- **Points spent tracking:** Includes both negative ledger entries and redemption amounts
 
 ## Research Completed
 
@@ -59,8 +61,8 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Session Continuity
 
 **Last session:** 2026-05-05
-**Stopped at:** Phase 5 context gathered, ready for planning
-**Resume file:** .planning/phases/05-summaries/05-CONTEXT.md
+**Stopped at:** Completed 05-01-PLAN — Summary types & computation
+**Resume file:** .planning/phases/05-summaries/05-01-SUMMARY.md
 
 ---
 ## Planning Completed
@@ -85,3 +87,4 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 *Phase 4 complete: 2026-05-05*
 *Phase 5 context gathered: 2026-05-05*
 *Phase 5 planned: 2026-05-05*
+*Phase 5 plan 01 complete: 2026-05-05*
