@@ -5,6 +5,7 @@ import { Activity, ArrowRight, CheckSquare, Clock3, Edit3, Leaf, Plus, Smile, Su
 import { format } from 'date-fns'
 import { useMoodEntries, createMoodEntry } from '../../hooks/useMoodEntries'
 import { MOODS } from '../../domain/mood'
+import { MOOD_SCORE } from '../../domain/summary'
 import { useUIStore } from '../../stores/uiStore'
 import type { MoodEmoji } from '../../domain/types'
 
@@ -12,19 +13,6 @@ interface MoodCalendarProps {
   showToast: (message: string, type?: 'success' | 'error') => void
   activeView?: 'mood' | 'data'
 }
-
-const moodScore: Record<MoodEmoji, number> = {
-  '😊': 4,
-  '😌': 3,
-  '😐': 2,
-  '😔': 2,
-  '😰': 1,
-  '😡': 1,
-  '🥳': 5,
-  '💪': 4,
-}
-
-const fallbackTrend = [4, 3.3, 2, 3, 3.8, 4.6, 3]
 
 export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarProps) {
   const [showStandalonePicker, setShowStandalonePicker] = useState(false)
@@ -34,18 +22,31 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
   const setCurrentPage = useUIStore((s) => s.setCurrentPage)
 
   const trend = useMemo(() => {
-    if (allMoods.length === 0) return fallbackTrend
+    if (allMoods.length === 0) return []
     const recent = allMoods.slice(-7)
-    const values = recent.map((entry) => moodScore[entry.emoji])
-    while (values.length < 7) values.unshift(fallbackTrend[values.length])
-    return values.slice(-7)
+    return recent.map((entry) => MOOD_SCORE[entry.emoji])
   }, [allMoods])
 
-  const path = trend.map((value, index) => {
-    const x = 40 + index * 118
-    const y = 170 - value * 28
-    return `${index === 0 ? 'M' : 'L'} ${x} ${y}`
-  }).join(' ')
+  const recentEntries = useMemo(() => allMoods.slice(-7), [allMoods])
+
+  const path = trend.length > 1
+    ? trend.map((value, index) => {
+        const step = 696 / (trend.length - 1)
+        const x = 40 + index * step
+        const y = 170 - value * 28
+        return `${index === 0 ? 'M' : 'L'} ${x} ${y}`
+      }).join(' ')
+    : ''
+
+  const recentWeekMoods = useMemo(() => {
+    const weekAgo = new Date()
+    weekAgo.setDate(weekAgo.getDate() - 7)
+    return allMoods.filter(m => m.createdAt >= weekAgo)
+  }, [allMoods])
+
+  const avgMoodScore = recentWeekMoods.length > 0
+    ? (recentWeekMoods.reduce((sum, m) => sum + MOOD_SCORE[m.emoji], 0) / recentWeekMoods.length).toFixed(1)
+    : '--'
 
   async function handleStandaloneSave() {
     if (!selectedEmoji) return
@@ -88,23 +89,39 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
             {[1, 2, 3, 4, 5].map((line) => (
               <line key={line} x1="34" x2="736" y1={178 - line * 28} y2={178 - line * 28} className="chart-grid" />
             ))}
-            <path d={`${path} L 748 178 L 40 178 Z`} className="chart-area" />
-            <path d={path} className="chart-line" />
-            {trend.map((value, index) => (
-              <g key={index}>
-                <circle cx={40 + index * 118} cy={170 - value * 28} r="13" className="chart-dot" />
-                <text x={40 + index * 118} y={176 - value * 28} textAnchor="middle" fontSize="14">{value >= 4 ? '😊' : value <= 2 ? '😐' : '😌'}</text>
-                <text x={40 + index * 118} y="186" textAnchor="middle" className="chart-date">{`5/${12 + index}`}</text>
-              </g>
-            ))}
+            {trend.length === 0 ? (
+              <text x="380" y="95" textAnchor="middle" fill="var(--color-text-tertiary, #9ca3af)" fontSize="14">暂无心情数据</text>
+            ) : (
+              <>
+                {path && (
+                  <>
+                    <path d={`${path} L ${40 + (trend.length - 1) * (trend.length > 1 ? 696 / (trend.length - 1) : 0)} 178 L 40 178 Z`} className="chart-area" />
+                    <path d={path} className="chart-line" />
+                  </>
+                )}
+                {trend.map((value, index) => {
+                  const step = trend.length > 1 ? 696 / (trend.length - 1) : 0
+                  const x = 40 + index * step
+                  return (
+                    <g key={index}>
+                      <circle cx={x} cy={170 - value * 28} r="13" className="chart-dot" />
+                      <text x={x} y={176 - value * 28} textAnchor="middle" fontSize="14">{value >= 4 ? '😊' : value <= 2 ? '😐' : '😌'}</text>
+                      <text x={x} y="186" textAnchor="middle" className="chart-date">
+                        {recentEntries[index] ? format(recentEntries[index].createdAt, 'M/d') : ''}
+                      </text>
+                    </g>
+                  )
+                })}
+              </>
+            )}
           </svg>
         </section>
 
         <section className="stats-strip mood-stats">
-          <Stat icon={<CheckSquare />} label="本周完成任务数" value="18 个" note="较上周 20%" />
-          <Stat icon={<Wallet />} label="累计奖励金额" value="¥ 235" note="可用余额 ¥168" />
-          <Stat icon={<Smile />} label="平均心情指数" value="3.6 / 5" note="较上周 0.4" />
-          <Stat icon={<Clock3 />} label="专注时段" value="下午" note="14:00-16:00" />
+          <Stat icon={<CheckSquare />} label="本周完成任务数" value="--" note="暂无数据" />
+          <Stat icon={<Wallet />} label="累计奖励金额" value="--" note="暂无数据" />
+          <Stat icon={<Smile />} label="平均心情指数" value={recentWeekMoods.length > 0 ? `${avgMoodScore} / 5` : '--'} note={recentWeekMoods.length > 0 ? `共 ${recentWeekMoods.length} 条记录` : '暂无数据'} />
+          <Stat icon={<Clock3 />} label="专注时段" value="--" note="暂无数据" />
         </section>
 
         <section className="content-card mood-records">
@@ -112,19 +129,20 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
             <h2>心情与任务记录</h2>
             <button type="button" className="small-select">全部情绪</button>
           </div>
-          {(allMoods.length > 0 ? allMoods.slice(-4).reverse() : fallbackRecords).map((entry, index) => {
-            const isFallback = !('id' in entry)
-            return (
-              <div key={isFallback ? entry.text : entry.id} className="record-row">
-                <span className="record-emoji">{isFallback ? entry.emoji : entry.emoji}</span>
-                <span>{isFallback ? entry.date : format(entry.createdAt, 'M/d')}</span>
-                <p>{isFallback ? entry.text : (entry.journal || '记录了今天的心情')}</p>
-                <em>{['工作', '健康', '生活', '专注'][index % 4]}</em>
-                <strong>完成任务 {3 - (index % 3)} 个</strong>
+          {allMoods.length === 0 ? (
+            <p className="empty-hint">暂无心情记录，点击右侧记录今日心情</p>
+          ) : (
+            allMoods.slice(-4).reverse().map((entry) => (
+              <div key={entry.id} className="record-row">
+                <span className="record-emoji">{entry.emoji}</span>
+                <span>{format(entry.createdAt, 'M/d')}</span>
+                <p>{entry.journal || '记录了今天的心情'}</p>
               </div>
-            )
-          })}
-          <button type="button" className="text-link">查看更多记录 <ArrowRight size={16} /></button>
+            ))
+          )}
+          {allMoods.length > 0 && (
+            <button type="button" className="text-link">查看更多记录 <ArrowRight size={16} /></button>
+          )}
         </section>
       </section>
 
@@ -164,9 +182,14 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
 
         <section className="side-panel insights">
           <h2>数据洞察 ✨</h2>
-          <Insight icon={<Activity />} title="完成运动任务的日子，心情更稳定" text="本周运动 3 天，平均心情 4.3，高于整体平均 0.7" />
-          <Insight icon={<SunMedium />} title="下午完成效率最高" text="14:00-16:00 完成任务 8 个，占本周 44%" />
-          <Insight icon={<CheckSquare />} title="周末情绪整体更好" text="周六、周日平均心情 4.2，高于工作日平均 3.2" />
+          {allMoods.length === 0 ? (
+            <Insight icon={<Activity />} title="记录心情后，这里会出现个性化洞察" text="持续记录，发现你的情绪规律" />
+          ) : (
+            <>
+              <Insight icon={<Activity />} title={`本周共记录 ${recentWeekMoods.length} 次心情`} text={recentWeekMoods.length > 0 ? `平均心情指数 ${avgMoodScore}` : '继续记录，发现你的情绪规律'} />
+              <Insight icon={<SunMedium />} title="继续记录，解锁更多洞察" text="记录越多，洞察越准确" />
+            </>
+          )}
           <button type="button" className="text-link">查看完整复盘报告 <ArrowRight size={16} /></button>
         </section>
 
@@ -203,10 +226,3 @@ function Insight({ icon, title, text }: { icon: ReactNode; title: string; text: 
     </div>
   )
 }
-
-const fallbackRecords = [
-  { emoji: '😊', date: '5/18 周日', text: '完成需求文档后感觉轻松多了 🎉' },
-  { emoji: '😊', date: '5/17 周六', text: '今天健身后心情很好，整个人都轻盈了 🌿' },
-  { emoji: '😌', date: '5/16 周五', text: '上午有点焦虑，下午专注后好多了' },
-  { emoji: '😐', date: '5/15 周四', text: '有点累，睡前记录一下，明天会更好' },
-] as const
