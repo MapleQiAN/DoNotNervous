@@ -174,7 +174,7 @@ Plans:
 
 **Plans:** 1 plan
 Plans:
-- [ ] 07-01-PLAN.md — Replace divergent moodScore with canonical import, remove all hardcoded fallback data
+- [x] 07-01-PLAN.md — Replace divergent moodScore with canonical import, remove all hardcoded fallback data
 
 **Gap Closure:** Closes warning from v1.0 audit — MoodCalendar uses divergent scores
 
