@@ -1,5 +1,5 @@
 import { Dexie, type EntityTable } from 'dexie'
-import type { Task, PointLedgerEntry, StreakRecord, MoodEntry, Reward, Redemption } from '../domain/types'
+import type { Task, PointLedgerEntry, StreakRecord, MoodEntry, Reward, Redemption, DailySummary, WeeklySummary } from '../domain/types'
 
 class DoNotNervousDB extends Dexie {
   tasks!: EntityTable<Task, 'id'>
@@ -8,6 +8,8 @@ class DoNotNervousDB extends Dexie {
   moodEntries!: EntityTable<MoodEntry, 'id'>
   rewards!: EntityTable<Reward, 'id'>
   redemptions!: EntityTable<Redemption, 'id'>
+  dailySummaries!: EntityTable<DailySummary, 'date'>
+  weeklySummaries!: EntityTable<WeeklySummary, 'weekStart'>
 
   constructor() {
     super('DoNotNervousDB')
@@ -22,6 +24,10 @@ class DoNotNervousDB extends Dexie {
       moodEntries: 'id, emoji, taskId, createdAt',
       rewards: 'id, createdAt',
       redemptions: 'id, rewardId, createdAt',
+    })
+    this.version(4).stores({
+      dailySummaries: 'date, computedAt',
+      weeklySummaries: 'weekStart, weekEnd, computedAt',
     })
   }
 }
