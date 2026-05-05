@@ -20,43 +20,33 @@ export function SummaryPage({ showToast }: SummaryPageProps) {
   const [activeTab, setActiveTab] = useState<SummaryTab>('daily')
 
   return (
-    <div className="dashboard-grid mood-route">
-      <section className="main-column">
-        <div className="top-tabs">
-          {tabs.map(({ key, label }) => (
-            <button
-              key={key}
-              type="button"
-              className={activeTab === key ? 'is-active' : ''}
-              onClick={() => setActiveTab(key)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.18 }}
+    <div className="summary-page">
+      <div className="top-tabs">
+        {tabs.map(({ key, label }) => (
+          <button
+            key={key}
+            type="button"
+            className={activeTab === key ? 'is-active' : ''}
+            onClick={() => setActiveTab(key)}
           >
-            {activeTab === 'daily' && <DailySummary showToast={showToast} />}
-            {activeTab === 'weekly' && <WeeklySummary showToast={showToast} />}
-            {activeTab === 'trend' && <MoodTrendChart />}
-          </motion.div>
-        </AnimatePresence>
-      </section>
+            {label}
+          </button>
+        ))}
+      </div>
 
-      <aside className="right-column">
-        <section className="side-panel">
-          <h2>数据复盘</h2>
-          <p>把完成、奖励和心情放在一起看见。</p>
-          <p>选择上方的标签页查看不同维度的总结数据。</p>
-        </section>
-      </aside>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.18 }}
+        >
+          {activeTab === 'daily' && <DailySummary showToast={showToast} />}
+          {activeTab === 'weekly' && <WeeklySummary showToast={showToast} />}
+          {activeTab === 'trend' && <MoodTrendChart />}
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

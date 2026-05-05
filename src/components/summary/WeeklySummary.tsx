@@ -81,11 +81,11 @@ export function WeeklySummary({ showToast }: WeeklySummaryProps) {
   return (
     <div className="weekly-summary">
       {/* Week navigation bar */}
-      <div className="content-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+      <div className="summary-nav-bar">
         <button type="button" className="icon-button" onClick={goPrevWeek} aria-label="上一周">
           <ChevronLeft size={20} />
         </button>
-        <span style={{ fontWeight: 600, fontSize: '15px' }}>{formattedRange}</span>
+        <span className="summary-nav-date">{formattedRange}</span>
         <button
           type="button"
           className="icon-button"

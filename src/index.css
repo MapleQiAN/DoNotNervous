@@ -1028,6 +1028,33 @@
     background: #2f8240;
   }
 
+  .summary-page {
+    display: grid;
+    align-content: start;
+    gap: 20px;
+  }
+
+  .summary-nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    border: 1px solid rgba(105, 88, 61, 0.08);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .summary-nav-date {
+    font-weight: 700;
+    font-size: 15px;
+    color: #2c302d;
+  }
+
+  .stats-strip-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .mood-hero {
     min-height: 170px;
   }
@@ -1082,6 +1109,8 @@
   }
 
   .record-row {
+    display: flex;
+    align-items: center;
     min-height: 52px;
     gap: 14px;
     border-bottom: 1px solid rgba(108,91,62,0.10);

@@ -78,11 +78,11 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
   return (
     <div className="daily-summary">
       {/* Arrow navigation bar (D-06) */}
-      <div className="content-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+      <div className="summary-nav-bar">
         <button type="button" className="icon-button" onClick={goPrev} aria-label="前一天">
           <ChevronLeft size={20} />
         </button>
-        <span style={{ fontWeight: 600, fontSize: '15px' }}>{formattedDate}</span>
+        <span className="summary-nav-date">{formattedDate}</span>
         <button
           type="button"
           className="icon-button"
@@ -96,7 +96,7 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
       </div>
 
       {/* Stats row (D-05) */}
-      <motion.div className="stats-strip" variants={fadeVariants} initial="initial" animate="animate">
+      <motion.div className="stats-strip stats-strip-3" variants={fadeVariants} initial="initial" animate="animate">
         <div className="stat-card">
           <div className="stat-icon"><CheckSquare size={18} /></div>
           <div>
