@@ -32,22 +32,25 @@ export async function detectEarnBackOpportunity(
 ): Promise<EarnBackOpportunity | null> {
   const todayKey = toDayKey(now)
 
-  // If today already has a record with tasks, streak is active
-  const todayRecord = await db.streakRecords.get(todayKey)
-  if (todayRecord && todayRecord.completedTaskIds.length > 0) return null
+  // Get all records, find the most recent one BEFORE today
+  // (today's record may have just been created by task completion)
+  const preTodayRecords = await db.streakRecords
+    .where('date')
+    .below(todayKey)
+    .reverse()
+    .toArray()
 
-  const allRecords = await db.streakRecords.orderBy('date').reverse().toArray()
-  if (allRecords.length === 0) return null
+  if (preTodayRecords.length === 0) return null
 
-  const lastRecord = allRecords[0]
+  const lastRecord = preTodayRecords[0]
   const gap = differenceInCalendarDays(now, new Date(lastRecord.date + 'T12:00:00'))
 
-  // No gap or yesterday was active
+  // Yesterday was active or today is consecutive
   if (gap <= 1) return null
 
   // Count frozen and recovered days among gap
-  const frozenDays = allRecords.filter(
-    r => r.freezeUsed || r.recoveredFrom
+  const frozenDays = preTodayRecords.filter(
+    r => (r.freezeUsed || r.recoveredFrom)
       && r.date > lastRecord.date
       && r.date < todayKey
   ).length
@@ -66,7 +69,7 @@ export async function detectEarnBackOpportunity(
 
   // Walk backward to count previous streak length
   let previousStreakLength = 0
-  const recordMap = new Map(allRecords.map(r => [r.date, r]))
+  const recordMap = new Map(preTodayRecords.map(r => [r.date, r]))
   let offset = 0
   while (true) {
     const dayKey = toDayKey(new Date(new Date(lastRecord.date + 'T12:00:00').getTime() - offset * 86400000))

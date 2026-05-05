@@ -1,9 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks'
-import { differenceInCalendarDays } from 'date-fns'
+import { differenceInCalendarDays, startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, isSameMonth, isToday, format } from 'date-fns'
 import { db } from '../db'
 import { toDayKey } from '../lib/date-utils'
 import { useMascotStore } from '../stores/mascotStore'
 import { celebrateStreakMilestone } from '../lib/celebrate'
+import { detectEarnBackOpportunity, applyEarnBackRecovery, type EarnBackOpportunity } from '../domain/streaks'
 
 /**
  * Compute the current streak length by walking backward from today
@@ -80,6 +81,84 @@ export function useStreakFreezes(): number {
     [],
     2
   )
+}
+
+export function useEarnBackOpportunity(): EarnBackOpportunity | null {
+  return useLiveQuery(
+    async () => detectEarnBackOpportunity(),
+    [],
+    null
+  )
+}
+
+export type StreakDayState = 'active' | 'frozen' | 'recovered' | 'missed' | 'empty' | 'future'
+
+export interface StreakCalendarDay {
+  date: Date
+  dayKey: string
+  isCurrentMonth: boolean
+  isToday: boolean
+  state: StreakDayState
+  taskCount: number
+}
+
+export function useStreakCalendarMonth(year: number, month: number): StreakCalendarDay[] {
+  const monthDate = new Date(year, month, 1)
+  const monthStart = startOfMonth(monthDate)
+  const monthEnd = endOfMonth(monthDate)
+  const calendarStart = startOfWeek(monthStart, { weekStartsOn: 1 })
+  const calendarEnd = endOfWeek(monthEnd, { weekStartsOn: 1 })
+
+  const startKey = format(calendarStart, 'yyyy-MM-dd')
+  const endKey = format(calendarEnd, 'yyyy-MM-dd')
+
+  const records = useLiveQuery(
+    async () => {
+      return db.streakRecords
+        .where('date')
+        .between(startKey, endKey, true, true)
+        .toArray()
+    },
+    [startKey, endKey]
+  )
+
+  if (!records) return []
+
+  const recordMap = new Map(records.map(r => [r.date, r]))
+  const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd })
+  const now = new Date()
+
+  return days.map(date => {
+    const dayKey = format(date, 'yyyy-MM-dd')
+    const record = recordMap.get(dayKey)
+    const isFuture = date > now && !isToday(date)
+
+    let state: StreakDayState = 'empty'
+    let taskCount = 0
+
+    if (isFuture) {
+      state = 'future'
+    } else if (record?.recoveredFrom) {
+      state = 'recovered'
+      taskCount = record.completedTaskIds.length
+    } else if (record?.freezeUsed) {
+      state = 'frozen'
+    } else if (record && record.completedTaskIds.length > 0) {
+      state = 'active'
+      taskCount = record.completedTaskIds.length
+    } else if (!isFuture && isSameMonth(date, monthDate)) {
+      state = 'missed'
+    }
+
+    return {
+      date,
+      dayKey,
+      isCurrentMonth: isSameMonth(date, monthDate),
+      isToday: isToday(date),
+      state,
+      taskCount,
+    }
+  })
 }
 
 /**

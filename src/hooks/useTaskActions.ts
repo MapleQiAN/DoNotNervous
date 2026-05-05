@@ -3,6 +3,7 @@ import { generateId } from '../lib/id'
 import { taskCreateSchema } from '../domain/task'
 import { calculatePoints } from '../domain/points'
 import { computeCurrentStreak, checkStreakMilestone } from './useStreaks'
+import { detectEarnBackOpportunity, applyEarnBackRecovery } from '../domain/streaks'
 import { toDayKey } from '../lib/date-utils'
 import { useUIStore } from '../stores/uiStore'
 import { useMascotStore } from '../stores/mascotStore'
@@ -104,6 +105,15 @@ export async function completeTask(id: string): Promise<Task> {
 
   // Check streak milestone (non-blocking — celebration is best-effort)
   checkStreakMilestone(now).catch(() => { /* non-blocking */ })
+
+  // Auto-recovery: check if this task completion can earn back a broken streak
+  detectEarnBackOpportunity(now)
+    .then(opportunity => {
+      if (opportunity) {
+        applyEarnBackRecovery(task.id, opportunity.gapDay).catch(() => { /* non-blocking */ })
+      }
+    })
+    .catch(() => { /* non-blocking */ })
 
   useUIStore.getState().setMoodPickerTaskId(task.id)
   return task
