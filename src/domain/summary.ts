@@ -140,7 +140,6 @@ export async function computeWeeklySummary(weekStartDate: string): Promise<Weekl
   const { startDayKey, endDayKey } = getWeekRange(weekDate)
 
   const startDate = new Date(`${startDayKey}T00:00:00`)
-  const endDate = new Date(`${endDayKey}T23:59:59.999`)
 
   // Compute daily summaries for each day in the week
   const dailyBreakdown: WeeklySummary['dailyBreakdown'] = []

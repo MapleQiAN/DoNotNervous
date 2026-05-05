@@ -563,7 +563,7 @@ describe('useMoodChartDays', () => {
     // Mock today as 2026-05-05 so daysAgo(2) = 2026-05-03, daysAgo(1) = 2026-05-04, daysAgo(0) = 2026-05-05
     vi.setSystemTime(new Date('2026-05-05T12:00:00'))
 
-    const { useMoodChartDays } = await import('../useSummary')
+    await import('../useSummary')
 
     // useMoodChartDays is a hook, test the underlying logic by calling refreshDailySummary
     // and checking the DB directly since we can't call hooks outside React

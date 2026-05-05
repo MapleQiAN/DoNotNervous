@@ -5,7 +5,6 @@ import { zhCN } from 'date-fns/locale/zh-CN'
 import { Trophy, Calendar, TrendingUp, Flame, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useWeeklySummary, refreshWeeklySummary } from '../../hooks/useSummary'
 import { getWeekRange } from '../../domain/summary'
-import { toDayKey } from '../../lib/date-utils'
 import { db } from '../../db'
 
 interface WeeklySummaryProps {

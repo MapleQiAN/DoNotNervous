@@ -39,7 +39,7 @@ export async function refreshDailySummaryForToday(): Promise<void> {
  */
 export function useDailySummary(dayKey: string): DailySummary | null {
   return useLiveQuery(
-    () => db.dailySummaries.get(dayKey),
+    async () => (await db.dailySummaries.get(dayKey)) ?? null,
     [dayKey],
     null,
   )
@@ -51,7 +51,7 @@ export function useDailySummary(dayKey: string): DailySummary | null {
  */
 export function useWeeklySummary(weekStart: string): WeeklySummary | null {
   return useLiveQuery(
-    () => db.weeklySummaries.get(weekStart),
+    async () => (await db.weeklySummaries.get(weekStart)) ?? null,
     [weekStart],
     null,
   )
