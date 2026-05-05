@@ -4,6 +4,12 @@ import { cors } from 'hono/cors'
 import { serve } from '@hono/node-server'
 import { logger } from 'hono/logger'
 import authRoutes from './routes/auth.js'
+import taskRoutes from './routes/tasks.js'
+import moodRoutes from './routes/mood.js'
+import streakRoutes from './routes/streaks.js'
+import rewardRoutes from './routes/rewards.js'
+import pointRoutes from './routes/points.js'
+import summaryRoutes from './routes/summaries.js'
 
 const app = new Hono()
 
@@ -16,6 +22,12 @@ app.use('*', cors({
 app.get('/health', (c) => c.json({ status: 'ok', timestamp: new Date().toISOString() }))
 
 app.route('/auth', authRoutes)
+app.route('/tasks', taskRoutes)
+app.route('/mood', moodRoutes)
+app.route('/streaks', streakRoutes)
+app.route('/rewards', rewardRoutes)
+app.route('/points', pointRoutes)
+app.route('/summaries', summaryRoutes)
 
 const port = Number(process.env.PORT) || 3001
 
