@@ -209,24 +209,54 @@ Plans:
 
 ---
 
+## Phase 9: Advanced Streak Features
+
+**Goal:** "Earn back" streak recovery — complete an extra task within 24h to recover a broken streak. Streak calendar showing monthly completion patterns with positive visual framing.
+
+**Requirements:** STRK-06, STRK-07
+
+**Plans:** 3 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — Data layer: extend StreakRecord with recovery fields, Dexie v5 schema migration, earn-back detection domain logic & tests
+- [ ] 09-02-PLAN.md — Integration: auto-earn-back in completeTask, useEarnBackOpportunity hook, useStreakCalendarMonth hook & tests
+- [ ] 09-03-PLAN.md — UI: StreakDisplay recovery banner, StreakCalendar modal with monthly grid, AppShell wiring & human verify
+
+**Wave 1** *(data layer — no dependencies)*: Plan 09-01
+**Wave 2** *(blocked on Wave 1)*: Plan 09-02
+**Wave 3** *(blocked on Wave 2)*: Plan 09-03 (has human verification checkpoint)
+
+**Success Criteria:**
+- Streak recovery available within 24h when freezes are exhausted
+- Auto-recovery triggers on any task completion during earn-back window
+- Streak calendar shows monthly grid with 6 day states (active, frozen, recovered, missed, future, empty)
+- Calendar uses positive framing only ("X out of Y days active!")
+- Recovery banner uses warm amber color with opportunity messaging
+- No punitive or failure-highlighting language anywhere
+
+**Depends on:** Phase 2 (streak infrastructure), Phase 6 (StreakDisplay mounted)
+
+---
+
 ## Progress
 
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
-| 1 | ✓ Complete | 3/3 | 100% |
-| 2 | ✓ Complete | 3/3 | 100% |
-| 3 | ✓ Complete | 3/3 | 100% |
-| 4 | ✓ Complete | 3/3 | 100% |
-| 5 | ✓ Complete | 3/3 | 100% |
-| 6 | ✓ Complete | 1/1 | 100% |
+| 1 | Complete | 3/3 | 100% |
+| 2 | Complete | 3/3 | 100% |
+| 3 | Complete | 3/3 | 100% |
+| 4 | Complete | 3/3 | 100% |
+| 5 | Complete | 3/3 | 100% |
+| 6 | Complete | 1/1 | 100% |
 | 7 | Complete | 1/1 | 100% |
-| 8 | Planned | 0/1 | 0% |
+| 8 | Complete | 1/1 | 100% |
+| 9 | Planned | 0/3 | 0% |
 
-**Overall:** 94% (17/18 plans complete)
+**Overall:** 100% v1.0 (18/18 plans complete), Phase 9 planned (0/3)
 
 ---
 *Roadmap created: 2026-04-28*
-*Last updated: 2026-05-05*
+*Last updated: 2026-05-06*
 *Phase 2 complete: 2026-04-29*
 *Phase 2 planned: 2026-04-29*
 *Phase 3 planned: 2026-05-04*
@@ -247,3 +277,4 @@ Plans:
 *Phase 7 planned: 2026-05-05*
 *Phase 8 planned: 2026-05-05*
 *Phase 8 complete: 2026-05-05*
+*Phase 9 planned: 2026-05-06*
