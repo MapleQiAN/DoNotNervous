@@ -1034,6 +1034,13 @@
     gap: 20px;
   }
 
+  .daily-summary,
+  .weekly-summary {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+  }
+
   .summary-nav-bar {
     display: flex;
     align-items: center;
