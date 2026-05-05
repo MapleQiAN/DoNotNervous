@@ -143,6 +143,64 @@ Plans:
 
 ---
 
+## Phase 6: Mount Gamification UI (Gap Closure — Blocker)
+
+**Goal:** Mount PointBadge, StreakDisplay, and TransactionPopover in Header topbar. These Phase 2 components exist but are never rendered, blocking POINT-02, POINT-03, STRK-04.
+
+**Requirements:** POINT-02, POINT-03, STRK-04
+
+**Plans:** 1 plan
+
+**Gap Closure:** Closes blocker from v1.0 audit — gamification UI not mounted
+
+**Success Criteria:**
+- PointBadge shows animated point count in Header
+- StreakDisplay shows fire icon + count when streak > 0
+- TransactionPopover opens on click showing last 10 transactions
+- All three components visible on desktop and mobile layouts
+
+**Depends on:** Phase 2 (gamification components), Phase 4 (responsive layout)
+
+---
+
+## Phase 7: Fix Mood Data Consistency (Gap Closure)
+
+**Goal:** Fix MoodCalendar divergent mood score mapping and remove hardcoded fallback trend data. Consolidate to canonical MOOD_SCORE from domain/summary.ts.
+
+**Requirements:** MOOD-04
+
+**Plans:** 1 plan
+
+**Gap Closure:** Closes warning from v1.0 audit — MoodCalendar uses divergent scores
+
+**Success Criteria:**
+- MoodCalendar imports and uses canonical MOOD_SCORE from domain/summary.ts
+- No hardcoded fallback trend data or date labels
+- Mood calendar and summary charts show consistent values
+
+**Depends on:** Phase 3 (MoodCalendar), Phase 5 (MOOD_SCORE definition)
+
+---
+
+## Phase 8: Codebase Cleanup (Gap Closure)
+
+**Goal:** Clean up orphaned domain module, fix test noise, and document placeholder Lottie status.
+
+**Requirements:** None (tech debt)
+
+**Plans:** 1 plan
+
+**Gap Closure:** Closes warnings from v1.0 audit — orphaned code and test noise
+
+**Success Criteria:**
+- domain/streaks.ts either imported by production code or removed
+- canvas-confetti mocked in test setup to prevent unhandled exceptions
+- Lottie placeholder status documented
+
+**Depends on:** Phase 2 (streaks domain), Phase 4 (mascot/test setup)
+
+---
+
 ## Progress
 
 | Phase | Status | Plans | Progress |
@@ -152,8 +210,11 @@ Plans:
 | 3 | ✓ Complete | 3/3 | 100% |
 | 4 | ✓ Complete | 3/3 | 100% |
 | 5 | ✓ Complete | 3/3 | 100% |
+| 6 | Gap Closure | 0/1 | 0% |
+| 7 | Gap Closure | 0/1 | 0% |
+| 8 | Gap Closure | 0/1 | 0% |
 
-**Overall:** 100%
+**Overall:** 93% (15/18 plans complete)
 
 ---
 *Roadmap created: 2026-04-28*

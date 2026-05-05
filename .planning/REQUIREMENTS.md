@@ -18,35 +18,35 @@
 
 ### Points System
 
-- [ ] **POINT-01**: User earns points on task completion (scaled by difficulty: easy=10, medium=25, hard=50)
+- [x] **POINT-01**: User earns points on task completion (scaled by difficulty: easy=10, medium=25, hard=50)
 - [ ] **POINT-02**: User sees current point balance prominently displayed
 - [ ] **POINT-03**: User can view point transaction history (earned, spent, bonuses)
-- [ ] **POINT-04**: Points use event-sourced ledger — every transaction is an immutable record
-- [ ] **POINT-05**: Streak bonus multiplier adds extra points for consecutive days
+- [x] **POINT-04**: Points use event-sourced ledger — every transaction is an immutable record
+- [x] **POINT-05**: Streak bonus multiplier adds extra points for consecutive days
 
 ### Rewards
 
-- [ ] **REWD-01**: User can create custom rewards with name, description, and point cost
-- [ ] **REWD-02**: User can redeem rewards when they have enough points
-- [ ] **REWD-03**: User can edit and delete rewards
-- [ ] **REWD-04**: Redemption triggers celebration animation
-- [ ] **REWD-05**: User can view redemption history
+- [x] **REWD-01**: User can create custom rewards with name, description, and point cost
+- [x] **REWD-02**: User can redeem rewards when they have enough points
+- [x] **REWD-03**: User can edit and delete rewards
+- [x] **REWD-04**: Redemption triggers celebration animation
+- [x] **REWD-05**: User can view redemption history
 
 ### Mood Tracking
 
-- [ ] **MOOD-01**: User can quickly select a mood emoji after completing a task (opt-in, not required)
-- [ ] **MOOD-02**: User can optionally write short journal text (max 280 chars) with mood
-- [ ] **MOOD-03**: Mood selection takes < 3 seconds (max 6-8 mood options)
+- [x] **MOOD-01**: User can quickly select a mood emoji after completing a task (opt-in, not required)
+- [x] **MOOD-02**: User can optionally write short journal text (max 280 chars) with mood
+- [x] **MOOD-03**: Mood selection takes < 3 seconds (max 6-8 mood options)
 - [ ] **MOOD-04**: User can view mood history timeline
-- [ ] **MOOD-05**: User can log standalone mood entries (not tied to a task)
+- [x] **MOOD-05**: User can log standalone mood entries (not tied to a task)
 
 ### Streak System
 
-- [ ] **STRK-01**: Streaks track consecutive days with at least one completed task
-- [ ] **STRK-02**: Streaks use period records (one row per day), not a simple counter
-- [ ] **STRK-03**: Streak freeze protects streak on missed days (graceful, not punitive)
+- [x] **STRK-01**: Streaks track consecutive days with at least one completed task
+- [x] **STRK-02**: Streaks use period records (one row per day), not a simple counter
+- [x] **STRK-03**: Streak freeze protects streak on missed days (graceful, not punitive)
 - [ ] **STRK-04**: All streak messaging is positive ("12 out of 14 days!" not "you broke your streak")
-- [ ] **STRK-05**: Streak milestones trigger celebration animations
+- [x] **STRK-05**: Streak milestones trigger celebration animations
 
 ### Mascot & Animations
 
@@ -54,23 +54,23 @@
 - [x] **MASC-02**: Mascot reacts to task completion with celebration animation
 - [x] **MASC-03**: Mascot shows encouragement on streak milestones
 - [x] **MASC-04**: Task completion triggers confetti effect
-- [ ] **MASC-05**: Smooth UI transitions for task list changes (reorder, add, complete)
+- [x] **MASC-05**: Smooth UI transitions for task list changes (reorder, add, complete)
 
 ### Summaries
 
-- [ ] **SUMM-01**: Daily summary shows tasks completed, points earned, dominant mood
-- [ ] **SUMM-02**: Weekly summary shows trends, best day, mood trajectory
-- [ ] **SUMM-03**: Mood trend chart visualizes mood changes over time
+- [x] **SUMM-01**: Daily summary shows tasks completed, points earned, dominant mood
+- [x] **SUMM-02**: Weekly summary shows trends, best day, mood trajectory
+- [x] **SUMM-03**: Mood trend chart visualizes mood changes over time
 - [x] **SUMM-04**: Summaries are pre-computed for instant loading
 
 ### Data & Infrastructure
 
 - [x] **DATA-01**: All data stored locally in IndexedDB via Dexie.js
-- [ ] **DATA-02**: No account or login required — works immediately on first visit
+- [x] **DATA-02**: No account or login required — works immediately on first visit
 - [x] **DATA-03**: Data persists across page refreshes and browser restarts
 - [x] **DATA-04**: User can export data as JSON (backup against Safari ITP data loss)
 - [x] **DATA-05**: User can import data from JSON backup
-- [ ] **DATA-06**: Responsive design works on mobile and desktop browsers
+- [x] **DATA-06**: Responsive design works on mobile and desktop browsers
 
 ### Gentle Onboarding
 
@@ -132,51 +132,52 @@
 | TASK-06 | Phase 1 | Complete |
 | TASK-07 | Phase 1 | Complete |
 | TASK-08 | Phase 1 | Complete |
-| POINT-01 | Phase 2 | Pending |
-| POINT-02 | Phase 2 | Pending |
-| POINT-03 | Phase 2 | Pending |
-| POINT-04 | Phase 2 | Pending |
-| POINT-05 | Phase 2 | Pending |
-| STRK-01 | Phase 2 | Pending |
-| STRK-02 | Phase 2 | Pending |
-| STRK-03 | Phase 2 | Pending |
-| STRK-04 | Phase 2 | Pending |
-| STRK-05 | Phase 2 | Pending |
-| REWD-01 | Phase 3 | Pending |
-| REWD-02 | Phase 3 | Pending |
-| REWD-03 | Phase 3 | Pending |
-| REWD-04 | Phase 3 | Pending |
-| REWD-05 | Phase 3 | Pending |
-| MOOD-01 | Phase 3 | Pending |
-| MOOD-02 | Phase 3 | Pending |
-| MOOD-03 | Phase 3 | Pending |
-| MOOD-04 | Phase 3 | Pending |
-| MOOD-05 | Phase 3 | Pending |
+| POINT-01 | Phase 2 | Complete |
+| POINT-02 | Phase 6 (gap) | Pending |
+| POINT-03 | Phase 6 (gap) | Pending |
+| POINT-04 | Phase 2 | Complete |
+| POINT-05 | Phase 2 | Complete |
+| STRK-01 | Phase 2 | Complete |
+| STRK-02 | Phase 2 | Complete |
+| STRK-03 | Phase 2 | Complete |
+| STRK-04 | Phase 6 (gap) | Pending |
+| STRK-05 | Phase 2→4 | Complete |
+| REWD-01 | Phase 3 | Complete |
+| REWD-02 | Phase 3 | Complete |
+| REWD-03 | Phase 3 | Complete |
+| REWD-04 | Phase 3 | Complete |
+| REWD-05 | Phase 3 | Complete |
+| MOOD-01 | Phase 3 | Complete |
+| MOOD-02 | Phase 3 | Complete |
+| MOOD-03 | Phase 3 | Complete |
+| MOOD-04 | Phase 7 (gap) | Pending |
+| MOOD-05 | Phase 3 | Complete |
 | MASC-01 | Phase 4 | Complete |
 | MASC-02 | Phase 4 | Complete |
 | MASC-03 | Phase 4 | Complete |
 | MASC-04 | Phase 4 | Complete |
-| MASC-05 | Phase 4 | Pending |
-| SUMM-01 | Phase 5 | Pending |
+| MASC-05 | Phase 4 | Complete |
+| SUMM-01 | Phase 5 | Complete |
 | SUMM-02 | Phase 5 | Complete |
-| SUMM-03 | Phase 5 | Pending |
+| SUMM-03 | Phase 5 | Complete |
 | SUMM-04 | Phase 5 | Complete |
 | DATA-01 | Phase 1 | Complete |
-| DATA-02 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Complete |
 | DATA-03 | Phase 1 | Complete |
 | DATA-04 | Phase 1 | Complete |
 | DATA-05 | Phase 1 | Complete |
-| DATA-06 | Phase 4 | Pending |
+| DATA-06 | Phase 4 | Complete |
 | ONBD-01 | Phase 1 | Complete |
 | ONBD-02 | Phase 1 | Complete |
 | ONBD-03 | Phase 1 | Complete |
 
 **Coverage:**
-- v1 requirements: 35 total
-- Mapped to phases: 35
+- v1 requirements: 46 total
+- Complete: 42
+- Pending (gap closure): 4 (POINT-02, POINT-03, STRK-04, MOOD-04)
+- Mapped to phases: 46
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-28*
-*Last updated: 2026-05-04 after Plan 04-02 completion*
-*MASC-01 completed: 2026-05-04*
+*Last updated: 2026-05-05 after v1.0 audit gap closure planning*
