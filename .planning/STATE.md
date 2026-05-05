@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** 完成任务 → 赚积分 → 奖励自己。正向激励循环，反焦虑，慢生活。
-**Current focus:** Phase 5 — Summaries & Insights (complete)
+**Current focus:** Phase 7 — Fix Mood Data Consistency (gap closure)
 
 ## Session Context
 
@@ -21,6 +21,7 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 | Phase 3: Mood & Rewards | ✓ Complete | 2026-05-04 |
 | Phase 4: Mascot & Animations | ✓ Complete | 2026-05-05 |
 | Phase 5: Summaries | ✓ Complete (3/3) | 2026-05-05 |
+| Phase 6: Mount Gamification UI | ✓ Complete (1/1) | 2026-05-05 |
 
 ## Key Decisions
 
@@ -66,8 +67,8 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Session Continuity
 
 **Last session:** 2026-05-05
-**Stopped at:** Completed 05-03-PLAN — Summary UI components (Phase 5 complete)
-**Resume file:** .planning/phases/05-summaries/05-03-SUMMARY.md
+**Stopped at:** Phase 6 complete — ready for Phase 7
+**Resume file:** .planning/phases/07-fix-mood-consistency/
 
 ---
 ## Planning Completed
@@ -95,3 +96,6 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 *Phase 5 plan 01 complete: 2026-05-05*
 *Phase 5 plan 02 complete: 2026-05-05*
 *Phase 5 plan 03 complete: 2026-05-05*
+*Phase 6 planned: 2026-05-05*
+*Phase 6 plan 01 complete: 2026-05-05*
+*Phase 6 complete: 2026-05-05*
