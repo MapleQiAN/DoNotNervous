@@ -65,3 +65,44 @@ export interface Redemption {
   pointsSpent: number
   createdAt: Date
 }
+
+export interface DailySummary {
+  id: string
+  date: string // YYYY-MM-DD, primary key
+  tasksCompleted: number
+  tasksCreated: number
+  pointsEarned: number
+  pointsSpent: number
+  dominantMood: MoodEmoji | null
+  dominantMoodScore: number
+  taskIds: string[]
+  moodEntryIds: string[]
+  ledgerEntryIds: string[]
+  redemptionIds: string[]
+  computedAt: Date
+}
+
+export interface WeeklySummary {
+  id: string
+  weekStart: string // YYYY-MM-DD Monday, primary key
+  weekEnd: string // YYYY-MM-DD Sunday
+  totalTasksCompleted: number
+  totalTasksCreated: number
+  totalPointsEarned: number
+  totalPointsSpent: number
+  avgMoodScore: number
+  streakDays: number
+  completionRate: number
+  bestDayDate: string | null
+  bestDayScore: number
+  bestDayTaskCount: number
+  userBestDayOverride: string | null
+  dailyBreakdown: Array<{
+    date: string
+    tasksCompleted: number
+    pointsEarned: number
+    moodScore: number
+    compositeScore: number
+  }>
+  computedAt: Date
+}
