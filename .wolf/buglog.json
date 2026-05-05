@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "bugs": [
+    {
+      "id": "bug-001",
+      "timestamp": "2026-05-05T13:08:15.389Z",
+      "error_message": "Type error",
+      "file": "src/test-setup.ts",
+      "root_cause": "Missing or incorrect type annotation",
+      "fix": "Added type assertion/annotation",
+      "tags": [
+        "auto-detected",
+        "type-fix",
+        "ts"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T13:08:15.389Z"
+    },
+    {
+      "id": "bug-002",
+      "timestamp": "2026-05-05T13:09:30.287Z",
+      "error_message": "Wrong reference: Planned should be Complete",
+      "file": ".planning/STATE.md",
+      "root_cause": "Used \"Planned\" instead of \"Complete\"",
+      "fix": "Changed Planned → Complete",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T13:09:30.287Z"
+    }
+  ]
+}

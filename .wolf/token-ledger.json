@@ -1,0 +1,448 @@
+{
+  "version": 1,
+  "created_at": "2026-05-05T11:09:47.569Z",
+  "lifetime": {
+    "total_tokens_estimated": 33080,
+    "total_reads": 38,
+    "total_writes": 26,
+    "total_sessions": 4,
+    "anatomy_hits": 19,
+    "anatomy_misses": 9,
+    "repeated_reads_blocked": 12,
+    "estimated_savings_vs_bare_cli": 22820
+  },
+  "sessions": [
+    {
+      "id": "session-2026-05-05-1934",
+      "started": "2026-05-05T11:34:15.651Z",
+      "ended": "2026-05-05T11:38:20.832Z",
+      "reads": [
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/workflows/discuss-phase/modes/default.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/test-setup.ts",
+          "tokens_estimated": 21,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/workflows/discuss-phase/templates/context.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/workflows/discuss-phase/templates/discussion-log.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-CONTEXT.md",
+          "tokens_estimated": 800,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-DISCUSSION-LOG.md",
+          "tokens_estimated": 504,
+          "action": "create"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 21,
+        "output_tokens_estimated": 1304,
+        "reads_count": 4,
+        "writes_count": 2,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 1
+      }
+    },
+    {
+      "id": "session-2026-05-05-1938",
+      "started": "2026-05-05T11:38:54.597Z",
+      "ended": "2026-05-05T11:49:17.328Z",
+      "reads": [
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/workflows/plan-phase.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/ROADMAP.md",
+          "tokens_estimated": 2292,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/references/gate-prompts.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/references/agent-contracts.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/references/gates.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-DISCUSSION-LOG.md",
+          "tokens_estimated": 441,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 1144,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/references/ui-brand.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/references/revision-loop.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-CONTEXT.md",
+          "tokens_estimated": 700,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/lib/celebrate.ts",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/domain/streaks.ts",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/vitest.config.ts",
+          "tokens_estimated": 71,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/test-setup.ts",
+          "tokens_estimated": 21,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mascot/Mascot.tsx",
+          "tokens_estimated": 816,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/domain/__tests__/streaks.test.ts",
+          "tokens_estimated": 692,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/phases/06-mount-gamification-ui/06-01-PLAN.md",
+          "tokens_estimated": 1558,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-01-PLAN.md",
+          "tokens_estimated": 2232,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-01-PLAN.md",
+          "tokens_estimated": 2550,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/ROADMAP.md",
+          "tokens_estimated": 2619,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 16,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 38,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 30,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 17,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 9967,
+        "output_tokens_estimated": 5270,
+        "reads_count": 18,
+        "writes_count": 6,
+        "repeated_reads_blocked": 10,
+        "anatomy_lookups": 8
+      }
+    },
+    {
+      "id": "session-2026-05-05-2106",
+      "started": "2026-05-05T13:06:57.928Z",
+      "ended": "2026-05-05T13:10:41.900Z",
+      "reads": [
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/workflows/execute-phase.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 1187,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-01-PLAN.md",
+          "tokens_estimated": 2232,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/test-setup.ts",
+          "tokens_estimated": 21,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/stores/mascotStore.ts",
+          "tokens_estimated": 459,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/lib/celebrate.ts",
+          "tokens_estimated": 233,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mascot/Mascot.tsx",
+          "tokens_estimated": 816,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/ROADMAP.md",
+          "tokens_estimated": 2292,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "E:/DoNotNervous/src/test-setup.ts",
+          "tokens_estimated": 46,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mascot/ANIMATIONS.md",
+          "tokens_estimated": 437,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-01-SUMMARY.md",
+          "tokens_estimated": 404,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 18,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 15,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 32,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 18,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/ROADMAP.md",
+          "tokens_estimated": 31,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/ROADMAP.md",
+          "tokens_estimated": 18,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 7240,
+        "output_tokens_estimated": 1019,
+        "reads_count": 8,
+        "writes_count": 9,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 5
+      }
+    },
+    {
+      "id": "session-2026-05-05-2106",
+      "started": "2026-05-05T13:06:57.928Z",
+      "ended": "2026-05-05T13:12:34.452Z",
+      "reads": [
+        {
+          "file": "C:/Users/SerendyLin/.claude/get-shit-done/workflows/execute-phase.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 1187,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-01-PLAN.md",
+          "tokens_estimated": 2232,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/test-setup.ts",
+          "tokens_estimated": 21,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/stores/mascotStore.ts",
+          "tokens_estimated": 459,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/lib/celebrate.ts",
+          "tokens_estimated": 233,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mascot/Mascot.tsx",
+          "tokens_estimated": 816,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/ROADMAP.md",
+          "tokens_estimated": 2292,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "E:/DoNotNervous/src/test-setup.ts",
+          "tokens_estimated": 46,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mascot/ANIMATIONS.md",
+          "tokens_estimated": 437,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/phases/08-codebase-cleanup/08-01-SUMMARY.md",
+          "tokens_estimated": 404,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 18,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 15,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 32,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/STATE.md",
+          "tokens_estimated": 18,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/ROADMAP.md",
+          "tokens_estimated": 31,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/.planning/ROADMAP.md",
+          "tokens_estimated": 18,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 7240,
+        "output_tokens_estimated": 1019,
+        "reads_count": 8,
+        "writes_count": 9,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 5
+      }
+    }
+  ],
+  "daemon_usage": [],
+  "waste_flags": [],
+  "optimization_report": {
+    "last_generated": null,
+    "patterns": []
+  }
+}
