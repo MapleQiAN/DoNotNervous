@@ -12,6 +12,7 @@ import { HomePage } from '../home/HomePage'
 import { TaskInput } from '../tasks/TaskInput'
 import { PointBadge } from '../gamification/PointBadge'
 import { StreakDisplay } from '../gamification/StreakDisplay'
+import { StreakCalendar } from '../gamification/StreakCalendar'
 import { TransactionPopover } from '../gamification/TransactionPopover'
 
 interface AppShellProps {
@@ -31,6 +32,8 @@ export function AppShell({ children, showToast }: AppShellProps) {
   const setSettingsOpen = useUIStore((s) => s.setSettingsOpen)
   const currentPage = useUIStore((s) => s.currentPage)
   const setCurrentPage = useUIStore((s) => s.setCurrentPage)
+  const showStreakCalendar = useUIStore((s) => s.showStreakCalendar)
+  const setShowStreakCalendar = useUIStore((s) => s.setShowStreakCalendar)
 
   useEffect(() => {
     checkAndApplyFreezes(showToast)
@@ -38,6 +41,24 @@ export function AppShell({ children, showToast }: AppShellProps) {
 
   return (
     <div className="app-canvas">
+      <AnimatePresence>
+        {showStreakCalendar && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4"
+            onClick={() => setShowStreakCalendar(false)}
+          >
+            <div
+              className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[85vh] overflow-y-auto"
+              onClick={e => e.stopPropagation()}
+            >
+              <StreakCalendar onClose={() => setShowStreakCalendar(false)} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="app-frame">
         <Header
           onSettingsClick={() => setSettingsOpen(true)}
@@ -52,7 +73,7 @@ export function AppShell({ children, showToast }: AppShellProps) {
             </div>
             <div className="topbar-actions">
               <div className="flex items-center gap-2">
-                <StreakDisplay />
+                <StreakDisplay onCalendarOpen={() => setShowStreakCalendar(true)} />
                 <div className="relative">
                   <PointBadge />
                   <TransactionPopover />
