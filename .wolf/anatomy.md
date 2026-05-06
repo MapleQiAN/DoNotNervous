@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T14:55:36.988Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T15:02:07.772Z
 > Files: 16 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
@@ -120,7 +120,7 @@
 
 - `RewardCard.tsx` — categoryTone (~697 tok)
 - `rewardIcons.ts` — Exports rewardIconKeys, RewardIconKey, rewardIconLabel, getRewardIconSrc, incomeTypeIcon (~179 tok)
-- `RewardShop.tsx` — categories (~3774 tok)
+- `RewardShop.tsx` — categories (~3780 tok)
 
 ## src/components/summary/
 
