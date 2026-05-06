@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: "YaoSuiXinShouXieTi";
+  src: url("/YaoSuiXinShouXieTi-2.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* ─── Healing Green Palette ─── */
   --color-sage-700: oklch(0.40 0.10 145);
@@ -421,6 +429,7 @@
     font-weight: 800;
     line-height: 1.34;
     letter-spacing: 0;
+    font-family: "YaoSuiXinShouXieTi", "Nunito", "Noto Sans SC", sans-serif;
   }
 
   .hero-copy h1 span {
@@ -2090,6 +2099,547 @@
 
   .stats-strip-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* ─── Summary v2 Cards ─── */
+  .summary-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid rgba(140, 120, 85, 0.06);
+    border-radius: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(6px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .summary-stat::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+    opacity: 0.7;
+  }
+
+  .summary-stat.tone-green::before { background: var(--color-sage-400); }
+  .summary-stat.tone-amber::before { background: var(--color-amber-500); }
+  .summary-stat.tone-mint::before { background: var(--color-mint-500); }
+  .summary-stat.tone-coral::before { background: var(--color-coral-500); }
+  .summary-stat.tone-lavender::before { background: var(--color-lavender-500); }
+
+  .summary-stat-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .summary-stat-icon {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .summary-stat-icon.tone-green {
+    background: rgba(114, 157, 90, 0.12);
+    color: var(--color-sage-500);
+  }
+
+  .summary-stat-icon.tone-amber {
+    background: rgba(234, 179, 8, 0.12);
+    color: var(--color-amber-500);
+  }
+
+  .summary-stat-icon.tone-mint {
+    background: rgba(62, 175, 124, 0.12);
+    color: var(--color-mint-500);
+  }
+
+  .summary-stat-icon.tone-coral {
+    background: rgba(224, 122, 95, 0.12);
+    color: var(--color-coral-500);
+  }
+
+  .summary-stat-icon.tone-lavender {
+    background: rgba(124, 104, 184, 0.12);
+    color: var(--color-lavender-500);
+  }
+
+  .summary-stat-label {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .summary-stat-body {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    padding-left: 40px;
+  }
+
+  .summary-stat-value {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--color-text-primary);
+  }
+
+  .summary-stat-unit {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    margin-left: 2px;
+  }
+
+  .summary-stat-trend {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .summary-stat-trend.up {
+    color: var(--color-sage-500);
+    background: rgba(114, 157, 90, 0.10);
+  }
+
+  .summary-stat-trend.down {
+    color: var(--color-coral-500);
+    background: rgba(224, 122, 95, 0.10);
+  }
+
+  .summary-stat-trend.neutral {
+    color: var(--color-text-tertiary);
+    background: rgba(140, 120, 85, 0.06);
+  }
+
+  /* ─── Summary Section Header ─── */
+  .summary-section {
+    border: 1px solid rgba(140, 120, 85, 0.06);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    overflow: hidden;
+  }
+
+  .summary-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px 10px;
+  }
+
+  .summary-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .summary-section-title .title-icon {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  .summary-section-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-sage-500);
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+    padding: 0;
+  }
+
+  .summary-section-body {
+    padding: 0 18px 14px;
+  }
+
+  /* ─── Summary Task Row ─── */
+  .summary-task {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(140, 120, 85, 0.05);
+  }
+
+  .summary-task:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .summary-task:first-child {
+    padding-top: 0;
+  }
+
+  .summary-task-check {
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(114, 157, 90, 0.15);
+    color: var(--color-sage-500);
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .summary-task-name {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .summary-task-time {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .summary-task-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .summary-task-tag.focus {
+    background: rgba(62, 175, 124, 0.10);
+    color: var(--color-mint-500);
+  }
+
+  .summary-task-tag.hope {
+    background: rgba(124, 104, 184, 0.10);
+    color: var(--color-lavender-500);
+  }
+
+  .summary-task-tag.energy {
+    background: rgba(234, 179, 8, 0.10);
+    color: var(--color-amber-500);
+  }
+
+  .summary-task-tag.calm {
+    background: rgba(114, 157, 90, 0.10);
+    color: var(--color-sage-500);
+  }
+
+  .summary-task-tag.relax {
+    background: rgba(224, 122, 95, 0.10);
+    color: var(--color-coral-500);
+  }
+
+  /* ─── Summary Mood Row ─── */
+  .summary-mood-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(140, 120, 85, 0.05);
+  }
+
+  .summary-mood-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .summary-mood-row:first-child {
+    padding-top: 0;
+  }
+
+  .summary-mood-emoji {
+    font-size: 22px;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: center;
+  }
+
+  .summary-mood-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .summary-mood-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .summary-mood-journal {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  .summary-mood-time {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ─── Summary Ledger Row ─── */
+  .summary-ledger-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(140, 120, 85, 0.05);
+  }
+
+  .summary-ledger-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .summary-ledger-row:first-child {
+    padding-top: 0;
+  }
+
+  .summary-ledger-amount {
+    font-size: 15px;
+    font-weight: 800;
+    min-width: 48px;
+    flex-shrink: 0;
+  }
+
+  .summary-ledger-amount.positive { color: var(--color-sage-500); }
+  .summary-ledger-amount.negative { color: var(--color-coral-500); }
+
+  .summary-ledger-reason {
+    flex: 1;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .summary-ledger-time {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  /* ─── Summary Insight Cards ─── */
+  .summary-insights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .summary-insight {
+    border: 1px solid rgba(140, 120, 85, 0.06);
+    border-radius: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .summary-insight-icon {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    font-size: 20px;
+  }
+
+  .summary-insight-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .summary-insight-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-text-primary);
+  }
+
+  .summary-insight-desc {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    line-height: 1.4;
+  }
+
+  /* ─── Summary Completion Bar ─── */
+  .completion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .completion-bar {
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(140, 120, 85, 0.08);
+    overflow: hidden;
+  }
+
+  .completion-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-sage-400), var(--color-sage-300));
+    transition: width 0.6s ease;
+  }
+
+  .completion-sub {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    margin-top: 8px;
+  }
+
+  /* ─── Summary Best Day Card ─── */
+  .best-day-card {
+    border: 1px solid rgba(140, 120, 85, 0.06);
+    border-radius: 16px;
+    padding: 18px;
+    background:
+      radial-gradient(ellipse at 90% 10%, rgba(250, 204, 21, 0.08), transparent 60%),
+      rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+  }
+
+  .best-day-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .best-day-trophy {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(250, 204, 21, 0.15);
+    color: #d4a017;
+    font-size: 16px;
+  }
+
+  .best-day-date {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin-bottom: 10px;
+  }
+
+  .best-day-stats {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .best-day-stats span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .best-day-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  /* ─── Summary Mood Trajectory ─── */
+  .mood-trajectory {
+    display: flex;
+    gap: 6px;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 16px 0 8px;
+  }
+
+  .mood-trajectory-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mood-trajectory-emoji {
+    font-size: 15px;
+  }
+
+  .mood-trajectory-bar {
+    width: 32px;
+    border-radius: 8px;
+    transition: height 0.3s ease;
+    min-height: 8px;
+  }
+
+  .mood-trajectory-label {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-weight: 600;
+  }
+
+  /* ─── Illustration Placeholder ─── */
+  .illustration-slot {
+    width: 100%;
+    min-height: 80px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    border: 2px dashed rgba(140, 120, 85, 0.12);
+    color: var(--color-text-tertiary);
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.30);
+  }
+
+  /* ─── Summary Empty State ─── */
+  .summary-empty {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--color-text-tertiary);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .summary-empty-emoji {
+    font-size: 28px;
+    margin-bottom: 8px;
+    display: block;
   }
 
   /* ─── Mood ─── */
