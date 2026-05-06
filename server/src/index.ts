@@ -10,6 +10,7 @@ import streakRoutes from './routes/streaks.js'
 import rewardRoutes from './routes/rewards.js'
 import pointRoutes from './routes/points.js'
 import summaryRoutes from './routes/summaries.js'
+import syncRoutes from './routes/sync.js'
 
 const app = new Hono()
 
@@ -28,6 +29,7 @@ app.route('/streaks', streakRoutes)
 app.route('/rewards', rewardRoutes)
 app.route('/points', pointRoutes)
 app.route('/summaries', summaryRoutes)
+app.route('/sync', syncRoutes)
 
 const port = Number(process.env.PORT) || 3001
 
