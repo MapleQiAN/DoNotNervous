@@ -321,18 +321,19 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           </button>
         </motion.div>
 
-        <section className="reward-banner">
-          <Leaf className="banner-leaf" size={31} strokeWidth={1.8} />
-          <div>
-            <p>小小进步，值得奖励</p>
-            <span>你已经非常棒了！别忘了给自己一个大大的奖励～</span>
-          </div>
-          <button type="button" onClick={() => setCurrentPage('rewards')}>
-            去奖励金库逛逛 <Gift size={16} />
-          </button>
-          <img className="pig-mini" src="/illustrations/reward-pig.png" alt="" aria-hidden="true" />
-        </section>
       </aside>
+
+      <section className="reward-banner">
+        <Leaf className="banner-leaf" size={31} strokeWidth={1.8} />
+        <div>
+          <p>小小进步，值得奖励</p>
+          <span>你已经非常棒了！别忘了给自己一个大大的奖励～</span>
+        </div>
+        <button type="button" onClick={() => setCurrentPage('rewards')}>
+          去奖励金库逛逛 <Gift size={16} />
+        </button>
+        <img className="pig-mini" src="/illustrations/reward-pig.png" alt="" aria-hidden="true" />
+      </section>
     </div>
   )
 }

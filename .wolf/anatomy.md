@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T06:12:08.330Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T06:38:17.618Z
 > Files: 3 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
@@ -77,7 +77,7 @@
 
 ## src/
 
-- `index.css` — Styles: 5 rules, 26 vars (~12204 tok)
+- `index.css` — Styles: 5 rules, 26 vars (~14988 tok)
 
 ## src/components/__tests__/
 
@@ -99,7 +99,7 @@
 
 ## src/components/home/
 
-- `HomePage.tsx` — focusRows (~3287 tok)
+- `HomePage.tsx` — focusRows (~3281 tok)
 
 ## src/components/layout/
 
