@@ -6,15 +6,17 @@ import { MoodPicker } from './components/mood/MoodPicker'
 import { Toast } from './components/common/Toast'
 import { Mascot } from './components/mascot/Mascot'
 import { useToast } from './hooks/useToast'
+import { useSync } from './hooks/useSync'
 import { useUIStore } from './stores/uiStore'
 
-function App() {
+function AuthenticatedApp() {
+  useSync()
   const isSettingsOpen = useUIStore((s) => s.isSettingsOpen)
   const setSettingsOpen = useUIStore((s) => s.setSettingsOpen)
   const { toast, showToast } = useToast()
 
   return (
-    <AuthGuard>
+    <>
       <AppShell showToast={showToast}>
         <TaskList />
       </AppShell>
@@ -26,6 +28,14 @@ function App() {
       <MoodPicker showToast={showToast} />
       <Toast message={toast.message} type={toast.type} visible={toast.visible} />
       <Mascot />
+    </>
+  )
+}
+
+function App() {
+  return (
+    <AuthGuard>
+      <AuthenticatedApp />
     </AuthGuard>
   )
 }

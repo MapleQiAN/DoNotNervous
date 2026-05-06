@@ -108,3 +108,11 @@ export interface WeeklySummary {
   }>
   computedAt: Date
 }
+
+export interface SyncQueueEntry {
+  id: string
+  tableName: string
+  operation: 'insert' | 'update' | 'delete'
+  data: unknown
+  updatedAt: string
+}
