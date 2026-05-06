@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T02:23:41.585Z
-> Files: 201 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T06:12:08.330Z
+> Files: 3 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
@@ -77,10 +77,7 @@
 
 ## src/
 
-- `App.tsx` — AuthenticatedApp (~356 tok)
-- `index.css` — Styles: 5 rules, 24 vars (~7366 tok)
-- `main.tsx` (~66 tok)
-- `test-setup.ts` (~46 tok)
+- `index.css` — Styles: 5 rules, 26 vars (~12204 tok)
 
 ## src/components/__tests__/
 
@@ -102,26 +99,19 @@
 
 ## src/components/home/
 
-- `HomePage.tsx` — difficultyLabels (~2239 tok)
+- `HomePage.tsx` — focusRows (~3287 tok)
 
 ## src/components/layout/
 
-- `AppShell.tsx` — subtitles (~1410 tok)
-- `Header.tsx` — navItems (~1032 tok)
 
 ## src/components/mascot/
 
 
 ## src/components/mood/
 
-- `MoodCalendar.tsx` — MoodCalendar (~2854 tok)
-- `MoodPicker.tsx` — MoodPicker — uses useState (~1388 tok)
 
 ## src/components/rewards/
 
-- `RedemptionHistory.tsx` — RedemptionHistory (~242 tok)
-- `RewardCard.tsx` — CARD_ICONS (~1020 tok)
-- `RewardShop.tsx` — categories (~2766 tok)
 
 ## src/components/summary/
 
@@ -134,6 +124,7 @@
 
 ## src/db/
 
+- `index.ts` — Exports db (~542 tok)
 
 ## src/db/__tests__/
 
