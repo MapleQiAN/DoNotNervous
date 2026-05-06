@@ -1,9 +1,16 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+<<<<<<< HEAD
 import { Gift, Plus, Wallet, Trophy, BadgeCheck, Coins } from 'lucide-react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../../db'
+=======
+import {
+  Gift, Plus, Wallet, Trophy, Coins, Sparkles,
+  ArrowRight, ChevronDown,
+} from 'lucide-react'
+>>>>>>> 49c9bb58aedb7d3acb0e618cb33dee4e9436c08c
 import { useMascotStore } from '../../stores/mascotStore'
 import { celebrateRedemption } from '../../lib/celebrate'
 import { useRewards, useRedemptions, createReward, redeemReward, deleteReward } from '../../hooks/useRewards'
@@ -28,6 +35,7 @@ export function RewardShop({ showToast }: RewardShopProps) {
   const [newName, setNewName] = useState('')
   const [newDesc, setNewDesc] = useState('')
   const [newCost, setNewCost] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('生活享受')
 
   async function handleCreate() {
     const cost = parseInt(newCost, 10)
@@ -36,7 +44,7 @@ export function RewardShop({ showToast }: RewardShopProps) {
       return
     }
     try {
-      await createReward({ name: newName.trim(), description: newDesc.trim(), pointCost: cost })
+      await createReward({ name: newName.trim(), description: selectedCategory, pointCost: cost })
       setNewName('')
       setNewDesc('')
       setNewCost('')
@@ -124,6 +132,7 @@ export function RewardShop({ showToast }: RewardShopProps) {
   return (
     <div className="dashboard-grid reward-route">
       <section className="main-column">
+        {/* Hero */}
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -136,14 +145,48 @@ export function RewardShop({ showToast }: RewardShopProps) {
           <img className="hero-illustration pig-illustration" src="/illustrations/reward-pig.png" alt="" aria-hidden="true" />
         </motion.section>
 
+        {/* Stat Cards */}
         <section className="stats-strip">
+<<<<<<< HEAD
           <StatCard icon={<Trophy size={25} />} label="累计奖励" value={`¥ ${balance + totalSpent}`} note="总计获得的奖励金" />
           <StatCard icon={<Wallet size={25} />} label="可用余额" value={`¥ ${balance}`} note="可用于兑换奖励" />
           <StatCard icon={<Coins size={25} />} label="本周新增" value={`¥ ${thisWeekIncome}`} note={weeklyDiff >= 0 ? `较上周 +${weeklyDiff}` : `较上周 ${weeklyDiff}`} accent="orange" />
           <StatCard icon={<Gift size={25} />} label="已兑现奖励" value={`¥ ${totalSpent}`} note={`已兑换 ${redemptions.length} 次奖励`} />
+=======
+          <StatCard
+            icon={<Trophy size={24} strokeWidth={1.8} />}
+            label="累计奖励"
+            value={`¥${balance + totalSpent}`}
+            note="总计获得的奖励金"
+            tone="coral"
+          />
+          <StatCard
+            icon={<Wallet size={24} strokeWidth={1.8} />}
+            label="可用余额"
+            value={`¥${balance}`}
+            note="可用于兑换奖励"
+            tone="purple"
+          />
+          <StatCard
+            icon={<Coins size={24} strokeWidth={1.8} />}
+            label="本周新增"
+            value={`¥${weeklyGain}`}
+            note="较上周 +¥40 ↗"
+            tone="orange"
+          />
+          <StatCard
+            icon={<Gift size={24} strokeWidth={1.8} />}
+            label="已兑现奖励"
+            value={`¥${totalSpent}`}
+            note={`已兑换 ${redemptions.length} 次奖励`}
+            tone="rose"
+          />
+>>>>>>> 49c9bb58aedb7d3acb0e618cb33dee4e9436c08c
         </section>
 
+        {/* Two-column content */}
         <div className="reward-columns">
+          {/* Reward List */}
           <section className="content-card">
             <div className="section-title-row">
               <div>
@@ -165,7 +208,6 @@ export function RewardShop({ showToast }: RewardShopProps) {
                       key={reward.id}
                       reward={reward}
                       balance={balance}
-                      onRedeem={setRedeemTarget}
                       onDelete={handleDelete}
                       onEdit={handleEdit}
                     />
@@ -173,8 +215,14 @@ export function RewardShop({ showToast }: RewardShopProps) {
                 </AnimatePresence>
               </div>
             )}
+
+            <button type="button" className="create-reward-inline">
+              <Plus size={16} strokeWidth={2.2} />
+              创建新奖励
+            </button>
           </section>
 
+          {/* Income Records */}
           <section className="content-card">
             <div className="section-title-row">
               <div>
@@ -182,11 +230,12 @@ export function RewardShop({ showToast }: RewardShopProps) {
                 <p>每一份努力，都算作对自己的奖励</p>
               </div>
               <button type="button" onClick={() => setShowHistory(!showHistory)} className="small-select">
-                {showHistory ? '收起' : '全部类型'}
+                {showHistory ? '收起' : '全部类型'} <ChevronDown size={14} />
               </button>
             </div>
 
             <div className="income-list">
+<<<<<<< HEAD
               {recentIncome.length === 0 ? (
                 <p style={{ color: 'var(--color-muted)', fontSize: '14px', textAlign: 'center', padding: '16px 0' }}>
                   完成任务后，奖励收入会出现在这里
@@ -203,6 +252,23 @@ export function RewardShop({ showToast }: RewardShopProps) {
                   </div>
                 ))
               )}
+=======
+              {incomeRows.map((row) => (
+                <div key={row.title} className="income-row">
+                  <span className={`income-icon ${row.tone}`}>{row.icon}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="income-title-row">
+                      <p>{row.title}</p>
+                      <span className="task-tag">{row.tag}</span>
+                    </div>
+                    <span className="income-time">{row.time}</span>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <strong className="income-amount">+¥{row.amount}</strong>
+                  </div>
+                </div>
+              ))}
+>>>>>>> 49c9bb58aedb7d3acb0e618cb33dee4e9436c08c
             </div>
 
             <AnimatePresence>
@@ -212,31 +278,53 @@ export function RewardShop({ showToast }: RewardShopProps) {
                 </motion.div>
               )}
             </AnimatePresence>
+
+            <button type="button" className="view-all-link">
+              查看全部记录 <ArrowRight size={15} />
+            </button>
           </section>
         </div>
       </section>
 
+      {/* Right Panel */}
       <aside className="right-column">
         <section className="side-panel form-panel">
-          <h2>创建新奖励 ✨</h2>
+          <h2>创建新奖励 <Sparkles size={18} className="inline ml-1 text-amber-500" /></h2>
           <label>
             <span>奖励名称</span>
-            <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="例如：买一束花" maxLength={20} />
-            <em>{newName.length}/20</em>
+            <div className="input-with-count">
+              <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="例如：买一束花" maxLength={20} />
+              <em>{newName.length}/20</em>
+            </div>
           </label>
           <label>
             <span>需要金额</span>
-            <input value={newCost} onChange={(e) => setNewCost(e.target.value)} placeholder="请输入金额" inputMode="numeric" />
+            <div className="amount-input-wrap">
+              <span className="amount-prefix">¥</span>
+              <input value={newCost} onChange={(e) => setNewCost(e.target.value)} placeholder="请输入金额" inputMode="numeric" />
+            </div>
+          </label>
+          <label>
+            <span>分类</span>
           </label>
           <div className="category-cloud">
-            {categories.map((category, index) => (
-              <button key={category} type="button" className={index === 0 ? 'is-active' : ''}>{category}</button>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                className={selectedCategory === cat ? 'is-active' : ''}
+                onClick={() => setSelectedCategory(cat)}
+              >
+                {cat}
+              </button>
             ))}
           </div>
           <label>
             <span>奖励描述（可选）</span>
-            <textarea value={newDesc} onChange={(e) => setNewDesc(e.target.value.slice(0, 100))} placeholder="描述一下这个奖励对你的意义吧～" rows={4} />
-            <em>{newDesc.length}/100</em>
+            <div className="input-with-count">
+              <textarea value={newDesc} onChange={(e) => setNewDesc(e.target.value.slice(0, 100))} placeholder="描述一下这个奖励对你的意义吧～" rows={4} />
+              <em>{newDesc.length}/100</em>
+            </div>
           </label>
           <button type="button" onClick={handleCreate} className="primary-wide">
             创建奖励 <Plus size={17} />
@@ -246,9 +334,9 @@ export function RewardShop({ showToast }: RewardShopProps) {
         <section className="quote-card reward-quote">
           <div>
             <h3>你值得所有美好 ✨</h3>
-            <p>慢慢攒，开心换，生活会越来越甜甜。</p>
+            <p>慢慢攒，开心换，生活会越来越甜～</p>
           </div>
-          <BadgeCheck size={52} />
+          <Gift size={52} strokeWidth={1.2} className="text-sage-300 shrink-0" />
         </section>
       </aside>
 
@@ -266,10 +354,13 @@ export function RewardShop({ showToast }: RewardShopProps) {
   )
 }
 
-function StatCard({ icon, label, value, note, accent }: { icon: ReactNode; label: string; value: string; note: string; accent?: 'orange' }) {
+/* ─── Stat Card ─── */
+function StatCard({ icon, label, value, note, tone }: {
+  icon: ReactNode; label: string; value: string; note: string; tone: string
+}) {
   return (
-    <div className={`stat-card ${accent ?? ''}`}>
-      <div className="stat-icon">{icon}</div>
+    <div className="stat-card">
+      <div className={`stat-icon tone-${tone}`}>{icon}</div>
       <div>
         <span>{label}</span>
         <strong>{value}</strong>
@@ -279,3 +370,14 @@ function StatCard({ icon, label, value, note, accent }: { icon: ReactNode; label
   )
 }
 
+<<<<<<< HEAD
+=======
+/* ─── Mock Income Data ─── */
+const incomeRows = [
+  { icon: '🏃', title: '完成晨跑', tag: '习惯任务', amount: 15, time: '今天 07:30', tone: 'green' },
+  { icon: '📖', title: '阅读 20 页', tag: '每日任务', amount: 10, time: '昨天 21:30', tone: 'blue' },
+  { icon: '🪷', title: '冥想 10 分钟', tag: '心情任务', amount: 10, time: '05-14 22:10', tone: 'rose' },
+  { icon: '✅', title: '完成项目方案初稿', tag: '专注任务', amount: 35, time: '05-14 10:00', tone: 'green' },
+  { icon: '👥', title: '与团队同步需求', tag: '协作任务', amount: 20, time: '05-13 14:00', tone: 'blue' },
+]
+>>>>>>> 49c9bb58aedb7d3acb0e618cb33dee4e9436c08c

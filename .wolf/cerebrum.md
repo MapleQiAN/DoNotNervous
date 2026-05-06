@@ -11,7 +11,11 @@
 ## Key Learnings
 
 - **Project:** donotnervous
-- **Description:** This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- **Description:** Healing/lifestyle anti-anxiety task tracker with gamification (points, streaks, rewards) and mood tracking.
+- **UI aesthetic:** Warm cream/green/orange palette, large border-radius, soft shadows, low saturation. NOT corporate/admin — more lifestyle/journal feel. CSS uses oklch colors via `@theme` tokens.
+- **Homepage layout:** Dashboard grid with `2.4fr 1fr` columns. Left: hero card + task list + reward banner. Right: stacked stat cards + quick-add form. Task rows use mood tags (tone-focus/tone-hope/tone-energy/tone-calm/tone-relax) and status pills (done/progress/default).
+- **npm vs node_modules:** TypeScript must be run via `./node_modules/.bin/tsc` — `npx tsc` resolves to wrong `tsc` package. Always use `--project tsconfig.app.json`.
+- **Hono route typing:** Every route file that uses `c.get('userId')` from authMiddleware must declare `type Variables = { userId: string }` and instantiate `new Hono<{ Variables: Variables }>()`. Without this, `c.get('userId')` returns `unknown` and breaks Drizzle ORM's `eq()` calls.
 - **Hono route typing:** Every route file that uses `c.get('userId')` from authMiddleware must declare `type Variables = { userId: string }` and instantiate `new Hono<{ Variables: Variables }>()`. Without this, `c.get('userId')` returns `unknown` and breaks Drizzle ORM's `eq()` calls.
 - **Hono route values typing:** When passing validated Zod input to Drizzle `.values()`, destructure datetime fields and convert them with `new Date()` in a spread object. Do not use `Record<string, unknown>` — Drizzle's typed insert/update expects specific field types.
 - **Drizzle generic upsert:** Drizzle's `.values()` has strict per-table typing. For generic sync layers that handle dynamic `Record<string, unknown>` data across multiple tables, cast to `any` on `.values()` and `.set()` calls. There is no way to satisfy Drizzle's inferred types with a generic record.

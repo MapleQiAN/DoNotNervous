@@ -23,7 +23,7 @@ services:
       DATABASE_URL: postgresql://app:${DB_PASSWORD}@postgres:5432/donotnervous
       JWT_SECRET: ${JWT_SECRET}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5525}
       PORT: 3001
     ports:
       - "3001:3001"
@@ -38,7 +38,7 @@ services:
       args:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:3001}
     ports:
-      - "5173:80"
+      - "5525:80"
     depends_on:
       - server
 

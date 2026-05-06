@@ -24,9 +24,9 @@ const priorityClass: Record<string, string> = {
 }
 
 function formatReward(task: Task) {
-  if (task.difficulty === 'hard') return '+ ¥35'
-  if (task.difficulty === 'medium') return '+ ¥20'
-  return '+ ¥10'
+  if (task.difficulty === 'hard') return '¥35'
+  if (task.difficulty === 'medium') return '¥20'
+  return '¥10'
 }
 
 export function HomePage({ showToast: _showToast }: HomePageProps) {
@@ -80,19 +80,34 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
 
   return (
     <div className="dashboard-grid">
+      {/* ─── Left Column ─── */}
       <section className="main-column">
+        {/* Hero Welcome Card */}
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           className="hero-panel home-hero"
         >
           <div className="hero-copy">
-            <h1>忙碌的工作也要慢下来，<span>好好生活</span></h1>
-            <p>完成任务，收获奖励，记录心情，在点滴进步中遇见更从容的自己。</p>
+            <h1>
+              忙碌的工作也要慢下来，<br />
+              <span>好好生活 ☀️</span>
+            </h1>
+            <p>
+              完成任务，收获奖励，记录心情，
+              <br />
+              在点滴进步中更从容。
+            </p>
           </div>
-          <img className="hero-illustration desk-illustration" src="/illustrations/home-hero.png" alt="" aria-hidden="true" />
+          <img
+            className="hero-illustration desk-illustration"
+            src="/illustrations/home-hero.png"
+            alt=""
+            aria-hidden="true"
+          />
         </motion.section>
 
+        {/* Today's Focus Tasks Card */}
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -103,7 +118,9 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
             <div>
               <h2>今日焦点任务</h2>
             </div>
-            <span className="muted-label">{topLevelActive.length} 项任务</span>
+            <span className="muted-label" style={{ color: 'var(--color-text-tertiary)', fontSize: 13, fontWeight: 600 }}>
+              {topLevelActive.length} 项任务
+            </span>
           </div>
 
           {recentTasks.length > 0 ? (
@@ -146,30 +163,37 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           )}
 
           <button type="button" onClick={() => setCurrentPage('tasks')} className="text-link">
-            查看全部任务 <ArrowRight size={16} />
+            查看全部任务 <ArrowRight size={15} />
           </button>
         </motion.section>
 
+        {/* Reward Banner */}
         <section className="reward-banner">
           <div>
             <p>小小进步，值得奖励</p>
-            <span>你已经非常棒了，别忘了给自己一个大大的奖励。</span>
+            <span>你已经非常棒了！别忘了给自己一个大大的奖励～</span>
           </div>
           <button type="button" onClick={() => setCurrentPage('rewards')}>
-            去奖励金库逛逛 <Gift size={17} />
+            去奖励金库逛逛 🎁
           </button>
           <img className="pig-mini" src="/illustrations/reward-pig.png" alt="" aria-hidden="true" />
         </section>
       </section>
 
+      {/* ─── Right Column ─── */}
       <aside className="right-column">
-        <div className="metric-card">
+        {/* Today's Progress */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="metric-card"
+        >
           <div>
             <p>今日进度</p>
             <strong>{progressPercent}%</strong>
             <span>已完成 {completedCount} / {total} 项任务</span>
           </div>
-          <svg width="92" height="92" viewBox="0 0 92 92" aria-hidden="true">
+          <svg width="88" height="88" viewBox="0 0 92 92" aria-hidden="true">
             <circle cx="46" cy="46" r="42" className="ring-bg" />
             <circle
               cx="46"
@@ -179,44 +203,72 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
               style={{ strokeDasharray: circumference, strokeDashoffset }}
             />
           </svg>
-        </div>
+        </motion.div>
 
-        <button type="button" onClick={() => setCurrentPage('rewards')} className="side-stat warm">
-          <Wallet size={27} />
+        {/* Accumulated Rewards */}
+        <motion.button
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.04 }}
+          type="button"
+          onClick={() => setCurrentPage('rewards')}
+          className="side-stat warm"
+        >
+          <Wallet size={24} />
           <div>
             <span>已累计奖励</span>
             <strong>¥ {balance}</strong>
             <p>已兑换 ¥{totalSpent} · 可用余额 ¥{balance}</p>
           </div>
-          <ArrowRight size={20} />
-        </button>
+          <ArrowRight size={18} style={{ marginLeft: 'auto', color: 'var(--color-text-tertiary)' }} />
+        </motion.button>
 
-        <div className="side-stat peach">
-          <Flame size={27} />
+        {/* Streak Days */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08 }}
+          className="side-stat peach"
+        >
+          <Flame size={24} style={{ color: 'var(--color-warm-400)' }} />
           <div>
             <span>连续完成天数</span>
             <strong>{streakLength} 天</strong>
             <p>{streakLength > 0 ? '继续加油，保持节奏' : '完成任务开始连续打卡'}</p>
           </div>
-        </div>
+        </motion.div>
 
-        <button type="button" onClick={() => setCurrentPage('mood')} className="side-stat blue">
-          <Smile size={27} />
+        {/* Mood Status */}
+        <motion.button
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+          type="button"
+          onClick={() => setCurrentPage('mood')}
+          className="side-stat blue"
+        >
+          <Smile size={24} style={{ color: '#6ba5c8' }} />
           <div>
             <span>心情状态</span>
             <strong>{latestMood ? `${latestMood.emoji}` : '暂无记录'}</strong>
             <p>{latestMood ? '很好，记得保持哦' : '点击记录今日心情'}</p>
           </div>
-          <ArrowRight size={20} />
-        </button>
+          <ArrowRight size={18} style={{ marginLeft: 'auto', color: 'var(--color-text-tertiary)' }} />
+        </motion.button>
 
-        <div className="quick-card">
+        {/* Quick Add Task */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.16 }}
+          className="quick-card"
+        >
           <h3>快速添加任务 ✨</h3>
           <input readOnly value="" placeholder="输入任务名称..." />
           <button type="button" onClick={() => setCurrentPage('tasks')}>
             添加任务 <PlusCircle size={17} />
           </button>
-        </div>
+        </motion.div>
       </aside>
     </div>
   )

@@ -1,24 +1,30 @@
 import { motion } from 'framer-motion'
+import { Coffee, BookOpen, Luggage, Heart, Music, Star, type LucideIcon } from 'lucide-react'
 import type { Reward } from '../../domain/types'
 
-const CARD_ICONS = ['📅', '✅', '📖', '🏃', '🎯', '⭐', '🎵', '🧘']
-
-function getCardIcon(index: number): string {
-  return CARD_ICONS[index % CARD_ICONS.length]
+const categoryConfig: Record<string, { icon: LucideIcon; bg: string; color: string }> = {
+  '生活享受': { icon: Coffee, bg: 'warm', color: '#c07a32' },
+  '学习成长': { icon: BookOpen, bg: 'blue', color: '#4a82b8' },
+  '旅行体验': { icon: Luggage, bg: 'orange', color: '#d08040' },
+  '健康身心': { icon: Heart, bg: 'rose', color: '#c06060' },
+  '兴趣爱好': { icon: Music, bg: 'purple', color: '#7c68b8' },
+  '其他': { icon: Star, bg: 'sage', color: '#5a9060' },
 }
+
+const defaultConfig = { icon: Star, bg: 'sage', color: '#5a9060' }
 
 interface RewardCardProps {
   reward: Reward
   balance: number
-  onRedeem: (reward: Reward) => void
   onDelete: (id: string) => void
   onEdit: (reward: Reward) => void
 }
 
-export function RewardCard({ reward, balance, onRedeem, onDelete, onEdit }: RewardCardProps) {
-  const canAfford = balance >= reward.pointCost
+export function RewardCard({ reward, balance, onDelete, onEdit }: RewardCardProps) {
   const progressPercent = Math.min(100, Math.round((balance / reward.pointCost) * 100))
-  const icon = getCardIcon(Math.abs(hashCode(reward.id)) % CARD_ICONS.length)
+  const currentSaved = Math.min(balance, reward.pointCost)
+  const config = categoryConfig[reward.description] ?? defaultConfig
+  const Icon = config.icon
 
   return (
     <motion.div
@@ -28,84 +34,49 @@ export function RewardCard({ reward, balance, onRedeem, onDelete, onEdit }: Rewa
       exit={{ opacity: 0, scale: 0.9 }}
       className="reward-item group"
     >
-      {/* Action buttons - top right on hover */}
-      <div className="absolute right-3 top-3 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+      {/* Icon */}
+      <div className={`reward-icon tone-${config.bg}`}>
+        <Icon size={22} strokeWidth={1.8} style={{ color: config.color }} />
+      </div>
+
+      {/* Title & subtitle */}
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <h3 className="reward-name">{reward.name}</h3>
+        <p className="reward-desc">需要 ¥{reward.pointCost}</p>
+      </div>
+
+      {/* Progress & amount */}
+      <div className="reward-progress-inline">
+        <div className="progress-bar-track">
+          <div
+            className="progress-bar-fill"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+        <div className="reward-amount-row">
+          <span className="reward-amount-current">¥{currentSaved}</span>
+          <span className="reward-amount-divider"> / </span>
+          <span className="reward-amount-total">¥{reward.pointCost}</span>
+        </div>
+      </div>
+
+      {/* Hover actions */}
+      <div className="reward-hover-actions">
         <button
           onClick={(e) => { e.stopPropagation(); onEdit(reward) }}
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-cream-50 text-[10px] text-text-secondary hover:text-text-primary"
+          className="reward-action-btn"
           aria-label="编辑"
         >
           ✎
         </button>
         <button
           onClick={(e) => { e.stopPropagation(); onDelete(reward.id) }}
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-cream-50 text-[10px] text-text-secondary hover:text-coral-500"
+          className="reward-action-btn reward-action-delete"
           aria-label="删除"
         >
           ✕
         </button>
       </div>
-
-      {/* Icon */}
-      <div className="reward-icon">
-        <span className="text-lg">{icon}</span>
-      </div>
-
-      {/* Title */}
-      <h3 className="reward-name">
-        {reward.name}
-      </h3>
-
-      {/* Description */}
-      {reward.description && (
-        <p className="reward-desc">
-          {reward.description}
-        </p>
-      )}
-
-      {/* Points */}
-      <div className="reward-progress">
-        <div className="flex items-baseline gap-0.5">
-          <span className="text-xs text-warm-500 font-semibold">¥</span>
-          <span className="text-base font-bold text-warm-500">{reward.pointCost}</span>
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-cream-100">
-          <div
-            className={`h-full rounded-full transition-all duration-500 ${
-              progressPercent >= 100 ? 'bg-sage-500' : 'bg-warm-400'
-            }`}
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
-        <p className="mt-1 text-[10px] text-text-secondary">
-          {progressPercent >= 100 ? '可以兑换' : `还需 ¥${reward.pointCost - balance}`}
-        </p>
-      </div>
-
-      {/* Redeem button */}
-      <button
-        onClick={() => canAfford && onRedeem(reward)}
-        disabled={!canAfford}
-        className={`mt-2 w-full rounded-xl py-1.5 text-xs font-semibold transition-colors ${
-          canAfford
-            ? 'bg-warm-500 text-white hover:bg-warm-400 cursor-pointer'
-            : 'bg-cream-100 text-text-secondary cursor-not-allowed'
-        }`}
-      >
-        {canAfford ? '兑换奖励' : '余额不足'}
-      </button>
     </motion.div>
   )
-}
-
-function hashCode(str: string): number {
-  let hash = 0
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i)
-    hash = ((hash << 5) - hash) + char
-    hash |= 0
-  }
-  return hash
 }
