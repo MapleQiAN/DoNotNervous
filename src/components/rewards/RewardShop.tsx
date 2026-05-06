@@ -1,16 +1,12 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-<<<<<<< HEAD
-import { Gift, Plus, Wallet, Trophy, BadgeCheck, Coins } from 'lucide-react'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../../db'
-=======
 import {
   Gift, Plus, Wallet, Trophy, Coins, Sparkles,
   ArrowRight, ChevronDown,
 } from 'lucide-react'
->>>>>>> 49c9bb58aedb7d3acb0e618cb33dee4e9436c08c
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db } from '../../db'
 import { useMascotStore } from '../../stores/mascotStore'
 import { celebrateRedemption } from '../../lib/celebrate'
 import { useRewards, useRedemptions, createReward, redeemReward, deleteReward } from '../../hooks/useRewards'
@@ -147,12 +143,6 @@ export function RewardShop({ showToast }: RewardShopProps) {
 
         {/* Stat Cards */}
         <section className="stats-strip">
-<<<<<<< HEAD
-          <StatCard icon={<Trophy size={25} />} label="累计奖励" value={`¥ ${balance + totalSpent}`} note="总计获得的奖励金" />
-          <StatCard icon={<Wallet size={25} />} label="可用余额" value={`¥ ${balance}`} note="可用于兑换奖励" />
-          <StatCard icon={<Coins size={25} />} label="本周新增" value={`¥ ${thisWeekIncome}`} note={weeklyDiff >= 0 ? `较上周 +${weeklyDiff}` : `较上周 ${weeklyDiff}`} accent="orange" />
-          <StatCard icon={<Gift size={25} />} label="已兑现奖励" value={`¥ ${totalSpent}`} note={`已兑换 ${redemptions.length} 次奖励`} />
-=======
           <StatCard
             icon={<Trophy size={24} strokeWidth={1.8} />}
             label="累计奖励"
@@ -170,8 +160,8 @@ export function RewardShop({ showToast }: RewardShopProps) {
           <StatCard
             icon={<Coins size={24} strokeWidth={1.8} />}
             label="本周新增"
-            value={`¥${weeklyGain}`}
-            note="较上周 +¥40 ↗"
+            value={`¥${thisWeekIncome}`}
+            note={weeklyDiff >= 0 ? `较上周 +¥${weeklyDiff}` : `较上周 ${weeklyDiff}`}
             tone="orange"
           />
           <StatCard
@@ -181,7 +171,6 @@ export function RewardShop({ showToast }: RewardShopProps) {
             note={`已兑换 ${redemptions.length} 次奖励`}
             tone="rose"
           />
->>>>>>> 49c9bb58aedb7d3acb0e618cb33dee4e9436c08c
         </section>
 
         {/* Two-column content */}
@@ -235,40 +224,27 @@ export function RewardShop({ showToast }: RewardShopProps) {
             </div>
 
             <div className="income-list">
-<<<<<<< HEAD
-              {recentIncome.length === 0 ? (
+              {recentIncome?.length === 0 ? (
                 <p style={{ color: 'var(--color-muted)', fontSize: '14px', textAlign: 'center', padding: '16px 0' }}>
                   完成任务后，奖励收入会出现在这里
                 </p>
               ) : (
-                recentIncome.map((row) => (
+                recentIncome?.map((row) => (
                   <div key={row.id} className="income-row">
                     <span className="income-icon green">💰</span>
-                    <div>
-                      <p>{row.reason}</p>
-                      <span>{row.type === 'task_complete' ? '任务奖励' : row.type === 'streak_bonus' ? '连续奖励' : '积分'}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div className="income-title-row">
+                        <p>{row.reason}</p>
+                        <span className="task-tag">{row.type === 'task_complete' ? '任务奖励' : row.type === 'streak_bonus' ? '连续奖励' : '积分'}</span>
+                      </div>
+                      <span className="income-time">{new Intl.DateTimeFormat('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).format(row.createdAt)}</span>
                     </div>
-                    <strong>+ ¥{row.amount}</strong>
+                    <div style={{ textAlign: 'right' }}>
+                      <strong className="income-amount">+¥{row.amount}</strong>
+                    </div>
                   </div>
                 ))
               )}
-=======
-              {incomeRows.map((row) => (
-                <div key={row.title} className="income-row">
-                  <span className={`income-icon ${row.tone}`}>{row.icon}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div className="income-title-row">
-                      <p>{row.title}</p>
-                      <span className="task-tag">{row.tag}</span>
-                    </div>
-                    <span className="income-time">{row.time}</span>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <strong className="income-amount">+¥{row.amount}</strong>
-                  </div>
-                </div>
-              ))}
->>>>>>> 49c9bb58aedb7d3acb0e618cb33dee4e9436c08c
             </div>
 
             <AnimatePresence>
@@ -369,15 +345,3 @@ function StatCard({ icon, label, value, note, tone }: {
     </div>
   )
 }
-
-<<<<<<< HEAD
-=======
-/* ─── Mock Income Data ─── */
-const incomeRows = [
-  { icon: '🏃', title: '完成晨跑', tag: '习惯任务', amount: 15, time: '今天 07:30', tone: 'green' },
-  { icon: '📖', title: '阅读 20 页', tag: '每日任务', amount: 10, time: '昨天 21:30', tone: 'blue' },
-  { icon: '🪷', title: '冥想 10 分钟', tag: '心情任务', amount: 10, time: '05-14 22:10', tone: 'rose' },
-  { icon: '✅', title: '完成项目方案初稿', tag: '专注任务', amount: 35, time: '05-14 10:00', tone: 'green' },
-  { icon: '👥', title: '与团队同步需求', tag: '协作任务', amount: 20, time: '05-13 14:00', tone: 'blue' },
-]
->>>>>>> 49c9bb58aedb7d3acb0e618cb33dee4e9436c08c

@@ -43,6 +43,9 @@ class DoNotNervousDB extends Dexie {
       syncQueue: 'id, tableName, updatedAt',
       lastSyncState: 'key',
     })
+    this.version(7).stores({
+      pointLedger: 'id, type, taskId, amount, createdAt',
+    })
   }
 }
 

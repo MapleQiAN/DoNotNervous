@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Bell, ChevronDown } from 'lucide-react'
+import { Bell, ChevronDown, Leaf } from 'lucide-react'
 import { Header } from './Header'
 import { useUIStore } from '../../stores/uiStore'
 import { checkAndApplyFreezes } from '../../hooks/useStreaks'
@@ -68,7 +68,9 @@ export function AppShell({ children, showToast }: AppShellProps) {
         <div className="app-workspace">
           <header className="topbar">
             <div>
-              <p className="topbar-title">下午好，林小满 <span aria-hidden="true">🌿</span></p>
+              <p className="topbar-title">
+                下午好，林小满 <Leaf size={18} strokeWidth={2} aria-hidden="true" />
+              </p>
               <p className="topbar-subtitle">{subtitles[currentPage]}</p>
             </div>
             <div className="topbar-actions">
