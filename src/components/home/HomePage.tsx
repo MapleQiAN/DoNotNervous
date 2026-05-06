@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { motion } from 'framer-motion'
 import {
@@ -24,7 +25,6 @@ import { db } from '../../db'
 import { usePointBalance } from '../../hooks/usePoints'
 import { useCurrentStreak } from '../../hooks/useStreaks'
 import { completeTask, uncompleteTask } from '../../hooks/useTaskActions'
-import { useUIStore } from '../../stores/uiStore'
 import type { Task } from '../../domain/types'
 
 interface HomePageProps {
@@ -71,7 +71,7 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
   void _showToast
   const balance = usePointBalance()
   const streakLength = useCurrentStreak()
-  const setCurrentPage = useUIStore((s) => s.setCurrentPage)
+  const navigate = useNavigate()
 
   const activeTasks = useLiveQuery(
     () => db.tasks.where('status').equals('active').sortBy('sortOrder'),
@@ -206,7 +206,7 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
             ))}
           </div>
 
-          <button type="button" onClick={() => setCurrentPage('tasks')} className="text-link">
+          <button type="button" onClick={() => navigate('/tasks')} className="text-link">
             查看全部任务 <ArrowRight size={15} />
           </button>
         </motion.section>
@@ -243,7 +243,7 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.04 }}
           type="button"
-          onClick={() => setCurrentPage('rewards')}
+          onClick={() => navigate('/rewards')}
           className="side-stat warm"
         >
           <BadgeDollarSign size={27} />
@@ -274,7 +274,7 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.12 }}
           type="button"
-          onClick={() => setCurrentPage('mood')}
+          onClick={() => navigate('/mood')}
           className="side-stat blue"
         >
           <Smile size={27} />
@@ -309,14 +309,14 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
             </label>
             <label className="quick-field">
               <span>心情感受</span>
-              <button type="button" onClick={() => setCurrentPage('mood')} className="quick-select">
+              <button type="button" onClick={() => navigate('/mood')} className="quick-select">
                 <Smile size={18} />
                 平静
                 <ChevronDown size={15} />
               </button>
             </label>
           </div>
-          <button type="button" onClick={() => setCurrentPage('tasks')} className="quick-submit">
+          <button type="button" onClick={() => navigate('/tasks')} className="quick-submit">
             添加任务 <PlusCircle size={17} />
           </button>
         </motion.div>
@@ -329,7 +329,7 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           <p>小小进步，值得奖励</p>
           <span>你已经非常棒了！别忘了给自己一个大大的奖励～</span>
         </div>
-        <button type="button" onClick={() => setCurrentPage('rewards')}>
+        <button type="button" onClick={() => navigate('/rewards')}>
           去奖励金库逛逛 <Gift size={16} />
         </button>
         <img className="pig-mini" src="/illustrations/reward-pig.png" alt="" aria-hidden="true" />

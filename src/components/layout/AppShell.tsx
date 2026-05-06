@@ -1,26 +1,24 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
+import { useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Bell, ChevronDown, Leaf } from 'lucide-react'
 import { Header } from './Header'
 import { useUIStore } from '../../stores/uiStore'
 import { checkAndApplyFreezes } from '../../hooks/useStreaks'
-import { RewardShop } from '../rewards/RewardShop'
-import { MoodCalendar } from '../mood/MoodCalendar'
-import { SummaryPage } from '../summary/SummaryPage'
-import { HomePage } from '../home/HomePage'
-import { TaskDetailPanel } from '../tasks/TaskDetailPanel'
-import { PointBadge } from '../gamification/PointBadge'
 import { StreakDisplay } from '../gamification/StreakDisplay'
+import { PointBadge } from '../gamification/PointBadge'
 import { StreakCalendar } from '../gamification/StreakCalendar'
 import { TransactionPopover } from '../gamification/TransactionPopover'
+
+type PageKey = 'home' | 'tasks' | 'rewards' | 'mood' | 'data'
 
 interface AppShellProps {
   children: ReactNode
   showToast: (message: string, type?: 'success' | 'error') => void
 }
 
-const subtitles: Record<string, string> = {
+const subtitles: Record<PageKey, string> = {
   home: '愿你今天的每一步，都让自己更轻松一点。',
   tasks: '一件一件来，每完成一步都是进步。',
   rewards: '每一份努力，都在为你换取更好的生活。',
@@ -28,12 +26,20 @@ const subtitles: Record<string, string> = {
   data: '把完成、奖励和心情放在一起看见。',
 }
 
+const pathToPage: Record<string, PageKey> = {
+  '/': 'home',
+  '/tasks': 'tasks',
+  '/rewards': 'rewards',
+  '/mood': 'mood',
+  '/data': 'data',
+}
+
 export function AppShell({ children, showToast }: AppShellProps) {
   const setSettingsOpen = useUIStore((s) => s.setSettingsOpen)
-  const currentPage = useUIStore((s) => s.currentPage)
-  const setCurrentPage = useUIStore((s) => s.setCurrentPage)
   const showStreakCalendar = useUIStore((s) => s.showStreakCalendar)
   const setShowStreakCalendar = useUIStore((s) => s.setShowStreakCalendar)
+  const location = useLocation()
+  const currentPage = pathToPage[location.pathname] ?? 'home'
 
   useEffect(() => {
     checkAndApplyFreezes(showToast)
@@ -60,11 +66,7 @@ export function AppShell({ children, showToast }: AppShellProps) {
         )}
       </AnimatePresence>
       <div className="app-frame">
-        <Header
-          onSettingsClick={() => setSettingsOpen(true)}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <Header onSettingsClick={() => setSettingsOpen(true)} />
         <div className="app-workspace">
           <header className="topbar">
             <div>
@@ -98,28 +100,13 @@ export function AppShell({ children, showToast }: AppShellProps) {
           <main className="page-shell">
             <AnimatePresence mode="wait">
               <motion.div
-                key={currentPage}
+                key={location.pathname}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.2 }}
               >
-                {currentPage === 'home' && <HomePage showToast={showToast} />}
-                {currentPage === 'tasks' && (
-                  <div className="dashboard-grid task-route">
-                    <section className="main-column">{children}</section>
-                    <aside className="right-column">
-                      <TaskDetailPanel />
-                    </aside>
-                  </div>
-                )}
-                {currentPage === 'rewards' && <RewardShop showToast={showToast} />}
-                {currentPage === 'mood' && (
-                  <MoodCalendar showToast={showToast} activeView="mood" />
-                )}
-                {currentPage === 'data' && (
-                  <SummaryPage showToast={showToast} />
-                )}
+                {children}
               </motion.div>
             </AnimatePresence>
           </main>

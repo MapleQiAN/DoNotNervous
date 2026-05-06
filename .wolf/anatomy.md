@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T06:38:17.618Z
-> Files: 3 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T10:18:04.996Z
+> Files: 9 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
@@ -77,10 +77,12 @@
 
 ## src/
 
-- `index.css` — Styles: 5 rules, 26 vars (~14988 tok)
+- `App.tsx` — TasksPage (~683 tok)
+- `index.css` — Styles: 5 rules, 29 vars (~16954 tok)
 
 ## src/components/__tests__/
 
+- `smoke.test.tsx` — variants (~1330 tok)
 
 ## src/components/auth/
 
@@ -99,16 +101,19 @@
 
 ## src/components/home/
 
-- `HomePage.tsx` — focusRows (~3281 tok)
+- `HomePage.tsx` — focusRows (~3263 tok)
 
 ## src/components/layout/
 
+- `AppShell.tsx` — subtitles (~1172 tok)
+- `Header.tsx` — navItems (~987 tok)
 
 ## src/components/mascot/
 
 
 ## src/components/mood/
 
+- `MoodCalendar.tsx` — MoodCalendar (~2842 tok)
 
 ## src/components/rewards/
 
@@ -146,3 +151,4 @@
 
 ## src/stores/
 
+- `uiStore.ts` — Exports useUIStore (~371 tok)

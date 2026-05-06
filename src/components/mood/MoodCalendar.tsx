@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Activity, ArrowRight, CheckSquare, Clock3, Edit3, Leaf, Plus, Smile, SunMedium, Wallet } from 'lucide-react'
 import { format } from 'date-fns'
@@ -9,7 +10,6 @@ import { useMoodEntries, createMoodEntry } from '../../hooks/useMoodEntries'
 import { usePointBalance } from '../../hooks/usePoints'
 import { MOODS } from '../../domain/mood'
 import { MOOD_SCORE } from '../../domain/summary'
-import { useUIStore } from '../../stores/uiStore'
 import type { MoodEmoji } from '../../domain/types'
 
 interface MoodCalendarProps {
@@ -22,7 +22,7 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
   const [selectedEmoji, setSelectedEmoji] = useState<MoodEmoji | null>(null)
   const [journal, setJournal] = useState('')
   const allMoods = useMoodEntries()
-  const setCurrentPage = useUIStore((s) => s.setCurrentPage)
+  const navigate = useNavigate()
 
   const trend = useMemo(() => {
     if (allMoods.length === 0) return []
@@ -81,8 +81,8 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
     <div className="dashboard-grid mood-route">
       <section className="main-column">
         <div className="top-tabs">
-          <button type="button" onClick={() => setCurrentPage('mood')} className={activeView === 'mood' ? 'is-active' : ''}>心情记录</button>
-          <button type="button" onClick={() => setCurrentPage('data')} className={activeView === 'data' ? 'is-active' : ''}>数据复盘</button>
+          <button type="button" onClick={() => navigate('/mood')} className={activeView === 'mood' ? 'is-active' : ''}>心情记录</button>
+          <button type="button" onClick={() => navigate('/data')} className={activeView === 'data' ? 'is-active' : ''}>数据复盘</button>
         </div>
 
         <section className="hero-panel mood-hero">

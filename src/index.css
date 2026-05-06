@@ -74,8 +74,11 @@
 @layer components {
   /* ─── Canvas & Frame ─── */
   .app-canvas {
+    --frame-pad: clamp(8px, 0.75vw, 16px);
+    --frame-gap: clamp(8px, 0.75vw, 16px);
+    --frame-height: calc(100vh - var(--frame-pad) - var(--frame-pad));
     min-height: 100dvh;
-    padding: 12px;
+    padding: var(--frame-pad);
     display: flex;
     justify-content: center;
   }
@@ -83,9 +86,10 @@
   .app-frame {
     display: grid;
     width: 100%;
-    min-height: calc(100dvh - 24px);
-    grid-template-columns: 255px minmax(0, 1fr);
-    gap: 12px;
+    height: var(--frame-height);
+    min-height: var(--frame-height);
+    grid-template-columns: clamp(228px, 16.3vw, 328px) minmax(0, 1fr);
+    gap: var(--frame-gap);
     overflow: visible;
     border: 0;
     border-radius: 0;
@@ -96,9 +100,10 @@
   /* ─── Sidebar ─── */
   .app-sidebar {
     flex-direction: column;
-    gap: 36px;
-    min-height: calc(100dvh - 24px);
-    padding: 36px 24px 20px;
+    gap: clamp(22px, 2.15vw, 42px);
+    height: var(--frame-height);
+    min-height: var(--frame-height);
+    padding: clamp(28px, 2.25vw, 44px) clamp(18px, 1.5vw, 30px) clamp(18px, 1.25vw, 24px);
     border: 1px solid rgba(140, 120, 85, 0.08);
     border-radius: 22px;
     background: rgba(255, 255, 255, 0.78);
@@ -161,12 +166,12 @@
 
   .sidebar-link {
     display: flex;
-    min-height: 50px;
+    min-height: clamp(48px, 3.15vw, 66px);
     align-items: center;
-    gap: 14px;
+    gap: clamp(12px, 0.9vw, 18px);
     border: 0;
     border-radius: var(--radius-md, 14px);
-    padding: 0 18px;
+    padding: 0 clamp(15px, 1.2vw, 24px);
     color: var(--color-text-secondary);
     background: transparent;
     font-size: 16px;
@@ -188,7 +193,7 @@
   /* ─── Sidebar Wellness Card ─── */
   .sidebar-note {
     margin-top: auto;
-    padding: 24px 18px 16px;
+    padding: clamp(20px, 1.5vw, 30px) clamp(16px, 1.15vw, 22px) clamp(14px, 1vw, 20px);
     border: 1px solid rgba(140, 120, 85, 0.06);
     border-radius: var(--radius-lg, 18px);
     background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(249,245,236,0.85));
@@ -202,7 +207,7 @@
   .plant-card {
     display: block;
     width: 100%;
-    height: 96px;
+    height: clamp(88px, 6.2vw, 126px);
     margin-top: 10px;
     object-fit: contain;
     object-position: center bottom;
@@ -228,10 +233,11 @@
   .app-workspace {
     min-width: 0;
     overflow-y: auto;
-    min-height: calc(100dvh - 24px);
+    height: var(--frame-height);
+    min-height: var(--frame-height);
     border: 1px solid rgba(140, 120, 85, 0.08);
     border-radius: 22px;
-    padding: 26px 18px 18px;
+    padding: clamp(20px, 1.65vw, 34px) clamp(16px, 1.15vw, 24px) clamp(16px, 1.15vw, 24px);
     background: rgba(255, 255, 255, 0.80);
     backdrop-filter: blur(14px);
     box-shadow: 0 18px 48px rgba(105, 86, 55, 0.08);
@@ -241,8 +247,8 @@
   .topbar {
     justify-content: space-between;
     gap: 20px;
-    min-height: 60px;
-    margin: 0 20px 12px;
+    min-height: clamp(54px, 4vw, 76px);
+    margin: 0 clamp(16px, 1.5vw, 28px) clamp(10px, 0.95vw, 18px);
   }
 
   .topbar-title {
@@ -322,11 +328,15 @@
   /* ─── Page Shell ─── */
   .page-shell { min-width: 0; }
 
+  .page-shell > div {
+    min-width: 0;
+  }
+
   /* ─── Dashboard Grid ─── */
   .dashboard-grid {
     display: grid;
-    grid-template-columns: minmax(0, 2.45fr) minmax(320px, 0.95fr);
-    gap: 18px;
+    grid-template-columns: minmax(0, 2.75fr) minmax(clamp(300px, 23vw, 430px), 1fr);
+    gap: clamp(14px, 1.15vw, 24px);
   }
 
   .task-route {
@@ -342,21 +352,23 @@
   .main-column {
     display: grid;
     align-content: start;
-    gap: 18px;
+    gap: clamp(14px, 1.15vw, 24px);
   }
 
   .right-column {
     display: grid;
     align-content: start;
-    gap: 12px;
+    gap: clamp(10px, 0.8vw, 16px);
   }
 
   .home-dashboard {
     padding: 0;
+    min-height: calc(var(--frame-height) - clamp(72px, 7.4dvh, 96px));
+    align-content: space-between;
   }
 
   .home-main-column {
-    gap: 20px;
+    gap: clamp(14px, 1.1vw, 22px);
   }
 
   /* ─── Card Base ─── */
@@ -379,16 +391,16 @@
   /* ─── Hero Panel ─── */
   .hero-panel {
     position: relative;
-    min-height: 230px;
+    min-height: clamp(200px, 30dvh, 360px);
     overflow: hidden;
-    padding: 54px 40px;
+    padding: clamp(24px, 5dvh, 68px) clamp(28px, 2.55vw, 54px);
     background:
       radial-gradient(circle at 80% 20%, rgba(255,255,255,0.75), transparent 14rem),
       linear-gradient(110deg, #fdf9f0 0%, #faf4e4 50%, #f7efd9 100%);
   }
 
   .home-hero {
-    min-height: 354px;
+    min-height: clamp(232px, 34dvh, 430px);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-color: rgba(140, 120, 85, 0.04);
@@ -398,14 +410,14 @@
   .hero-copy {
     position: relative;
     z-index: 2;
-    max-width: 53%;
+    max-width: clamp(460px, 52%, 680px);
   }
 
   .hero-copy h1 {
     max-width: 620px;
     text-wrap: balance;
     color: var(--color-text-primary);
-    font-size: clamp(2rem, 3.2vw, 3rem);
+    font-size: clamp(2rem, 3.05vw, 3.55rem);
     font-weight: 800;
     line-height: 1.34;
     letter-spacing: 0;
@@ -425,7 +437,7 @@
 
   .hero-copy p {
     max-width: 440px;
-    margin-top: 18px;
+    margin-top: clamp(12px, 2dvh, 24px);
     color: var(--color-text-secondary);
     font-size: 16px;
     font-weight: 600;
@@ -455,8 +467,8 @@
   .desk-illustration {
     right: -8px;
     bottom: -4px;
-    width: min(56%, 650px);
-    height: 110%;
+    width: min(57%, 760px);
+    height: 112%;
   }
 
   .notebook-illustration {
@@ -506,11 +518,11 @@
 
   /* ─── Content Card ─── */
   .content-card {
-    padding: 24px 30px 14px;
+    padding: clamp(20px, 1.55vw, 30px) clamp(24px, 2vw, 42px) clamp(12px, 0.95vw, 20px);
   }
 
   .task-card {
-    margin: -58px 0 0;
+    margin: clamp(-70px, -5.8dvh, -38px) 0 0;
     position: relative;
     z-index: 3;
     border-radius: 18px;
@@ -529,11 +541,11 @@
 
   .task-row {
     display: grid;
-    min-height: 52px;
+    min-height: clamp(38px, 4.1dvh, 60px);
     grid-template-columns: 28px minmax(150px, 1fr) 150px 90px 86px 86px;
-    gap: 12px;
+    gap: clamp(8px, 0.85vw, 16px);
     border-bottom: 1px solid rgba(140, 120, 85, 0.06);
-    padding: 9px 0;
+    padding: clamp(4px, 0.55dvh, 9px) 0;
     transition: background 150ms ease;
   }
 
@@ -691,11 +703,11 @@
   /* ─── Reward Banner ─── */
   .reward-banner {
     position: relative;
-    min-height: 96px;
+    min-height: clamp(72px, 9dvh, 118px);
     justify-content: space-between;
     overflow: hidden;
     margin: 0;
-    padding: 18px 140px 18px 54px;
+    padding: clamp(12px, 2dvh, 22px) clamp(112px, 8.8vw, 168px) clamp(12px, 2dvh, 22px) clamp(44px, 3.4vw, 68px);
     grid-column: 1 / -1;
     width: 100%;
     background:
@@ -773,8 +785,8 @@
     position: absolute;
     right: 8px;
     bottom: -22px;
-    width: 130px;
-    height: 80px;
+    width: clamp(124px, 8.9vw, 170px);
+    height: clamp(78px, 5.4vw, 104px);
     border-radius: 0;
     background: transparent;
     object-fit: contain;
@@ -788,14 +800,14 @@
   .quick-card,
   .side-panel,
   .quote-card {
-    padding: 20px;
+    padding: clamp(17px, 1.28vw, 24px);
   }
 
   .metric-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 118px;
+    min-height: clamp(88px, 10dvh, 142px);
   }
 
   .metric-copy {
@@ -876,8 +888,8 @@
   .side-stat {
     display: flex;
     align-items: center;
-    gap: 16px;
-    min-height: 116px;
+    gap: clamp(13px, 1vw, 19px);
+    min-height: clamp(86px, 10dvh, 138px);
     border: 1px solid rgba(140, 120, 85, 0.09);
     border-radius: 16px;
     background: rgba(255,255,255,0.60);
@@ -921,9 +933,9 @@
 
   .home-quick-card {
     display: grid;
-    gap: 10px;
-    min-height: 256px;
-    padding: 22px 20px;
+    gap: clamp(9px, 0.7vw, 14px);
+    min-height: clamp(188px, 21dvh, 304px);
+    padding: clamp(19px, 1.45vw, 28px) clamp(17px, 1.3vw, 24px);
   }
 
   .quick-card input,
@@ -1053,6 +1065,10 @@
   }
 
   .quick-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     min-height: 45px;
     margin-top: 4px;
     border-radius: 10px;
@@ -2189,9 +2205,201 @@
    RESPONSIVE BREAKPOINTS
    ═══════════════════════════════════════ */
 
+@media (min-width: 900px) {
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .app-canvas {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  .app-sidebar {
+    display: flex !important;
+  }
+
+  .mobile-bottom-nav {
+    display: none;
+  }
+
+  .app-workspace:has(.home-dashboard) {
+    overflow: hidden;
+    padding-top: clamp(12px, 2dvh, 22px);
+    padding-bottom: clamp(10px, 1.6dvh, 18px);
+  }
+
+  .app-workspace:has(.home-dashboard) .topbar {
+    min-height: clamp(44px, 5.2dvh, 62px);
+    margin-bottom: clamp(6px, 1dvh, 12px);
+  }
+
+  .page-shell:has(.home-dashboard),
+  .page-shell:has(.home-dashboard) > div {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .home-dashboard {
+    height: calc(
+      var(--frame-height)
+      - clamp(44px, 5.2dvh, 62px)
+      - clamp(24px, 3.2dvh, 40px)
+    );
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr) clamp(52px, 7dvh, 92px);
+    align-content: stretch;
+  }
+
+  .home-main-column,
+  .home-right-column {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .home-main-column {
+    grid-template-rows: minmax(150px, 0.5fr) minmax(178px, 0.5fr);
+  }
+
+  .home-right-column {
+    grid-template-rows:
+      minmax(58px, 0.85fr)
+      minmax(58px, 0.85fr)
+      minmax(58px, 0.85fr)
+      minmax(58px, 0.85fr)
+      minmax(110px, 1.25fr);
+  }
+
+  .home-hero,
+  .task-card,
+  .metric-card,
+  .side-stat,
+  .home-quick-card,
+  .reward-banner {
+    min-height: 0;
+  }
+
+  .home-hero {
+    height: 100%;
+    padding-top: clamp(18px, 3dvh, 42px);
+    padding-bottom: clamp(16px, 2.4dvh, 34px);
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(1.8rem, min(3vw, 5.4dvh), 3.3rem);
+  }
+
+  .hero-copy p {
+    font-size: clamp(14px, 1.75dvh, 16px);
+    line-height: 1.65;
+  }
+
+  .task-card {
+    height: calc(100% + clamp(30px, 5dvh, 58px));
+    overflow: hidden;
+    padding-top: clamp(14px, 2dvh, 24px);
+    padding-bottom: clamp(6px, 1dvh, 12px);
+  }
+
+  .table-list {
+    margin-top: clamp(10px, 1.8dvh, 18px);
+  }
+
+  .task-row {
+    min-height: clamp(36px, 4.25dvh, 52px);
+    padding-top: clamp(3px, 0.45dvh, 8px);
+    padding-bottom: clamp(3px, 0.45dvh, 8px);
+  }
+
+  .task-card .text-link {
+    min-height: clamp(30px, 3.6dvh, 40px);
+    margin-top: clamp(4px, 0.8dvh, 8px);
+  }
+
+  .metric-card,
+  .side-stat {
+    height: 100%;
+  }
+
+  .home-quick-card {
+    height: 100%;
+    align-content: start;
+    gap: clamp(4px, 0.75dvh, 10px);
+    padding-top: clamp(10px, 1.6dvh, 20px);
+    padding-bottom: clamp(8px, 1.2dvh, 18px);
+  }
+
+  .quick-card h3 {
+    font-size: clamp(15px, 1.9dvh, 18px);
+  }
+
+  .quick-field {
+    gap: clamp(3px, 0.55dvh, 6px);
+    font-size: clamp(11px, 1.45dvh, 13px);
+  }
+
+  .quick-grid {
+    gap: clamp(5px, 0.7dvh, 8px);
+  }
+
+  .quick-grid .quick-field > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .quick-card input {
+    padding-top: clamp(5px, 0.7dvh, 8px);
+    padding-bottom: clamp(5px, 0.7dvh, 8px);
+    font-size: clamp(12px, 1.55dvh, 14px);
+  }
+
+  .quick-card input,
+  .quick-input-shell,
+  .quick-select {
+    min-height: clamp(30px, 3.8dvh, 40px);
+  }
+
+  .quick-submit {
+    min-height: clamp(32px, 4dvh, 40px);
+    margin-top: 0;
+  }
+
+  .reward-banner {
+    height: 100%;
+    padding-top: clamp(6px, 1dvh, 12px);
+    padding-bottom: clamp(6px, 1dvh, 12px);
+  }
+
+  .reward-banner p {
+    font-size: clamp(15px, 1.9dvh, 18px);
+  }
+
+  .reward-banner span {
+    margin-top: 2px;
+    font-size: clamp(11px, 1.45dvh, 13px);
+  }
+
+  .reward-banner button {
+    min-height: clamp(30px, 3.8dvh, 38px);
+    font-size: clamp(12px, 1.55dvh, 14px);
+  }
+
+  .pig-mini {
+    width: clamp(96px, 8vw, 150px);
+    height: clamp(58px, 5dvh, 90px);
+  }
+}
+
 @media (max-width: 1280px) {
   .dashboard-grid {
-    grid-template-columns: minmax(0, 1.9fr) minmax(280px, 0.9fr);
+    grid-template-columns: minmax(0, 2.15fr) minmax(clamp(280px, 27vw, 360px), 0.95fr);
   }
 
   .task-route {
@@ -2214,7 +2422,7 @@
 
   .task-row {
     grid-template-columns: 28px minmax(130px, 1fr) 120px 72px 72px 72px;
-    gap: 9px;
+    gap: clamp(7px, 0.75vw, 9px);
   }
 
   .screenshot-row {
@@ -2235,7 +2443,7 @@
 
 @media (max-width: 1100px) {
   .app-frame {
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: clamp(208px, 20vw, 220px) minmax(0, 1fr);
   }
 
   .dashboard-grid {
@@ -2264,7 +2472,48 @@
   }
 }
 
-@media (max-width: 1023px) {
+@media (min-width: 900px) and (max-width: 1100px) {
+  .home-dashboard {
+    grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.78fr);
+    grid-template-rows: minmax(0, 1fr) clamp(64px, 8dvh, 88px);
+  }
+
+  .home-right-column {
+    grid-template-columns: 1fr;
+  }
+
+  .home-quick-card,
+  .reward-banner {
+    grid-column: auto;
+  }
+
+  .task-row {
+    grid-template-columns: 24px minmax(112px, 1fr) 82px 54px 56px 58px;
+    gap: 6px;
+  }
+
+  .task-title {
+    font-size: 13px;
+  }
+
+  .row-time,
+  .muted-label {
+    font-size: 11px;
+  }
+
+  .soft-pill,
+  .status-pill {
+    min-width: 48px;
+    padding-inline: 8px;
+    font-size: 11px;
+  }
+
+  .reward-text {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 899px) {
   .app-canvas { padding: 0; }
 
   .app-frame {
@@ -2397,6 +2646,14 @@
     padding-right: 2px;
   }
 
+  .app-sidebar {
+    display: none;
+  }
+
+  .mobile-bottom-nav {
+    display: block;
+  }
+
   .task-list-heading .view-toggle {
     display: none;
   }
@@ -2414,10 +2671,19 @@
   }
 
   .hero-copy h1 {
-    font-size: clamp(1.4rem, 5vw, 1.85rem);
+    max-width: 100%;
+    font-size: clamp(1.35rem, 6vw, 1.7rem);
+    line-height: 1.32;
+    text-wrap: wrap;
+    overflow-wrap: anywhere;
   }
 
   .hero-copy p { font-size: 13px; }
+
+  .hero-copy h1 span svg {
+    width: 24px;
+    height: 24px;
+  }
 
   .section-title-row h2,
   .side-panel h2,

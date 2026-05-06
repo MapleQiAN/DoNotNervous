@@ -351,3 +351,32 @@
 | 14:12 | Edited src/index.css | CSS: grid-column, width | ~66 |
 | 14:37 | Edited src/components/home/HomePage.tsx | 13→14 lines | ~138 |
 | 14:38 | Edited src/index.css | 4→4 lines | ~20 |
+| 14:48 | Created src/App.tsx | — | ~683 |
+| 14:49 | Created src/components/layout/AppShell.tsx | — | ~1172 |
+| 14:49 | Created src/components/layout/Header.tsx | — | ~987 |
+| 14:50 | Edited src/components/home/HomePage.tsx | added 1 import(s) | ~49 |
+| 14:50 | Edited src/components/home/HomePage.tsx | 2→1 lines | ~14 |
+| 14:50 | Edited src/components/home/HomePage.tsx | useUIStore() → useNavigate() | ~32 |
+| 14:50 | Edited src/components/home/HomePage.tsx | "tasks" → "/tasks" | ~10 |
+| 14:50 | Edited src/components/home/HomePage.tsx | "rewards" → "/rewards" | ~11 |
+| 14:50 | Edited src/components/home/HomePage.tsx | "mood" → "/mood" | ~10 |
+| 14:51 | Edited src/components/mood/MoodCalendar.tsx | added 1 import(s) | ~53 |
+| 14:51 | Edited src/components/mood/MoodCalendar.tsx | 6→5 lines | ~79 |
+| 14:51 | Edited src/components/mood/MoodCalendar.tsx | useUIStore() → useNavigate() | ~33 |
+| 14:51 | Edited src/components/mood/MoodCalendar.tsx | setCurrentPage() → navigate() | ~76 |
+| 14:52 | Edited src/stores/uiStore.ts | 16→14 lines | ~140 |
+| 14:52 | Edited src/stores/uiStore.ts | 11→9 lines | ~141 |
+| 14:53 | Edited src/components/__tests__/smoke.test.tsx | added 1 import(s) | ~59 |
+| 14:53 | Edited src/components/__tests__/smoke.test.tsx | 19→24 lines | ~182 |
+| 14:53 | Edited src/components/__tests__/smoke.test.tsx | 3→2 lines | ~33 |
+
+## Session: 2026-05-06 18:16
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 18:18 | Edited src/index.css | 8→12 lines | ~88 |
+
+## Session: 2026-05-06 18:20
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|

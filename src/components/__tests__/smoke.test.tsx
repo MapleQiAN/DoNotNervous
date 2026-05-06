@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 import { Button } from '../../components/common/Button'
 import { Input } from '../../components/common/Input'
 import { Textarea } from '../../components/common/Textarea'
@@ -10,7 +11,6 @@ import { Toast } from '../../components/common/Toast'
 import { DifficultyBadge } from '../../components/common/DifficultyBadge'
 import { Header } from '../../components/layout/Header'
 import { AppShell } from '../../components/layout/AppShell'
-import { useUIStore } from '../../stores/uiStore'
 
 describe('Button', () => {
   it('renders all 4 variants without crashing', () => {
@@ -120,19 +120,24 @@ describe('DifficultyBadge', () => {
 
 describe('Header', () => {
   it('renders navigation tabs', () => {
-    render(<Header onSettingsClick={() => {}} currentPage="home" setCurrentPage={() => {}} />)
+    render(
+      <MemoryRouter>
+        <Header onSettingsClick={() => {}} />
+      </MemoryRouter>
+    )
     expect(screen.getByLabelText('Home')).toBeInTheDocument()
     expect(screen.getByLabelText('Tasks')).toBeInTheDocument()
   })
 })
 
 describe('AppShell', () => {
-  it('renders children inside layout when on tasks page', () => {
-    useUIStore.setState({ currentPage: 'tasks' })
+  it('renders children inside layout', () => {
     render(
-      <AppShell showToast={() => {}}>
-        <div>test child</div>
-      </AppShell>
+      <MemoryRouter initialEntries={['/tasks']}>
+        <AppShell showToast={() => {}}>
+          <div>test child</div>
+        </AppShell>
+      </MemoryRouter>
     )
     expect(screen.getByText('test child')).toBeInTheDocument()
   })
