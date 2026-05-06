@@ -3,7 +3,10 @@ import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Activity, ArrowRight, CheckSquare, Clock3, Edit3, Leaf, Plus, Smile, SunMedium, Wallet } from 'lucide-react'
 import { format } from 'date-fns'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db } from '../../db'
 import { useMoodEntries, createMoodEntry } from '../../hooks/useMoodEntries'
+import { usePointBalance } from '../../hooks/usePoints'
 import { MOODS } from '../../domain/mood'
 import { MOOD_SCORE } from '../../domain/summary'
 import { useUIStore } from '../../stores/uiStore'
@@ -47,6 +50,19 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
   const avgMoodScore = recentWeekMoods.length > 0
     ? (recentWeekMoods.reduce((sum, m) => sum + MOOD_SCORE[m.emoji], 0) / recentWeekMoods.length).toFixed(1)
     : '--'
+
+  const weekCompletedTasks = useLiveQuery(
+    async () => {
+      const weekAgo = new Date()
+      weekAgo.setDate(weekAgo.getDate() - 7)
+      const tasks = await db.tasks.where('status').equals('completed').toArray()
+      return tasks.filter(t => t.completedAt && t.completedAt >= weekAgo).length
+    },
+    [],
+    0
+  )
+
+  const balance = usePointBalance()
 
   async function handleStandaloneSave() {
     if (!selectedEmoji) return
@@ -118,8 +134,8 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
         </section>
 
         <section className="stats-strip mood-stats">
-          <Stat icon={<CheckSquare />} label="本周完成任务数" value="--" note="暂无数据" />
-          <Stat icon={<Wallet />} label="累计奖励金额" value="--" note="暂无数据" />
+          <Stat icon={<CheckSquare />} label="本周完成任务数" value={weekCompletedTasks > 0 ? `${weekCompletedTasks}` : '--'} note={weekCompletedTasks > 0 ? `本周共完成 ${weekCompletedTasks} 个任务` : '暂无数据'} />
+          <Stat icon={<Wallet />} label="累计奖励金额" value={balance > 0 ? `¥${balance}` : '--'} note={balance > 0 ? `已获得 ${balance} 奖励金` : '暂无数据'} />
           <Stat icon={<Smile />} label="平均心情指数" value={recentWeekMoods.length > 0 ? `${avgMoodScore} / 5` : '--'} note={recentWeekMoods.length > 0 ? `共 ${recentWeekMoods.length} 条记录` : '暂无数据'} />
           <Stat icon={<Clock3 />} label="专注时段" value="--" note="暂无数据" />
         </section>

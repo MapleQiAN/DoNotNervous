@@ -463,6 +463,14 @@
     padding: 8px 0;
   }
 
+  .task-row-status {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    justify-content: space-evenly;
+  }
+
   .task-row:last-child {
     border-bottom: 0;
   }
@@ -473,13 +481,14 @@
 
   .task-title {
     min-width: 0;
-    flex: 1;
+    flex: none;
     overflow: hidden;
     color: #2f302d;
     font-size: 15px;
     font-weight: 700;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-width: 160px;
   }
 
   .check-active {
@@ -548,8 +557,19 @@
     min-height: 88px;
     justify-content: space-between;
     overflow: hidden;
-    padding: 22px 32px;
+    padding: 22px 32px 22px 32px;
     background: linear-gradient(100deg, #fff8e9, #fffaf1);
+  }
+
+  .reward-banner > div {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .reward-banner button {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
   }
 
   .reward-banner p {
@@ -597,9 +617,9 @@
   .pig-mini {
     position: absolute;
     right: 16px;
-    bottom: -28px;
-    width: 170px;
-    height: 112px;
+    bottom: -8px;
+    width: 140px;
+    height: 92px;
     border-radius: 0;
     background: transparent;
     object-fit: contain;

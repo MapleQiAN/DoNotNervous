@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T02:02:20.707Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T02:23:41.585Z
 > Files: 201 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
@@ -195,7 +195,7 @@
 ## src/
 
 - `App.tsx` — AuthenticatedApp (~356 tok)
-- `index.css` — Styles: 5 rules, 24 vars, 2 layers (~7275 tok)
+- `index.css` — Styles: 5 rules, 24 vars (~7366 tok)
 - `main.tsx` (~66 tok)
 - `test-setup.ts` (~46 tok)
 
@@ -236,7 +236,7 @@
 
 ## src/components/home/
 
-- `HomePage.tsx` — moodLabels (~2037 tok)
+- `HomePage.tsx` — difficultyLabels (~2239 tok)
 
 ## src/components/layout/
 
@@ -252,14 +252,14 @@
 
 ## src/components/mood/
 
-- `MoodCalendar.tsx` — moodScore — renders chart — uses useState, useMemo (~2452 tok)
+- `MoodCalendar.tsx` — MoodCalendar (~2854 tok)
 - `MoodPicker.tsx` — MoodPicker — uses useState (~1388 tok)
 
 ## src/components/rewards/
 
 - `RedemptionHistory.tsx` — RedemptionHistory (~242 tok)
 - `RewardCard.tsx` — CARD_ICONS (~1020 tok)
-- `RewardShop.tsx` — categories — uses useState (~2426 tok)
+- `RewardShop.tsx` — categories (~2766 tok)
 
 ## src/components/summary/
 

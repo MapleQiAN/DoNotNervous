@@ -2,6 +2,8 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Gift, Plus, Wallet, Trophy, BadgeCheck, Coins } from 'lucide-react'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db } from '../../db'
 import { useMascotStore } from '../../stores/mascotStore'
 import { celebrateRedemption } from '../../lib/celebrate'
 import { useRewards, useRedemptions, createReward, redeemReward, deleteReward } from '../../hooks/useRewards'
@@ -76,7 +78,48 @@ export function RewardShop({ showToast }: RewardShopProps) {
   }
 
   const totalSpent = redemptions.reduce((sum, r) => sum + r.pointsSpent, 0)
-  const weeklyGain = Math.max(95, Math.round((balance + totalSpent) * 0.08))
+
+  const recentIncome = useLiveQuery(
+    async () => {
+      const entries = await db.pointLedger
+        .where('amount').above(0)
+        .reverse()
+        .sortBy('createdAt')
+      return entries.slice(0, 6)
+    },
+    [],
+    []
+  )
+
+  const thisWeekIncome = useLiveQuery(
+    async () => {
+      const weekAgo = new Date()
+      weekAgo.setDate(weekAgo.getDate() - 7)
+      const entries = await db.pointLedger
+        .where('createdAt').above(weekAgo)
+        .toArray()
+      return entries.filter(e => e.amount > 0).reduce((sum, e) => sum + e.amount, 0)
+    },
+    [],
+    0
+  )
+
+  const lastWeekIncome = useLiveQuery(
+    async () => {
+      const twoWeeksAgo = new Date()
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14)
+      const oneWeekAgo = new Date()
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+      const entries = await db.pointLedger.toArray()
+      return entries
+        .filter(e => e.amount > 0 && e.createdAt >= twoWeeksAgo && e.createdAt < oneWeekAgo)
+        .reduce((sum, e) => sum + e.amount, 0)
+    },
+    [],
+    0
+  )
+
+  const weeklyDiff = thisWeekIncome - lastWeekIncome
 
   return (
     <div className="dashboard-grid reward-route">
@@ -96,7 +139,7 @@ export function RewardShop({ showToast }: RewardShopProps) {
         <section className="stats-strip">
           <StatCard icon={<Trophy size={25} />} label="累计奖励" value={`¥ ${balance + totalSpent}`} note="总计获得的奖励金" />
           <StatCard icon={<Wallet size={25} />} label="可用余额" value={`¥ ${balance}`} note="可用于兑换奖励" />
-          <StatCard icon={<Coins size={25} />} label="本周新增" value={`¥ ${weeklyGain}`} note="较上周 +40" accent="orange" />
+          <StatCard icon={<Coins size={25} />} label="本周新增" value={`¥ ${thisWeekIncome}`} note={weeklyDiff >= 0 ? `较上周 +${weeklyDiff}` : `较上周 ${weeklyDiff}`} accent="orange" />
           <StatCard icon={<Gift size={25} />} label="已兑现奖励" value={`¥ ${totalSpent}`} note={`已兑换 ${redemptions.length} 次奖励`} />
         </section>
 
@@ -144,16 +187,22 @@ export function RewardShop({ showToast }: RewardShopProps) {
             </div>
 
             <div className="income-list">
-              {incomeRows.map((row) => (
-                <div key={row.title} className="income-row">
-                  <span className={`income-icon ${row.tone}`}>{row.icon}</span>
-                  <div>
-                    <p>{row.title}</p>
-                    <span>{row.tag}</span>
+              {recentIncome.length === 0 ? (
+                <p style={{ color: 'var(--color-muted)', fontSize: '14px', textAlign: 'center', padding: '16px 0' }}>
+                  完成任务后，奖励收入会出现在这里
+                </p>
+              ) : (
+                recentIncome.map((row) => (
+                  <div key={row.id} className="income-row">
+                    <span className="income-icon green">💰</span>
+                    <div>
+                      <p>{row.reason}</p>
+                      <span>{row.type === 'task_complete' ? '任务奖励' : row.type === 'streak_bonus' ? '连续奖励' : '积分'}</span>
+                    </div>
+                    <strong>+ ¥{row.amount}</strong>
                   </div>
-                  <strong>+ ¥{row.amount}</strong>
-                </div>
-              ))}
+                ))
+              )}
             </div>
 
             <AnimatePresence>
@@ -230,9 +279,3 @@ function StatCard({ icon, label, value, note, accent }: { icon: ReactNode; label
   )
 }
 
-const incomeRows = [
-  { icon: '🏃', title: '完成晨跑', tag: '习惯任务', amount: 15, tone: 'green' },
-  { icon: '📖', title: '阅读 20 页', tag: '每日任务', amount: 10, tone: 'blue' },
-  { icon: '🪷', title: '冥想 10 分钟', tag: '心情任务', amount: 10, tone: 'rose' },
-  { icon: '✅', title: '完成项目方案初稿', tag: '专注任务', amount: 35, tone: 'green' },
-]

@@ -2,14 +2,14 @@
   "version": 1,
   "created_at": "2026-05-05T11:09:47.569Z",
   "lifetime": {
-    "total_tokens_estimated": 274434,
-    "total_reads": 159,
-    "total_writes": 204,
-    "total_sessions": 7,
-    "anatomy_hits": 110,
+    "total_tokens_estimated": 343662,
+    "total_reads": 197,
+    "total_writes": 236,
+    "total_sessions": 8,
+    "anatomy_hits": 134,
     "anatomy_misses": 17,
-    "repeated_reads_blocked": 158,
-    "estimated_savings_vs_bare_cli": 202467
+    "repeated_reads_blocked": 182,
+    "estimated_savings_vs_bare_cli": 279967
   },
   "sessions": [
     {
@@ -2137,6 +2137,428 @@
         "writes_count": 54,
         "repeated_reads_blocked": 42,
         "anatomy_lookups": 24
+      }
+    },
+    {
+      "id": "session-2026-05-06-1017",
+      "started": "2026-05-06T02:17:23.067Z",
+      "ended": "2026-05-06T02:24:04.771Z",
+      "reads": [
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodCalendar.tsx",
+          "tokens_estimated": 2452,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodPicker.tsx",
+          "tokens_estimated": 1388,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 2426,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 2242,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/summary/WeeklySummary.tsx",
+          "tokens_estimated": 3136,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/summary/DailySummary.tsx",
+          "tokens_estimated": 1882,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/hooks/usePoints.ts",
+          "tokens_estimated": 175,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/hooks/useRewards.ts",
+          "tokens_estimated": 779,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/hooks/useSync.ts",
+          "tokens_estimated": 652,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/lib/api.ts",
+          "tokens_estimated": 366,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/Header.tsx",
+          "tokens_estimated": 967,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RedemptionHistory.tsx",
+          "tokens_estimated": 242,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/summary/SummaryPage.tsx",
+          "tokens_estimated": 450,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/gamification/StreakDisplay.tsx",
+          "tokens_estimated": 411,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/gamification/TransactionPopover.tsx",
+          "tokens_estimated": 727,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/summary/MoodTrendChart.tsx",
+          "tokens_estimated": 1094,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardCard.tsx",
+          "tokens_estimated": 1020,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/tasks/TaskItem.tsx",
+          "tokens_estimated": 2651,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 7275,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 220,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 342,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 51,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 229,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 0,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 32,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 277,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 72,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 106,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 75,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 62,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 2241,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodCalendar.tsx",
+          "tokens_estimated": 199,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 30,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodCalendar.tsx",
+          "tokens_estimated": 153,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodCalendar.tsx",
+          "tokens_estimated": 190,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 30335,
+        "output_tokens_estimated": 4279,
+        "reads_count": 19,
+        "writes_count": 16,
+        "repeated_reads_blocked": 12,
+        "anatomy_lookups": 12
+      }
+    },
+    {
+      "id": "session-2026-05-06-1017",
+      "started": "2026-05-06T02:17:23.067Z",
+      "ended": "2026-05-06T02:24:31.474Z",
+      "reads": [
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodCalendar.tsx",
+          "tokens_estimated": 2452,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodPicker.tsx",
+          "tokens_estimated": 1388,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 2426,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 2242,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/summary/WeeklySummary.tsx",
+          "tokens_estimated": 3136,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/summary/DailySummary.tsx",
+          "tokens_estimated": 1882,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/hooks/usePoints.ts",
+          "tokens_estimated": 175,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/hooks/useRewards.ts",
+          "tokens_estimated": 779,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/hooks/useSync.ts",
+          "tokens_estimated": 652,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/lib/api.ts",
+          "tokens_estimated": 366,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/Header.tsx",
+          "tokens_estimated": 967,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RedemptionHistory.tsx",
+          "tokens_estimated": 242,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/summary/SummaryPage.tsx",
+          "tokens_estimated": 450,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/gamification/StreakDisplay.tsx",
+          "tokens_estimated": 411,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/gamification/TransactionPopover.tsx",
+          "tokens_estimated": 727,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/summary/MoodTrendChart.tsx",
+          "tokens_estimated": 1094,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardCard.tsx",
+          "tokens_estimated": 1020,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/tasks/TaskItem.tsx",
+          "tokens_estimated": 2651,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 7275,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 220,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 342,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 51,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 229,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/rewards/RewardShop.tsx",
+          "tokens_estimated": 0,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 32,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 277,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 72,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 106,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 75,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 62,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 2241,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodCalendar.tsx",
+          "tokens_estimated": 199,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 30,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodCalendar.tsx",
+          "tokens_estimated": 153,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/mood/MoodCalendar.tsx",
+          "tokens_estimated": 190,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 30335,
+        "output_tokens_estimated": 4279,
+        "reads_count": 19,
+        "writes_count": 16,
+        "repeated_reads_blocked": 12,
+        "anatomy_lookups": 12
       }
     }
   ],
