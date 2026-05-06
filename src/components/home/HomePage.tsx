@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { motion } from 'framer-motion'
-import { ArrowRight, CheckCircle2, Clock3, Flame, Gift, PlusCircle, Smile, Wallet } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Circle, Clock3, Flame, Smile, Wallet } from 'lucide-react'
 import { db } from '../../db'
 import { usePointBalance } from '../../hooks/usePoints'
 import { useCurrentStreak } from '../../hooks/useStreaks'
@@ -11,21 +11,27 @@ interface HomePageProps {
   showToast: (message: string, type?: 'success' | 'error') => void
 }
 
-const moodLabels = ['专注', '期待', '活力', '平静', '放松']
-const priorityClass: Record<string, string> = {
-  hard: 'tone-danger',
-  medium: 'tone-blue',
-  easy: 'tone-green',
+const moodConfig: { label: string; tone: string }[] = [
+  { label: '专注', tone: 'tone-focus' },
+  { label: '期待', tone: 'tone-hope' },
+  { label: '活力', tone: 'tone-energy' },
+  { label: '平静', tone: 'tone-calm' },
+  { label: '放松', tone: 'tone-relax' },
+]
+
+const statusConfig: Record<number, { label: string; className: string }> = {
+  0: { label: '已完成', className: 'status-pill done' },
+  1: { label: '进行中', className: 'status-pill progress' },
 }
 
 function formatReward(task: Task) {
-  if (task.difficulty === 'hard') return '+ ¥35'
-  if (task.difficulty === 'medium') return '+ ¥20'
-  return '+ ¥10'
+  if (task.difficulty === 'hard') return '¥35'
+  if (task.difficulty === 'medium') return '¥20'
+  return '¥10'
 }
 
 function formatTime(index: number) {
-  return ['10:00 截止', '14:00 截止', '18:30 截止', '21:30 截止', '22:30 截止'][index] ?? '今天'
+  return ['10:00', '14:00', '18:30', '21:30', '22:30'][index] ?? '今天'
 }
 
 export function HomePage({ showToast: _showToast }: HomePageProps) {
@@ -61,19 +67,34 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
 
   return (
     <div className="dashboard-grid">
+      {/* ─── Left Column ─── */}
       <section className="main-column">
+        {/* Hero Welcome Card */}
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           className="hero-panel home-hero"
         >
           <div className="hero-copy">
-            <h1>忙碌的工作也要慢下来，<span>好好生活</span></h1>
-            <p>完成任务，收获奖励，记录心情，在点滴进步中遇见更从容的自己。</p>
+            <h1>
+              忙碌的工作也要慢下来，<br />
+              <span>好好生活 ☀️</span>
+            </h1>
+            <p>
+              完成任务，收获奖励，记录心情，
+              <br />
+              在点滴进步中更从容。
+            </p>
           </div>
-          <img className="hero-illustration desk-illustration" src="/illustrations/home-hero.png" alt="" aria-hidden="true" />
+          <img
+            className="hero-illustration desk-illustration"
+            src="/illustrations/home-hero.png"
+            alt=""
+            aria-hidden="true"
+          />
         </motion.section>
 
+        {/* Today's Focus Tasks Card */}
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -84,54 +105,73 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
             <div>
               <h2>今日焦点任务</h2>
             </div>
-            <span className="muted-label">{topLevelActive.length} 项任务</span>
+            <span className="muted-label" style={{ color: 'var(--color-text-tertiary)', fontSize: 13, fontWeight: 600 }}>
+              {topLevelActive.length} 项任务
+            </span>
           </div>
 
           <div className="table-list">
             {(recentTasks.length > 0 ? recentTasks : fallbackTasks).map((task, index) => {
               const isFallback = !('id' in task)
-              const title = isFallback ? task.title : task.title
-              const difficulty = isFallback ? task.difficulty : task.difficulty
+              const title = task.title
+              const mood = moodConfig[index % moodConfig.length]
+              const status = statusConfig[index] ?? { label: '未开始', className: 'status-pill' }
+              const isDone = index === 0
+
               return (
-                <div key={isFallback ? title : task.id} className="task-row">
-                  <CheckCircle2 className={index === 0 ? 'check-active' : 'check-muted'} size={23} />
+                <div key={isFallback ? title : (task as Task & { id: string }).id} className="task-row">
+                  {isDone ? (
+                    <CheckCircle2 className="check-active" size={20} />
+                  ) : (
+                    <Circle className="check-muted" size={20} />
+                  )}
                   <span className="task-title">{title}</span>
-                  <span className="row-time"><Clock3 size={15} />{formatTime(index)}</span>
-                  <span className={`soft-pill ${priorityClass[difficulty] ?? 'tone-blue'}`}>
-                    {moodLabels[index % moodLabels.length]}
+                  <span className="row-time">
+                    <Clock3 size={13} />
+                    {formatTime(index)}
                   </span>
-                  <span className="reward-text">{isFallback ? task.reward : formatReward(task as Task)}</span>
-                  <span className={index === 0 ? 'status-pill done' : 'status-pill'}>{index === 0 ? '已完成' : index === 1 ? '进行中' : '未开始'}</span>
+                  <span className={`soft-pill ${mood.tone}`}>{mood.label}</span>
+                  <span className="reward-text">
+                    {isFallback ? task.reward : formatReward(task as Task)}
+                  </span>
+                  <span className={status.className}>{status.label}</span>
                 </div>
               )
             })}
           </div>
 
           <button type="button" onClick={() => setCurrentPage('tasks')} className="text-link">
-            查看全部任务 <ArrowRight size={16} />
+            查看全部任务 <ArrowRight size={15} />
           </button>
         </motion.section>
 
+        {/* Reward Banner */}
         <section className="reward-banner">
           <div>
             <p>小小进步，值得奖励</p>
-            <span>你已经非常棒了，别忘了给自己一个大大的奖励。</span>
+            <span>你已经非常棒了！别忘了给自己一个大大的奖励～</span>
           </div>
           <button type="button" onClick={() => setCurrentPage('rewards')}>
-            去奖励金库逛逛 <Gift size={17} />
+            去奖励金库逛逛 🎁
           </button>
           <img className="pig-mini" src="/illustrations/reward-pig.png" alt="" aria-hidden="true" />
         </section>
       </section>
 
+      {/* ─── Right Column ─── */}
       <aside className="right-column">
-        <div className="metric-card">
+        {/* Today's Progress */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="metric-card"
+        >
           <div>
             <p>今日进度</p>
             <strong>{progressPercent}%</strong>
             <span>已完成 {completedCount} / {Math.max(total, 5)} 项任务</span>
           </div>
-          <svg width="92" height="92" viewBox="0 0 92 92" aria-hidden="true">
+          <svg width="88" height="88" viewBox="0 0 92 92" aria-hidden="true">
             <circle cx="46" cy="46" r="42" className="ring-bg" />
             <circle
               cx="46"
@@ -141,57 +181,90 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
               style={{ strokeDasharray: circumference, strokeDashoffset }}
             />
           </svg>
-        </div>
+        </motion.div>
 
-        <button type="button" onClick={() => setCurrentPage('rewards')} className="side-stat warm">
-          <Wallet size={27} />
+        {/* Accumulated Rewards */}
+        <motion.button
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.04 }}
+          type="button"
+          onClick={() => setCurrentPage('rewards')}
+          className="side-stat warm"
+        >
+          <Wallet size={24} />
           <div>
             <span>已累计奖励</span>
             <strong>¥ {balance}</strong>
             <p>可用余额 ¥{Math.max(0, balance - 67)}</p>
           </div>
-          <ArrowRight size={20} />
-        </button>
+          <ArrowRight size={18} style={{ marginLeft: 'auto', color: 'var(--color-text-tertiary)' }} />
+        </motion.button>
 
-        <div className="side-stat peach">
-          <Flame size={27} />
+        {/* Streak Days */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08 }}
+          className="side-stat peach"
+        >
+          <Flame size={24} style={{ color: 'var(--color-warm-400)' }} />
           <div>
             <span>连续完成天数</span>
             <strong>{streakLength || 12} 天</strong>
-            <p>继续加油，保持节奏</p>
+            <p>继续加油，保持节奏！</p>
           </div>
-        </div>
+        </motion.div>
 
-        <button type="button" onClick={() => setCurrentPage('mood')} className="side-stat blue">
-          <Smile size={27} />
+        {/* Mood Status */}
+        <motion.button
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+          type="button"
+          onClick={() => setCurrentPage('mood')}
+          className="side-stat blue"
+        >
+          <Smile size={24} style={{ color: '#6ba5c8' }} />
           <div>
             <span>心情状态</span>
             <strong>平静 😊</strong>
-            <p>很好，记得保持哦</p>
+            <p>很棒！记得保持哦～</p>
           </div>
-          <ArrowRight size={20} />
-        </button>
+          <ArrowRight size={18} style={{ marginLeft: 'auto', color: 'var(--color-text-tertiary)' }} />
+        </motion.button>
 
-        <div className="quick-card">
+        {/* Quick Add Task */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.16 }}
+          className="quick-card"
+        >
           <h3>快速添加任务 ✨</h3>
           <input readOnly value="" placeholder="输入任务名称..." />
           <div className="quick-grid">
             <span>¥ 20</span>
-            <span>平静</span>
+            <span>😊 平静</span>
           </div>
-          <button type="button" onClick={() => setCurrentPage('tasks')}>
-            添加任务 <PlusCircle size={17} />
+          <button
+            type="button"
+            onClick={() => setCurrentPage('tasks')}
+            className="primary-wide"
+            style={{ borderRadius: 12, fontSize: 14, fontWeight: 700 }}
+          >
+            添加任务 ⊕
           </button>
-        </div>
+        </motion.div>
       </aside>
     </div>
   )
 }
 
 const fallbackTasks = [
-  { title: '完成项目方案初稿', difficulty: 'hard', reward: '+ ¥35' },
-  { title: '与团队同步需求', difficulty: 'medium', reward: '+ ¥20' },
-  { title: '健身 30 分钟', difficulty: 'easy', reward: '+ ¥15' },
-  { title: '阅读 20 页', difficulty: 'easy', reward: '+ ¥10' },
-  { title: '睡前记录心情', difficulty: 'easy', reward: '+ ¥10' },
+  { title: '完成项目方案初稿', difficulty: 'hard' as const, reward: '¥35' },
+  { title: '与团队同步需求', difficulty: 'medium' as const, reward: '¥20' },
+  { title: '健身 30 分钟', difficulty: 'easy' as const, reward: '¥15' },
+  { title: '阅读 20 页', difficulty: 'easy' as const, reward: '¥10' },
+  { title: '睡前记录心情', difficulty: 'easy' as const, reward: '¥10' },
 ] as const

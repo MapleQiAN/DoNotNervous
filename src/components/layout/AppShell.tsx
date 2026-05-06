@@ -22,7 +22,7 @@ interface AppShellProps {
 
 const subtitles: Record<string, string> = {
   home: '愿你今天的每一步，都让自己更轻松一点。',
-  tasks: '愿你今天的每一步，都让自己更轻松一点。',
+  tasks: '一件一件来，每完成一步都是进步。',
   rewards: '每一份努力，都在为你换取更好的生活。',
   mood: '记录每一次波动，也发现让你变好的规律。',
   data: '把完成、奖励和心情放在一起看见。',

@@ -20,9 +20,10 @@ export function Header({ onSettingsClick, currentPage, setCurrentPage }: HeaderP
   return (
     <>
       <aside className="hidden lg:flex app-sidebar">
+        {/* Brand Block */}
         <div className="brand-lockup">
           <div className="brand-mark">
-            <Leaf size={30} />
+            <Leaf size={26} />
           </div>
           <div>
             <p className="brand-name">DoNotNervous</p>
@@ -30,6 +31,7 @@ export function Header({ onSettingsClick, currentPage, setCurrentPage }: HeaderP
           </div>
         </div>
 
+        {/* Navigation Menu */}
         <nav className="sidebar-nav" aria-label="主导航">
           {navItems.map(({ key, label, ariaLabel, Icon }) => {
             const active = currentPage === key
@@ -41,17 +43,18 @@ export function Header({ onSettingsClick, currentPage, setCurrentPage }: HeaderP
                 onClick={() => setCurrentPage(key)}
                 className={`sidebar-link ${active ? 'is-active' : ''}`}
               >
-                <Icon size={22} strokeWidth={active ? 2.6 : 1.9} />
+                <Icon size={20} strokeWidth={active ? 2.4 : 1.8} />
                 <span>{label}</span>
               </button>
             )
           })}
           <button type="button" onClick={onSettingsClick} className="sidebar-link">
-            <Settings size={22} strokeWidth={1.9} />
+            <Settings size={20} strokeWidth={1.8} />
             <span>设置</span>
           </button>
         </nav>
 
+        {/* Sidebar Wellness Card */}
         <div className="sidebar-note">
           <p>照顾好自己，</p>
           <p>才有能量走更远的路。</p>
@@ -60,6 +63,7 @@ export function Header({ onSettingsClick, currentPage, setCurrentPage }: HeaderP
         </div>
       </aside>
 
+      {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-white/95 backdrop-blur-md lg:hidden">
         <div className="mx-auto flex max-w-[640px] items-center justify-around px-2 pb-2 pt-1">
           {navItems.map(({ key, label, Icon }) => {
