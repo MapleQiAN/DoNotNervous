@@ -1,3 +1,4 @@
+import { AuthGuard } from './components/auth/AuthGuard'
 import { AppShell } from './components/layout/AppShell'
 import { TaskList } from './components/tasks/TaskList'
 import { SettingsDrawer } from './components/layout/SettingsDrawer'
@@ -13,7 +14,7 @@ function App() {
   const { toast, showToast } = useToast()
 
   return (
-    <>
+    <AuthGuard>
       <AppShell showToast={showToast}>
         <TaskList />
       </AppShell>
@@ -25,7 +26,7 @@ function App() {
       <MoodPicker showToast={showToast} />
       <Toast message={toast.message} type={toast.type} visible={toast.visible} />
       <Mascot />
-    </>
+    </AuthGuard>
   )
 }
 
