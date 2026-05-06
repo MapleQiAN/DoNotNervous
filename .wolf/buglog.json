@@ -32,6 +32,174 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-05T13:09:30.287Z"
+    },
+    {
+      "id": "bug-003",
+      "timestamp": "2026-05-05T16:27:07.756Z",
+      "error_message": "Null/undefined access in ",
+      "file": "src/domain/streaks.ts",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "ts"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T16:27:07.756Z"
+    },
+    {
+      "id": "bug-004",
+      "timestamp": "2026-05-05T16:27:14.938Z",
+      "error_message": "Significant refactor of ",
+      "file": "src/domain/__tests__/streaks.test.ts",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 3→4 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "ts"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T16:27:14.938Z"
+    },
+    {
+      "id": "bug-005",
+      "timestamp": "2026-05-05T16:27:50.883Z",
+      "error_message": "Missing await",
+      "file": "src/domain/__tests__/streaks.test.ts",
+      "root_cause": "Async call without await — returned Promise instead of value",
+      "fix": "Added await to async call",
+      "tags": [
+        "auto-detected",
+        "async-fix",
+        "ts"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T16:27:50.883Z"
+    },
+    {
+      "id": "bug-006",
+      "timestamp": "2026-05-05T16:30:41.700Z",
+      "error_message": "Type error",
+      "file": "src/hooks/useTaskActions.ts",
+      "root_cause": "Missing or incorrect type annotation",
+      "fix": "Added type assertion/annotation",
+      "tags": [
+        "auto-detected",
+        "type-fix",
+        "ts"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T16:30:41.700Z"
+    },
+    {
+      "id": "bug-007",
+      "timestamp": "2026-05-05T16:31:01.115Z",
+      "error_message": "Null/undefined access in ",
+      "file": "src/hooks/useStreaks.ts",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "ts"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T16:31:01.115Z"
+    },
+    {
+      "id": "bug-008",
+      "timestamp": "2026-05-05T16:36:23.899Z",
+      "error_message": "Incorrect value in code",
+      "file": "src/components/layout/AppShell.tsx",
+      "root_cause": "Had '../gamification/TransactionPopover'",
+      "fix": "Changed to '../gamification/StreakCalendar'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "tsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T16:36:23.899Z"
+    },
+    {
+      "id": "bug-009",
+      "timestamp": "2026-05-05T16:36:46.499Z",
+      "error_message": "Type error",
+      "file": "src/components/layout/AppShell.tsx",
+      "root_cause": "Missing or incorrect type annotation",
+      "fix": "Added type assertion/annotation",
+      "tags": [
+        "auto-detected",
+        "type-fix",
+        "tsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T16:36:46.499Z"
+    },
+    {
+      "id": "bug-010",
+      "timestamp": "2026-05-05T16:46:30.284Z",
+      "error_message": "Significant refactor of ",
+      "file": ".planning/STATE.md",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 3→3 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-05T16:46:30.284Z"
+    },
+    {
+      "id": "bug-011",
+      "timestamp": "2026-05-06T01:35:10.578Z",
+      "error_message": "Incorrect value in code",
+      "file": "src/App.tsx",
+      "root_cause": "Had './components/layout/AppShell'",
+      "fix": "Changed to './components/auth/AuthGuard'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "tsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-06T01:35:10.578Z"
+    },
+    {
+      "id": "bug-012",
+      "timestamp": "2026-05-06T10:01:33.000Z",
+      "error_message": "sync test 'returns empty changes after full sync' failed — expected 0 total changes but got 1",
+      "file": "server/src/routes/__tests__/sync.test.ts",
+      "root_cause": "Used new Date().toISOString() as lastSyncTimestamp from client-side, which can be earlier than server's updatedAt due to clock skew and network latency. The gt filter in pullChanges includes records updated after the timestamp.",
+      "fix": "Captured serverTimestamp from the previous sync response and used it as lastSyncTimestamp in the follow-up sync call, ensuring the timestamp is server-authoritative.",
+      "tags": ["sync", "timing", "integration-test"],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-06T10:01:33.000Z"
+    },
+    {
+      "id": "bug-013",
+      "timestamp": "2026-05-06T10:01:43.000Z",
+      "error_message": "getByLabelText(/email/i) and getByLabelText(/password/i) fail — label not associated with input",
+      "file": "src/components/auth/__tests__/LoginPage.test.tsx",
+      "root_cause": "LoginPage uses sibling label and input elements without htmlFor/id association. getByLabelText requires the label to wrap or reference the input via htmlFor.",
+      "fix": "Replaced getByLabelText queries with getByRole('textbox') for email and querySelector('input[type=password]') for password, which work without label association.",
+      "tags": ["testing-library", "accessibility", "react-test"],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-06T10:01:43.000Z"
     }
   ]
 }

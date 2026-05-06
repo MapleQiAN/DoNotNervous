@@ -3,6 +3,12 @@
 > Chronological action log. Hooks and AI append to this file automatically.
 > Old sessions are consolidated by the daemon weekly.
 
+| 10:02 | Created integration tests: server tasks CRUD (7), sync (4), frontend auth (4) — all 15 passing | server/src/routes/__tests__, src/components/auth/__tests__ | committed | ~15k |
+
+| 09:38 | Added SyncQueueEntry type, Dexie v6 syncQueue+lastSyncState tables, useSync hook, AuthenticatedApp wrapper in App.tsx | src/domain/types.ts, src/db/index.ts, src/hooks/useSync.ts, src/App.tsx | tsc clean, committed | ~600 |
+
+| 22:30 | Created LoginPage, AuthGuard, wired into App.tsx with AuthGuard wrapper | src/components/auth/*, src/App.tsx | tsc clean, committed | ~800 |
+
 ## Session: 2026-05-05 19:34
 
 | Time | Action | File(s) | Outcome | ~Tokens |
@@ -43,3 +49,128 @@
 | 21:10 | Edited .planning/ROADMAP.md | 1→2 lines | ~16 |
 | 21:10 | Session end: 9 writes across 5 files (test-setup.ts, ANIMATIONS.md, 08-01-SUMMARY.md, STATE.md, ROADMAP.md) | 8 reads | ~8259 tok |
 | 21:12 | Session end: 9 writes across 5 files (test-setup.ts, ANIMATIONS.md, 08-01-SUMMARY.md, STATE.md, ROADMAP.md) | 8 reads | ~8259 tok |
+| 21:39 | Created .planning/phases/09-advanced-streaks/09-RESEARCH.md | — | ~8999 |
+| 21:43 | Created .planning/phases/09-advanced-streaks/09-01-PLAN.md | — | ~3618 |
+| 21:45 | Created .planning/phases/09-advanced-streaks/09-02-PLAN.md | — | ~3674 |
+| 21:48 | Created .planning/phases/09-advanced-streaks/09-03-PLAN.md | — | ~5060 |
+| 00:11 | Created .planning/ROADMAP.md | — | ~2851 |
+| 00:12 | Session end: 14 writes across 9 files (test-setup.ts, ANIMATIONS.md, 08-01-SUMMARY.md, STATE.md, ROADMAP.md) | 29 reads | ~69694 tok |
+
+## Session: 2026-05-05 00:21
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 00:25 | Edited src/domain/types.ts | 7→9 lines | ~101 |
+| 00:25 | Edited src/db/index.ts | added 2 condition(s) | ~132 |
+| 00:25 | Edited src/db/__tests__/database.test.ts | expanded (+35 lines) | ~541 |
+| 00:26 | Edited src/db/__tests__/database.test.ts | 34→39 lines | ~377 |
+| 00:27 | Edited src/domain/streaks.ts | added optional chaining | ~995 |
+| 00:27 | Edited src/domain/__tests__/streaks.test.ts | added 1 import(s) | ~82 |
+| 00:27 | Edited src/domain/__tests__/streaks.test.ts | expanded (+145 lines) | ~1445 |
+| 00:28 | Edited src/db/__tests__/database.test.ts | added 1 condition(s) | ~50 |
+| 00:29 | Created src/db/__tests__/database.test.ts | — | ~817 |
+| 00:30 | Edited src/hooks/useStreaks.ts | added 1 import(s) | ~142 |
+| 00:30 | Edited src/hooks/useStreaks.ts | modified useStreakFreezes() | ~142 |
+| 00:30 | Edited src/hooks/useTaskActions.ts | added 1 import(s) | ~46 |
+| 00:30 | Edited src/hooks/useTaskActions.ts | added 1 condition(s) | ~130 |
+| 00:31 | Edited src/hooks/useStreaks.ts | added optional chaining | ~603 |
+| 00:31 | Edited src/hooks/__tests__/useStreaks.test.ts | added 1 import(s) | ~111 |
+| 00:31 | Edited src/hooks/__tests__/useStreaks.test.ts | modified for() | ~1375 |
+| 00:33 | Edited src/domain/streaks.ts | modified detectEarnBackOpportunity() | ~539 |
+| 00:33 | Edited src/hooks/__tests__/useStreaks.test.ts | added 1 condition(s) | ~281 |
+| 00:35 | Created src/components/gamification/StreakDisplay.tsx | — | ~411 |
+| 00:35 | Created src/components/gamification/StreakCalendar.tsx | — | ~1650 |
+| 00:35 | Edited src/stores/uiStore.ts | 14→16 lines | ~181 |
+| 00:35 | Edited src/stores/uiStore.ts | 2→3 lines | ~28 |
+| 00:36 | Edited src/stores/uiStore.ts | 2→3 lines | ~61 |
+| 00:36 | Edited src/components/layout/AppShell.tsx | added 1 import(s) | ~57 |
+| 00:36 | Edited src/components/layout/AppShell.tsx | 3→5 lines | ~92 |
+| 00:36 | Edited src/components/layout/AppShell.tsx | inline fix | ~24 |
+| 00:36 | Edited src/components/layout/AppShell.tsx | CSS: opacity, opacity, opacity | ~219 |
+| 00:37 | Session end: 27 writes across 12 files (types.ts, index.ts, database.test.ts, streaks.ts, streaks.test.ts) | 17 reads | ~34223 tok |
+| 00:46 | Created .planning/phases/09-advanced-streaks/09-01-SUMMARY.md | — | ~296 |
+| 00:46 | Created .planning/phases/09-advanced-streaks/09-02-SUMMARY.md | — | ~299 |
+| 00:46 | Created .planning/phases/09-advanced-streaks/09-03-SUMMARY.md | — | ~306 |
+| 00:46 | Edited .planning/STATE.md | inline fix | ~18 |
+| 00:46 | Edited .planning/STATE.md | 1→2 lines | ~33 |
+| 00:46 | Edited .planning/STATE.md | 3→3 lines | ~40 |
+| 00:46 | Edited .planning/STATE.md | 1→2 lines | ~17 |
+| 00:46 | Session end: 34 writes across 16 files (types.ts, index.ts, database.test.ts, streaks.ts, streaks.test.ts) | 17 reads | ~35304 tok |
+
+## Session: 2026-05-05 00:48
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 01:06 | Created docs/plans/2026-05-06-backend-persistence-design.md | — | ~1778 |
+| 01:12 | Created docs/plans/2026-05-06-backend-persistence-plan.md | — | ~12241 |
+| 01:19 | Created server/package.json | — | ~245 |
+| 01:19 | Created server/tsconfig.json | — | ~101 |
+| 01:19 | Created server/src/index.ts | — | ~14 |
+| 01:20 | npm install in server/ (95 packages) | server/ | ok |
+| 01:20 | Verified tsc --noEmit passes | server/ | ok |
+| 01:20 | Committed feat(server): scaffold server package with deps | server/ | 4 files, 3580 insertions |
+| 01:24 | Created docker-compose.yml | — | ~237 |
+| 01:24 | Created server/src/db/schema.ts | — | ~2001 |
+| 01:24 | Created server/drizzle.config.ts | — | ~78 |
+| 01:24 | Edited .gitignore | 1→4 lines | ~7 |
+| 01:27 | Created server/src/db/index.ts | — | ~75 |
+| 01:27 | Created server/src/index.ts | — | ~169 |
+| 01:27 | Created server/Dockerfile | — | ~39 |
+| 01:27 | Edited server/tsconfig.json | 3→4 lines | ~26 |
+| 01:29 | Committed Tasks 2-6: Docker Compose, Drizzle schema, DB connection, Hono entry, Dockerfile | ec16cb7 | ~1278 lines |
+| 01:33 | Created server/src/domain/auth.ts | — | ~349 |
+| 01:33 | Created server/src/domain/__tests__/auth.test.ts | — | ~306 |
+| 01:33 | Created server/src/middleware/auth.ts | — | ~152 |
+| 01:34 | Ran auth domain tests | server/ | 4/4 passed |
+| 01:34 | Verified tsc --noEmit passes | server/ | ok |
+| 01:34 | Committed feat(server): add auth domain and JWT middleware | bbc22e9 | 3 files, 84 insertions |
+| 01:36 | Created server/src/routes/auth.ts | — | ~628 |
+| 01:36 | Edited server/src/index.ts | added 1 import(s) | ~30 |
+| 01:36 | Edited server/src/index.ts | 3→5 lines | ~38 |
+| 01:36 | Installed @hono/zod-validator | server/ | ok |
+| 01:36 | Verified tsc --noEmit passes | server/ | ok |
+| 01:36 | Committed feat(server): add auth routes — register, login, refresh | 8dd752e | 4 files |
+| 01:41 | Created server/src/routes/tasks.ts | — | ~946 |
+| 01:41 | Created server/src/routes/tasks.ts | — | ~995 |
+| 01:42 | Created server/src/routes/mood.ts | — | ~734 |
+| 01:42 | Created server/src/routes/streaks.ts | — | ~638 |
+| 01:42 | Created server/src/routes/rewards.ts | — | ~903 |
+| 01:42 | Created server/src/routes/points.ts | — | ~498 |
+| 01:42 | Created server/src/routes/summaries.ts | — | ~1474 |
+| 01:44 | Created server/src/routes/mood.ts | — | ~805 |
+| 01:44 | Created server/src/routes/streaks.ts | — | ~670 |
+| 01:44 | Created server/src/routes/rewards.ts | — | ~933 |
+| 01:44 | Created server/src/routes/points.ts | — | ~528 |
+| 01:44 | Created server/src/routes/summaries.ts | — | ~1592 |
+| 01:45 | Fixed all 5 route files: added Hono Variables type, used destructuring for typed values | mood.ts, streaks.ts, rewards.ts, points.ts, summaries.ts | tsc --noEmit passes |
+| 01:45 | Task 11 complete — all CRUD routes verified | 5 new route files | 0 type errors |
+| 01:46 | Edited server/src/index.ts | expanded (+12 lines) | ~229 |
+| 09:29 | Created src/lib/api.ts | — | ~366 |
+| 09:29 | Created src/stores/authStore.ts | — | ~462 |
+| 09:30 | Created server/src/domain/sync.ts | — | ~1739 |
+| 09:30 | Created server/src/routes/sync.ts | — | ~315 |
+| 09:30 | Edited server/src/index.ts | added 1 import(s) | ~26 |
+| 09:30 | Edited server/src/index.ts | 1→2 lines | ~20 |
+| 09:31 | Created server/src/domain/sync.ts | — | ~1863 |
+| 09:35 | Created src/components/auth/LoginPage.tsx | — | ~935 |
+| 09:35 | Created src/components/auth/AuthGuard.tsx | — | ~342 |
+| 09:35 | Edited src/App.tsx | added 1 import(s) | ~32 |
+| 09:35 | Edited src/App.tsx | 15→15 lines | ~117 |
+| 09:39 | Edited src/db/index.ts | inline fix | ~44 |
+| 09:39 | Edited src/domain/types.ts | expanded (+8 lines) | ~51 |
+| 09:39 | Edited src/db/index.ts | 2→4 lines | ~66 |
+| 09:39 | Edited src/db/index.ts | 9→13 lines | ~125 |
+| 09:39 | Created src/hooks/useSync.ts | — | ~652 |
+| 09:40 | Edited src/App.tsx | modified AuthenticatedApp() | ~356 |
+| 09:42 | Session end: 49 writes across 26 files (2026-05-06-backend-persistence-design.md, 2026-05-06-backend-persistence-plan.md, package.json, tsconfig.json, index.ts) | 26 reads | ~48051 tok |
+| 10:00 | Created server/src/routes/__tests__/tasks.test.ts | — | ~765 |
+| 10:00 | Created server/src/routes/__tests__/sync.test.ts | — | ~919 |
+| 10:00 | Created src/components/auth/__tests__/LoginPage.test.tsx | — | ~661 |
+| 10:01 | Edited server/src/routes/__tests__/sync.test.ts | 51→53 lines | ~516 |
+| 10:02 | Created src/components/auth/__tests__/LoginPage.test.tsx | — | ~683 |
+| 10:05 | Session end: 54 writes across 29 files (2026-05-06-backend-persistence-design.md, 2026-05-06-backend-persistence-plan.md, package.json, tsconfig.json, index.ts) | 32 reads | ~54082 tok |
+
+## Session: 2026-05-06 10:16
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|

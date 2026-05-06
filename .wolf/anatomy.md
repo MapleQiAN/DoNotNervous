@@ -1,12 +1,14 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-05T13:10:23.754Z
-> Files: 159 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T02:02:20.707Z
+> Files: 201 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
-- `.gitignore` — Git ignore rules (~68 tok)
+- `.env.example` — Environment variable template (~45 tok)
+- `.gitignore` — Git ignore rules (~73 tok)
 - `CLAUDE.md` — OpenWolf (~57 tok)
+- `docker-compose.yml` — Docker Compose services (~237 tok)
 - `eslint.config.js` — ESLint flat configuration (~169 tok)
 - `index.html` — temp-scaffold (~98 tok)
 - `package-lock.json` — npm lock file (~44442 tok)
@@ -32,8 +34,8 @@
 - `config.json` (~92 tok)
 - `PROJECT.md` — DoNotNervous (~592 tok)
 - `REQUIREMENTS.md` — Requirements: DoNotNervous (~1862 tok)
-- `ROADMAP.md` — Roadmap: DoNotNervous (~2299 tok)
-- `STATE.md` — State: DoNotNervous (~1189 tok)
+- `ROADMAP.md` — Roadmap: DoNotNervous (~2673 tok)
+- `STATE.md` — State: DoNotNervous (~1224 tok)
 - `v1.0-MILESTONE-AUDIT.md` — Milestone v1.0 Audit Report (~3009 tok)
 
 ## .planning/phases/01-foundation-tasks-data-layer/
@@ -110,12 +112,27 @@
 - `08-CONTEXT.md` — Phase 8: Codebase Cleanup - Context (~700 tok)
 - `08-DISCUSSION-LOG.md` — Phase 8: Codebase Cleanup - Discussion Log (~441 tok)
 
+## .planning/phases/09-advanced-streaks/
+
+- `09-01-PLAN.md` — Trust Boundaries (~3392 tok)
+- `09-01-SUMMARY.md` — Plan 09-01: Earn-back Data Layer (~277 tok)
+- `09-02-PLAN.md` — StreakRecord: detectEarnBackOpportunity, applyEarnBackRecovery, computeCurrentStreak + 7 more (~3445 tok)
+- `09-02-SUMMARY.md` — Plan 09-02: Hook Integration Layer (~280 tok)
+- `09-03-PLAN.md` — computeCurrentStreak: useCurrentStreak, useStreakFreezes, checkAndApplyFreezes + 7 more (~4744 tok)
+- `09-03-SUMMARY.md` — Plan 09-03: UI Layer — Streak Calendar + Recovery Banner (~287 tok)
+- `09-RESEARCH.md` — Phase 9: Advanced Streak Features - Research (~8436 tok)
+
 ## .planning/research/
 
 - `ARCHITECTURE.md` — Architecture Patterns (~7370 tok)
 - `FEATURES.md` — Feature Landscape (~3390 tok)
 - `PITFALLS.md` — Domain Pitfalls: DoNotNervous (~6889 tok)
 - `STACK.md` — Technology Stack (~3881 tok)
+
+## docs/plans/
+
+- `2026-05-06-backend-persistence-design.md` — Backend & Data Persistence Design (~1667 tok)
+- `2026-05-06-backend-persistence-plan.md` — Backend & Data Persistence Implementation Plan (~11476 tok)
 
 ## public/animations/
 
@@ -124,9 +141,60 @@
 - `cat-idle.json` (~555 tok)
 - `cat-sleepy.json` (~790 tok)
 
+## server/
+
+- `Dockerfile` — Docker container definition (~39 tok)
+- `drizzle.config.ts` (~78 tok)
+- `package-lock.json` — npm lock file (~3500 tok)
+- `package.json` — donotnervous-server manifest (~454 tok)
+- `tsconfig.json` — TypeScript config for server (~107 tok)
+
+## server/drizzle/
+
+- `0000_blushing_greymalkin.sql` — Initial migration SQL (~800 tok)
+
+## server/src/
+
+- `index.ts` — API routes: GET health + 8 route mounts including sync (~378 tok)
+
+## server/src/db/
+
+- `index.ts` — Exports db — drizzle-orm/postgres-js connection (~75 tok)
+- `schema.ts` — Exports users, tasks, pointLedger, streakRecords + 5 more (~2001 tok)
+
+## server/src/domain/
+
+- `auth.ts` — Exports hashPassword, verifyPassword, signAccessToken, signRefreshToken, verifyToken (~349 tok)
+- `sync.ts` — Strip identity columns from a data object so they are not overwritten (~1863 tok)
+
+## server/src/domain/__tests__/
+
+- `auth.test.ts` — Declares hash (~306 tok)
+
+## server/src/middleware/
+
+- `auth.ts` — Exports authMiddleware (~152 tok)
+
+## server/src/routes/
+
+- `auth.ts` — API routes: POST (3 endpoints) (~628 tok)
+- `mood.ts` — API routes: GET, POST, PATCH, DELETE (10 endpoints) (~805 tok)
+- `points.ts` — API routes: GET, POST (6 endpoints) (~528 tok)
+- `rewards.ts` — API routes: GET, POST, PATCH, DELETE (12 endpoints) (~933 tok)
+- `streaks.ts` — API routes: GET, PUT, DELETE (8 endpoints) (~670 tok)
+- `summaries.ts` — API routes: GET, PUT, DELETE (16 endpoints) (~1592 tok)
+- `sync.ts` — API routes: POST, GET (4 endpoints) (~315 tok)
+- `tasks.ts` — Tasks CRUD routes: GET (list + single), POST, PATCH, DELETE (~650 tok)
+- `tasks.ts` — API routes: GET, POST, PATCH, DELETE (10 endpoints) (~995 tok)
+
+## server/src/routes/__tests__/
+
+- `sync.test.ts` — Declares BASE (~937 tok)
+- `tasks.test.ts` — Declares BASE (~765 tok)
+
 ## src/
 
-- `App.tsx` — App (~294 tok)
+- `App.tsx` — AuthenticatedApp (~356 tok)
 - `index.css` — Styles: 5 rules, 24 vars, 2 layers (~7275 tok)
 - `main.tsx` (~66 tok)
 - `test-setup.ts` (~46 tok)
@@ -134,6 +202,15 @@
 ## src/components/__tests__/
 
 - `smoke.test.tsx` — variants (~1325 tok)
+
+## src/components/auth/
+
+- `AuthGuard.tsx` — AuthGuard (~342 tok)
+- `LoginPage.tsx` — LoginPage — renders form (~935 tok)
+
+## src/components/auth/__tests__/
+
+- `LoginPage.test.tsx` — Mock the API module (~683 tok)
 
 ## src/components/common/
 
@@ -148,7 +225,8 @@
 ## src/components/gamification/
 
 - `PointBadge.tsx` — AnimatedNumber — uses useEffect (~353 tok)
-- `StreakDisplay.tsx` — StreakDisplay (~150 tok)
+- `StreakCalendar.tsx` — MONTH_NAMES (~1650 tok)
+- `StreakDisplay.tsx` — StreakDisplay (~411 tok)
 - `TransactionPopover.tsx` — TransactionPopover — uses useEffect (~727 tok)
 
 ## src/components/gamification/__tests__/
@@ -162,7 +240,7 @@
 
 ## src/components/layout/
 
-- `AppShell.tsx` — subtitles — uses useEffect (~1104 tok)
+- `AppShell.tsx` — subtitles (~1374 tok)
 - `Header.tsx` — navItems — renders chart (~967 tok)
 - `SettingsDrawer.tsx` — SettingsDrawer (~1082 tok)
 
@@ -205,11 +283,11 @@
 
 ## src/db/
 
-- `index.ts` — Exports db (~353 tok)
+- `index.ts` — Exports db (~515 tok)
 
 ## src/db/__tests__/
 
-- `database.test.ts` — API routes: GET (1 endpoints) (~440 tok)
+- `database.test.ts` — API routes: GET (3 endpoints) (~817 tok)
 - `task-crud.test.ts` — Declares task (~950 tok)
 - `task-hierarchy.test.ts` — Declares parent (~1080 tok)
 
@@ -218,17 +296,17 @@
 - `mood.ts` — Zod schemas: moodCreateSchema (~200 tok)
 - `points.ts` — Exports POINT_VALUES, STREAK_TIERS, calculateMultiplier, calculatePoints (~250 tok)
 - `reward.ts` — Zod schemas: rewardCreateSchema, rewardEditSchema (~190 tok)
-- `streaks.ts` — Exports STREAK_MILESTONES, getStreakMilestone (~123 tok)
+- `streaks.ts` — Exports STREAK_MILESTONES, getStreakMilestone, EARN_BACK_WINDOW_HOURS, EarnBackOpportunity + 2 more (~997 tok)
 - `summary.ts` — D-09: Mood emoji to numeric score mapping (~1924 tok)
 - `task.ts` — Zod schemas: taskCreateSchema (~138 tok)
-- `types.ts` — Exports TaskType, TaskStatus, TaskDifficulty, Task + 9 more (~680 tok)
+- `types.ts` — Exports TaskType, TaskStatus, TaskDifficulty, Task + 10 more (~771 tok)
 
 ## src/domain/__tests__/
 
 - `mood.test.ts` — Type-level test helper: forces compile error if type doesn't match (~1203 tok)
 - `points.test.ts` — Declares result (~910 tok)
 - `reward.test.ts` — Type-level test helper: forces compile error if type doesn't match (~1484 tok)
-- `streaks.test.ts` — Declares morning (~692 tok)
+- `streaks.test.ts` — API routes: GET (2 endpoints) (~2068 tok)
 - `task.test.ts` — Declares result (~662 tok)
 
 ## src/hooks/
@@ -237,9 +315,10 @@
 - `useMoodEntries.ts` — Exports createMoodEntry, useMoodEntries, useMoodEntriesForTask, useMoodEntriesForDate (~487 tok)
 - `usePoints.ts` — Exports usePointBalance, useRecentTransactions (~175 tok)
 - `useRewards.ts` — Exports createReward, updateReward, deleteReward, redeemReward + 3 more (~779 tok)
-- `useStreaks.ts` — Compute the current streak length by walking backward from today (~1189 tok)
+- `useStreaks.ts` — Compute the current streak length by walking backward from today (~1852 tok)
 - `useSummary.ts` — Compute daily summary for a given day and write to db.dailySummaries (upsert). (~767 tok)
-- `useTaskActions.ts` — Exports createTask, completeTask, uncompleteTask, archiveTask + 3 more (~1228 tok)
+- `useSync.ts` — API routes: GET (1 endpoints) (~652 tok)
+- `useTaskActions.ts` — Exports createTask, completeTask, uncompleteTask, archiveTask + 3 more (~1343 tok)
 - `useTaskCount.ts` — Exports useTaskCount (~64 tok)
 - `useToast.ts` — Exports useToast (~278 tok)
 
@@ -248,11 +327,12 @@
 - `useExportImport.test.ts` — Declares mockBlob (~891 tok)
 - `useMoodEntries.test.ts` — Declares entry (~570 tok)
 - `useRewards.test.ts` — Declares reward (~1228 tok)
-- `useStreaks.test.ts` — Declares task (~3525 tok)
+- `useStreaks.test.ts` — Declares task (~4300 tok)
 - `useSummary.test.ts` — Declares emojis (~7028 tok)
 
 ## src/lib/
 
+- `api.ts` — Exports api (~366 tok)
 - `celebrate.ts` — Exports celebrate, celebrateTaskComplete, celebrateMoodLog, celebrateRedemption, celebrateStreakMilestone (~233 tok)
 - `cn.ts` — Exports cn (~48 tok)
 - `date-utils.ts` — Exports toDayKey, daysAgo (~71 tok)
@@ -260,6 +340,7 @@
 
 ## src/stores/
 
+- `authStore.ts` — Exports useAuthStore (~462 tok)
 - `filterStore.ts` — Exports useFilterStore (~168 tok)
 - `mascotStore.ts` — Exports useMascotStore (~459 tok)
-- `uiStore.ts` — Exports useUIStore (~386 tok)
+- `uiStore.ts` — Exports useUIStore (~439 tok)
