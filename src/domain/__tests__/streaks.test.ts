@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { getStreakMilestone, STREAK_MILESTONES, detectEarnBackOpportunity, applyEarnBackRecovery, EARN_BACK_WINDOW_HOURS } from '../streaks'
+import { getStreakMilestone, STREAK_MILESTONES, detectEarnBackOpportunity, applyEarnBackRecovery } from '../streaks'
 import { toDayKey, daysAgo } from '../../lib/date-utils'
 import { db } from '../../db'
 
@@ -130,7 +130,6 @@ describe('detectEarnBackOpportunity', () => {
   })
 
   it('returns opportunity with correct data when gap exists within 24h window', async () => {
-    const gapDayStart = new Date('2026-01-09T12:00:00')
     const now = new Date('2026-01-10T06:00:00') // 18h after gap day noon, within 24h
 
     await db.streakRecords.put({

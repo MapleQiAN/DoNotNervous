@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Flame, Sparkles } from 'lucide-react'
 import { useCurrentStreak, useEarnBackOpportunity } from '../../hooks/useStreaks'
 

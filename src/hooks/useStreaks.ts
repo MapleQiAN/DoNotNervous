@@ -4,7 +4,7 @@ import { db } from '../db'
 import { toDayKey } from '../lib/date-utils'
 import { useMascotStore } from '../stores/mascotStore'
 import { celebrateStreakMilestone } from '../lib/celebrate'
-import { detectEarnBackOpportunity, applyEarnBackRecovery, type EarnBackOpportunity } from '../domain/streaks'
+import { detectEarnBackOpportunity, type EarnBackOpportunity } from '../domain/streaks'
 
 /**
  * Compute the current streak length by walking backward from today

@@ -18,7 +18,7 @@ const TABLE_MAP: Record<string, string> = {
 
 export function useSync() {
   const accessToken = useAuthStore((s) => s.accessToken)
-  const intervalRef = useRef<ReturnType<typeof setInterval>>()
+  const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined)
 
   useEffect(() => {
     if (!accessToken) return
@@ -41,7 +41,7 @@ export function useSync() {
         const result = await api.post<{ serverTimestamp: string; changes: Record<string, unknown[]> }>(
           '/sync',
           { lastSyncTimestamp, changes },
-          accessToken,
+          accessToken ?? undefined,
         )
 
         if (queue.length > 0) {

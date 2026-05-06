@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { db } from '../../db'
 import { createTask, completeTask, uncompleteTask } from '../useTaskActions'
 import { checkAndApplyFreezes, computeCurrentStreak } from '../useStreaks'
@@ -379,7 +379,6 @@ describe('completeTask point awarding and streak tracking', () => {
 
     it('completeTask does not apply earn-back when no opportunity exists', async () => {
       // Active streak — no gap
-      const todayKey = toDayKey(new Date())
       await db.streakRecords.put({
         date: daysAgo(1),
         completedTaskIds: ['seeded'],
