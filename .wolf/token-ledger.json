@@ -2,14 +2,14 @@
   "version": 1,
   "created_at": "2026-05-05T11:09:47.569Z",
   "lifetime": {
-    "total_tokens_estimated": 274434,
-    "total_reads": 159,
-    "total_writes": 204,
-    "total_sessions": 7,
+    "total_tokens_estimated": 304432,
+    "total_reads": 169,
+    "total_writes": 216,
+    "total_sessions": 8,
     "anatomy_hits": 110,
-    "anatomy_misses": 17,
-    "repeated_reads_blocked": 158,
-    "estimated_savings_vs_bare_cli": 202467
+    "anatomy_misses": 25,
+    "repeated_reads_blocked": 168,
+    "estimated_savings_vs_bare_cli": 218451
   },
   "sessions": [
     {
@@ -2137,6 +2137,160 @@
         "writes_count": 54,
         "repeated_reads_blocked": 42,
         "anatomy_lookups": 24
+      }
+    },
+    {
+      "id": "session-2026-05-06-1056",
+      "started": "2026-05-06T02:56:58.409Z",
+      "ended": "2026-05-06T03:16:02.118Z",
+      "reads": [
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 2664,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/AppShell.tsx",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/App.tsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/Header.tsx",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 8532,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/Header.tsx",
+          "tokens_estimated": 1006,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 2669,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/AppShell.tsx",
+          "tokens_estimated": 57,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 27,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 44,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 2664,
+        "output_tokens_estimated": 12335,
+        "reads_count": 5,
+        "writes_count": 6,
+        "repeated_reads_blocked": 5,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-06-1056",
+      "started": "2026-05-06T02:56:58.409Z",
+      "ended": "2026-05-06T03:19:38.828Z",
+      "reads": [
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 2664,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/AppShell.tsx",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/App.tsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/Header.tsx",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "E:/DoNotNervous/src/index.css",
+          "tokens_estimated": 8532,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/Header.tsx",
+          "tokens_estimated": 1006,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 2669,
+          "action": "create"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/layout/AppShell.tsx",
+          "tokens_estimated": 57,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 27,
+          "action": "edit"
+        },
+        {
+          "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+          "tokens_estimated": 44,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 2664,
+        "output_tokens_estimated": 12335,
+        "reads_count": 5,
+        "writes_count": 6,
+        "repeated_reads_blocked": 5,
+        "anatomy_lookups": 0
       }
     }
   ],

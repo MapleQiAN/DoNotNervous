@@ -184,7 +184,11 @@
       "file": "server/src/routes/__tests__/sync.test.ts",
       "root_cause": "Used new Date().toISOString() as lastSyncTimestamp from client-side, which can be earlier than server's updatedAt due to clock skew and network latency. The gt filter in pullChanges includes records updated after the timestamp.",
       "fix": "Captured serverTimestamp from the previous sync response and used it as lastSyncTimestamp in the follow-up sync call, ensuring the timestamp is server-authoritative.",
-      "tags": ["sync", "timing", "integration-test"],
+      "tags": [
+        "sync",
+        "timing",
+        "integration-test"
+      ],
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-06T10:01:33.000Z"
@@ -196,10 +200,30 @@
       "file": "src/components/auth/__tests__/LoginPage.test.tsx",
       "root_cause": "LoginPage uses sibling label and input elements without htmlFor/id association. getByLabelText requires the label to wrap or reference the input via htmlFor.",
       "fix": "Replaced getByLabelText queries with getByRole('textbox') for email and querySelector('input[type=password]') for password, which work without label association.",
-      "tags": ["testing-library", "accessibility", "react-test"],
+      "tags": [
+        "testing-library",
+        "accessibility",
+        "react-test"
+      ],
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-06T10:01:43.000Z"
+    },
+    {
+      "id": "bug-014",
+      "timestamp": "2026-05-06T03:07:47.677Z",
+      "error_message": "CSS fix: tasks",
+      "file": "src/components/layout/AppShell.tsx",
+      "root_cause": "tasks: '愿你今天的每一步，都让自己更轻松一点。', → '一件一件来，每完成一步都是进步。',",
+      "fix": "Changed tasks: '愿你今天的每一步，都让自己更轻松一点。', → '一件一件来，每完成一步都是进步。',",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "tsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-06T03:07:47.677Z"
     }
   ]
 }
