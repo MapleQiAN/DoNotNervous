@@ -380,3 +380,47 @@
 
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
+| 18:21 | Edited src/components/layout/AppShell.tsx | removed 13 lines | ~23 |
+| 18:33 | Edited src/index.css | 7→7 lines | ~81 |
+| 18:33 | Edited src/index.css | 6→6 lines | ~42 |
+| 18:33 | Edited src/index.css | 6→6 lines | ~50 |
+| 18:33 | Edited src/index.css | 4→4 lines | ~16 |
+
+## Session: 2026-05-06 18:40
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 18:41 | Edited src/components/auth/AuthGuard.tsx | removed 43 lines | ~65 |
+
+## Session: 2026-05-06 18:42
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 18:44 | Edited src/App.tsx | added 1 import(s) | ~32 |
+| 18:44 | Edited src/App.tsx | modified TasksPage() | ~122 |
+| 18:44 | Edited src/components/mood/MoodCalendar.tsx | 2→3 lines | ~46 |
+| 18:44 | Edited src/components/mood/MoodCalendar.tsx | 2→3 lines | ~17 |
+| 18:44 | Edited src/components/mood/MoodCalendar.tsx | inline fix | ~40 |
+| 18:44 | Edited src/components/mood/MoodCalendar.tsx | inline fix | ~6 |
+| 18:45 | Edited src/components/rewards/RewardShop.tsx | 2→2 lines | ~48 |
+| 18:45 | Edited src/components/rewards/RewardShop.tsx | 4→4 lines | ~58 |
+| 18:45 | Edited src/components/rewards/RewardShop.tsx | 5→5 lines | ~58 |
+| 18:45 | Edited src/components/rewards/RewardShop.tsx | inline fix | ~6 |
+
+## Session: 2026-05-06 18:58
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 22:51 | Edited src/domain/reward.ts | 5→6 lines | ~91 |
+| 22:52 | Edited src/domain/types.ts | 8→9 lines | ~43 |
+| 22:52 | Edited src/hooks/useRewards.ts | 8→9 lines | ~65 |
+| 22:52 | Edited src/components/rewards/RewardShop.tsx | added 1 import(s) | ~48 |
+| 22:52 | Created src/components/rewards/rewardIcons.ts | — | ~179 |
+| 22:53 | Edited src/components/rewards/RewardShop.tsx | 1→2 lines | ~40 |
+| 22:53 | Edited src/components/rewards/RewardShop.tsx | CSS: icon | ~61 |
+| 22:53 | Edited src/components/rewards/RewardShop.tsx | expanded (+16 lines) | ~273 |
+| 22:53 | Edited src/components/rewards/RewardShop.tsx | added nullish coalescing | ~83 |
+| 22:54 | Edited src/components/rewards/RewardCard.tsx | 3→2 lines | ~25 |
+| 22:54 | Edited src/components/rewards/RewardCard.tsx | CSS: categoryTone | ~54 |
+| 22:54 | Edited src/components/rewards/RewardCard.tsx | 15→14 lines | ~128 |
+| 22:55 | Edited src/index.css | expanded (+41 lines) | ~252 |

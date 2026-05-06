@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T10:18:04.996Z
-> Files: 9 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T14:55:36.988Z
+> Files: 16 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
@@ -77,8 +77,8 @@
 
 ## src/
 
-- `App.tsx` — TasksPage (~683 tok)
-- `index.css` — Styles: 5 rules, 29 vars (~16954 tok)
+- `App.tsx` — fadeUp (~742 tok)
+- `index.css` — Styles: 5 rules, 29 vars (~17252 tok)
 
 ## src/components/__tests__/
 
@@ -86,6 +86,7 @@
 
 ## src/components/auth/
 
+- `AuthGuard.tsx` — AuthGuard (~65 tok)
 
 ## src/components/auth/__tests__/
 
@@ -105,7 +106,7 @@
 
 ## src/components/layout/
 
-- `AppShell.tsx` — subtitles (~1172 tok)
+- `AppShell.tsx` — subtitles (~1065 tok)
 - `Header.tsx` — navItems (~987 tok)
 
 ## src/components/mascot/
@@ -113,10 +114,13 @@
 
 ## src/components/mood/
 
-- `MoodCalendar.tsx` — MoodCalendar (~2842 tok)
+- `MoodCalendar.tsx` — MoodCalendar (~2903 tok)
 
 ## src/components/rewards/
 
+- `RewardCard.tsx` — categoryTone (~697 tok)
+- `rewardIcons.ts` — Exports rewardIconKeys, RewardIconKey, rewardIconLabel, getRewardIconSrc, incomeTypeIcon (~179 tok)
+- `RewardShop.tsx` — categories (~3774 tok)
 
 ## src/components/summary/
 
@@ -136,12 +140,15 @@
 
 ## src/domain/
 
+- `reward.ts` — Zod schemas: rewardCreateSchema, rewardEditSchema (~200 tok)
+- `types.ts` — Exports TaskType, TaskStatus, TaskDifficulty, Task + 10 more (~775 tok)
 
 ## src/domain/__tests__/
 
 
 ## src/hooks/
 
+- `useRewards.ts` — Exports createReward, updateReward, deleteReward, redeemReward + 3 more (~786 tok)
 
 ## src/hooks/__tests__/
 

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthGuard } from './components/auth/AuthGuard'
 import { AppShell } from './components/layout/AppShell'
@@ -15,15 +16,20 @@ import { useToast } from './hooks/useToast'
 import { useSync } from './hooks/useSync'
 import { useUIStore } from './stores/uiStore'
 
+const fadeUp = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+}
+
 function TasksPage() {
   return (
     <div className="dashboard-grid task-route">
-      <section className="main-column">
+      <motion.section className="main-column" {...fadeUp}>
         <TaskList />
-      </section>
-      <aside className="right-column">
+      </motion.section>
+      <motion.aside className="right-column" {...fadeUp} transition={{ delay: 0.06 }}>
         <TaskDetailPanel />
-      </aside>
+      </motion.aside>
     </div>
   )
 }

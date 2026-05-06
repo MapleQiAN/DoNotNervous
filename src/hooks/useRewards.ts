@@ -12,6 +12,7 @@ export async function createReward(input: unknown): Promise<Reward> {
     name: validated.name,
     description: validated.description,
     pointCost: validated.pointCost,
+    icon: validated.icon,
     active: true,
     createdAt: new Date(),
   }

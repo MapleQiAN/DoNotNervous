@@ -1,17 +1,16 @@
 import { motion } from 'framer-motion'
-import { Coffee, BookOpen, Luggage, Heart, Music, Star, type LucideIcon } from 'lucide-react'
 import type { Reward } from '../../domain/types'
 
-const categoryConfig: Record<string, { icon: LucideIcon; bg: string; color: string }> = {
-  '生活享受': { icon: Coffee, bg: 'warm', color: '#c07a32' },
-  '学习成长': { icon: BookOpen, bg: 'blue', color: '#4a82b8' },
-  '旅行体验': { icon: Luggage, bg: 'orange', color: '#d08040' },
-  '健康身心': { icon: Heart, bg: 'rose', color: '#c06060' },
-  '兴趣爱好': { icon: Music, bg: 'purple', color: '#7c68b8' },
-  '其他': { icon: Star, bg: 'sage', color: '#5a9060' },
+const categoryTone: Record<string, string> = {
+  '生活享受': 'warm',
+  '学习成长': 'blue',
+  '旅行体验': 'orange',
+  '健康身心': 'rose',
+  '兴趣爱好': 'purple',
+  '其他': 'sage',
 }
 
-const defaultConfig = { icon: Star, bg: 'sage', color: '#5a9060' }
+const defaultTone = 'sage'
 
 interface RewardCardProps {
   reward: Reward
@@ -23,8 +22,7 @@ interface RewardCardProps {
 export function RewardCard({ reward, balance, onDelete, onEdit }: RewardCardProps) {
   const progressPercent = Math.min(100, Math.round((balance / reward.pointCost) * 100))
   const currentSaved = Math.min(balance, reward.pointCost)
-  const config = categoryConfig[reward.description] ?? defaultConfig
-  const Icon = config.icon
+  const tone = categoryTone[reward.description] ?? defaultTone
 
   return (
     <motion.div
@@ -35,8 +33,8 @@ export function RewardCard({ reward, balance, onDelete, onEdit }: RewardCardProp
       className="reward-item group"
     >
       {/* Icon */}
-      <div className={`reward-icon tone-${config.bg}`}>
-        <Icon size={22} strokeWidth={1.8} style={{ color: config.color }} />
+      <div className={`reward-icon tone-${tone}`}>
+        <img src={`/icons/${reward.icon || 'gift'}.png`} alt="" className="reward-icon-img" />
       </div>
 
       {/* Title & subtitle */}

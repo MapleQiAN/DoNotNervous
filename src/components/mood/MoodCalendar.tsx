@@ -80,6 +80,7 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
   return (
     <div className="dashboard-grid mood-route">
       <section className="main-column">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <div className="top-tabs">
           <button type="button" onClick={() => navigate('/mood')} className={activeView === 'mood' ? 'is-active' : ''}>心情记录</button>
           <button type="button" onClick={() => navigate('/data')} className={activeView === 'data' ? 'is-active' : ''}>数据复盘</button>
@@ -160,9 +161,10 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
             <button type="button" className="text-link">查看更多记录 <ArrowRight size={16} /></button>
           )}
         </section>
+        </motion.div>
       </section>
 
-      <aside className="right-column">
+      <motion.aside className="right-column" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}>
         <section className="side-panel mood-write">
           <h2>写下今天的心情吧</h2>
           <p>记录情绪，梳理想法，让自己被看见。</p>
@@ -216,7 +218,7 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
             <p>你已经做得很棒了。继续关注让你充实的事，情绪会越来越稳。</p>
           </div>
         </section>
-      </aside>
+      </motion.aside>
     </div>
   )
 }

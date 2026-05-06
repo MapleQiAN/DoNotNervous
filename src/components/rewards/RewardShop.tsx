@@ -5,6 +5,7 @@ import {
   Gift, Plus, Wallet, Trophy, Coins, Sparkles,
   ArrowRight, ChevronDown,
 } from 'lucide-react'
+import { rewardIcons, type RewardIconKey } from './rewardIcons'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../../db'
 import { useMascotStore } from '../../stores/mascotStore'
@@ -32,6 +33,7 @@ export function RewardShop({ showToast }: RewardShopProps) {
   const [newDesc, setNewDesc] = useState('')
   const [newCost, setNewCost] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('生活享受')
+  const [selectedIcon, setSelectedIcon] = useState<RewardIconKey>('gift')
 
   async function handleCreate() {
     const cost = parseInt(newCost, 10)
@@ -40,10 +42,11 @@ export function RewardShop({ showToast }: RewardShopProps) {
       return
     }
     try {
-      await createReward({ name: newName.trim(), description: selectedCategory, pointCost: cost })
+      await createReward({ name: newName.trim(), description: selectedCategory, pointCost: cost, icon: selectedIcon })
       setNewName('')
       setNewDesc('')
       setNewCost('')
+      setSelectedIcon('gift')
       showToast('奖励创建成功')
     } catch {
       showToast('创建失败', 'error')
@@ -142,7 +145,7 @@ export function RewardShop({ showToast }: RewardShopProps) {
         </motion.section>
 
         {/* Stat Cards */}
-        <section className="stats-strip">
+        <motion.section className="stats-strip" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
           <StatCard
             icon={<Trophy size={24} strokeWidth={1.8} />}
             label="累计奖励"
@@ -171,10 +174,10 @@ export function RewardShop({ showToast }: RewardShopProps) {
             note={`已兑换 ${redemptions.length} 次奖励`}
             tone="rose"
           />
-        </section>
+        </motion.section>
 
         {/* Two-column content */}
-        <div className="reward-columns">
+        <motion.div className="reward-columns" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           {/* Reward List */}
           <section className="content-card">
             <div className="section-title-row">
@@ -231,7 +234,9 @@ export function RewardShop({ showToast }: RewardShopProps) {
               ) : (
                 recentIncome?.map((row) => (
                   <div key={row.id} className="income-row">
-                    <span className="income-icon green">💰</span>
+                    <span className="income-icon green">
+                      <img src={`/icons/${incomeTypeIcon[row.type] ?? 'piggy_bank'}.png`} alt="" />
+                    </span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div className="income-title-row">
                         <p>{row.reason}</p>
@@ -259,11 +264,11 @@ export function RewardShop({ showToast }: RewardShopProps) {
               查看全部记录 <ArrowRight size={15} />
             </button>
           </section>
-        </div>
+        </motion.div>
       </section>
 
       {/* Right Panel */}
-      <aside className="right-column">
+      <motion.aside className="right-column" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}>
         <section className="side-panel form-panel">
           <h2>创建新奖励 <Sparkles size={18} className="inline ml-1 text-amber-500" /></h2>
           <label>
@@ -296,6 +301,22 @@ export function RewardShop({ showToast }: RewardShopProps) {
             ))}
           </div>
           <label>
+            <span>选择图标</span>
+          </label>
+          <div className="icon-picker-grid">
+            {rewardIconKeys.map((key) => (
+              <button
+                key={key}
+                type="button"
+                className={`icon-picker-item${selectedIcon === key ? ' is-active' : ''}`}
+                onClick={() => setSelectedIcon(key)}
+                title={rewardIconLabel[key]}
+              >
+                <img src={`/icons/${key}.png`} alt={rewardIconLabel[key]} />
+              </button>
+            ))}
+          </div>
+          <label>
             <span>奖励描述（可选）</span>
             <div className="input-with-count">
               <textarea value={newDesc} onChange={(e) => setNewDesc(e.target.value.slice(0, 100))} placeholder="描述一下这个奖励对你的意义吧～" rows={4} />
@@ -314,7 +335,7 @@ export function RewardShop({ showToast }: RewardShopProps) {
           </div>
           <Gift size={52} strokeWidth={1.2} className="text-sage-300 shrink-0" />
         </section>
-      </aside>
+      </motion.aside>
 
       {redeemTarget && (
         <ConfirmDialog

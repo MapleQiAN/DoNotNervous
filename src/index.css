@@ -703,11 +703,11 @@
   /* ─── Reward Banner ─── */
   .reward-banner {
     position: relative;
-    min-height: clamp(72px, 9dvh, 118px);
+    min-height: clamp(80px, 10dvh, 128px);
     justify-content: space-between;
     overflow: hidden;
-    margin: 0;
-    padding: clamp(12px, 2dvh, 22px) clamp(112px, 8.8vw, 168px) clamp(12px, 2dvh, 22px) clamp(44px, 3.4vw, 68px);
+    margin: -4px 0 0;
+    padding: clamp(14px, 2.4dvh, 26px) clamp(128px, 9.6vw, 182px) clamp(14px, 2.4dvh, 26px) clamp(44px, 3.4vw, 68px);
     grid-column: 1 / -1;
     width: 100%;
     background:
@@ -784,9 +784,9 @@
   .pig-mini {
     position: absolute;
     right: 8px;
-    bottom: -22px;
-    width: clamp(124px, 8.9vw, 170px);
-    height: clamp(78px, 5.4vw, 104px);
+    bottom: -18px;
+    width: clamp(148px, 11vw, 210px);
+    height: clamp(94px, 7vw, 132px);
     border-radius: 0;
     background: transparent;
     object-fit: contain;
@@ -1854,6 +1854,47 @@
   .income-icon.blue { background: #eaf2ff; }
   .income-icon.rose { background: #fff0f0; }
 
+  .income-icon img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+  }
+
+  .reward-icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .icon-picker-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .icon-picker-item {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: border-color .15s, transform .1s;
+    padding: 0;
+  }
+
+  .icon-picker-item:hover { transform: scale(1.08); }
+  .icon-picker-item.is-active { border-color: var(--color-accent, #7c68b8); }
+
+  .icon-picker-item img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+
   .income-title-row {
     display: flex;
     align-items: center;
@@ -2228,9 +2269,11 @@
   }
 
   .app-workspace:has(.home-dashboard) {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
     overflow: hidden;
     padding-top: clamp(12px, 2dvh, 22px);
-    padding-bottom: clamp(10px, 1.6dvh, 18px);
+    padding-bottom: clamp(18px, 2.6dvh, 34px);
   }
 
   .app-workspace:has(.home-dashboard) .topbar {
@@ -2242,16 +2285,13 @@
   .page-shell:has(.home-dashboard) > div {
     height: 100%;
     min-height: 0;
+    overflow: hidden;
   }
 
   .home-dashboard {
-    height: calc(
-      var(--frame-height)
-      - clamp(44px, 5.2dvh, 62px)
-      - clamp(24px, 3.2dvh, 40px)
-    );
+    height: 100%;
     min-height: 0;
-    grid-template-rows: minmax(0, 1fr) clamp(52px, 7dvh, 92px);
+    grid-template-rows: minmax(0, 1fr) clamp(74px, 9dvh, 116px);
     align-content: stretch;
   }
 
@@ -2325,6 +2365,11 @@
     height: 100%;
   }
 
+  .metric-card > svg {
+    width: clamp(60px, 8dvh, 86px);
+    height: clamp(60px, 8dvh, 86px);
+  }
+
   .home-quick-card {
     height: 100%;
     align-content: start;
@@ -2373,6 +2418,7 @@
 
   .reward-banner {
     height: 100%;
+    align-self: stretch;
     padding-top: clamp(6px, 1dvh, 12px);
     padding-bottom: clamp(6px, 1dvh, 12px);
   }
@@ -2392,8 +2438,10 @@
   }
 
   .pig-mini {
-    width: clamp(96px, 8vw, 150px);
-    height: clamp(58px, 5dvh, 90px);
+    right: clamp(10px, 1.1vw, 22px);
+    bottom: clamp(-20px, -1.5dvh, -8px);
+    width: clamp(170px, 14vw, 270px);
+    height: clamp(108px, 9dvh, 168px);
   }
 }
 
@@ -2475,7 +2523,7 @@
 @media (min-width: 900px) and (max-width: 1100px) {
   .home-dashboard {
     grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.78fr);
-    grid-template-rows: minmax(0, 1fr) clamp(64px, 8dvh, 88px);
+    grid-template-rows: minmax(0, 1fr) clamp(74px, 9dvh, 96px);
   }
 
   .home-right-column {
@@ -2611,8 +2659,8 @@
   }
 
   .pig-mini {
-    width: 160px;
-    height: 96px;
+    width: 180px;
+    height: 110px;
   }
 
   .stats-strip {

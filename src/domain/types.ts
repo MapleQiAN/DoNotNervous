@@ -56,6 +56,7 @@ export interface Reward {
   name: string
   description: string
   pointCost: number
+  icon: string
   active: boolean
   createdAt: Date
 }
