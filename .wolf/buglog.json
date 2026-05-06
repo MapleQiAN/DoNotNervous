@@ -224,6 +224,70 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-06T03:07:47.677Z"
+    },
+    {
+      "id": "bug-015",
+      "timestamp": "2026-05-06T03:31:07.013Z",
+      "error_message": "CSS fix: reward-item",
+      "file": "src/index.css",
+      "root_cause": "reward-item: hover { → hover .reward-hover-actions {",
+      "fix": "Changed reward-item: hover { → hover .reward-hover-actions {",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-06T03:32:40.041Z"
+    },
+    {
+      "id": "bug-016",
+      "timestamp": "2026-05-06T03:31:39.557Z",
+      "error_message": "Significant refactor of ",
+      "file": "src/index.css",
+      "root_cause": "6 lines replaced/restructured",
+      "fix": "Rewrote 21→85 lines (6 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-06T03:31:39.557Z"
+    },
+    {
+      "id": "bug-017",
+      "timestamp": "2026-05-06T03:38:26.228Z",
+      "error_message": "CSS fix: min-height",
+      "file": "src/index.css",
+      "root_cause": "min-height: calc(100dvh - 32px) → 100dvh",
+      "fix": "Changed min-height: calc(100dvh - 32px) → 100dvh",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-06T03:38:26.228Z"
+    },
+    {
+      "id": "bug-018",
+      "timestamp": "2026-05-06T03:39:57.441Z",
+      "error_message": "Significant refactor of ",
+      "file": "src/index.css",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 9→5 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-06T03:39:57.441Z"
     }
   ]
 }

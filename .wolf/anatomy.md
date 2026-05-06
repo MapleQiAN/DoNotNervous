@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T03:12:46.459Z
-> Files: 4 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T03:39:57.408Z
+> Files: 6 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
@@ -77,7 +77,7 @@
 
 ## src/
 
-- `index.css` — Styles: 5 rules, 26 vars (~8532 tok)
+- `index.css` — Styles: 5 rules, 26 vars (~9802 tok)
 
 ## src/components/__tests__/
 
@@ -114,6 +114,8 @@
 
 ## src/components/rewards/
 
+- `RewardCard.tsx` — categoryConfig (~799 tok)
+- `RewardShop.tsx` — categories (~3009 tok)
 
 ## src/components/summary/
 
