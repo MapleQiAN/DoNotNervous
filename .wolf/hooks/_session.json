@@ -1,12 +1,44 @@
 {
-  "session_id": "session-2026-05-06-2305",
-  "started": "2026-05-06T15:05:39.091Z",
-  "files_read": {},
-  "files_written": [],
-  "edit_counts": {},
-  "anatomy_hits": 0,
+  "session_id": "session-2026-05-06-0059",
+  "started": "2026-05-06T16:59:42.613Z",
+  "files_read": {
+    "E:/DoNotNervous/src/components/summary/WeeklySummary.tsx": {
+      "count": 2,
+      "tokens": 6194,
+      "first_read": "2026-05-06T17:00:25.264Z"
+    },
+    "E:/DoNotNervous/src/index.css": {
+      "count": 1,
+      "tokens": 20632,
+      "first_read": "2026-05-06T17:01:20.840Z"
+    },
+    "E:/DoNotNervous/src/components/summary/DailySummary.tsx": {
+      "count": 1,
+      "tokens": 5228,
+      "first_read": "2026-05-06T17:01:43.692Z"
+    }
+  },
+  "files_written": [
+    {
+      "file": "E:/DoNotNervous/src/components/summary/WeeklySummary.tsx",
+      "action": "edit",
+      "tokens": 6,
+      "at": "2026-05-06T17:03:28.585Z"
+    },
+    {
+      "file": "E:/DoNotNervous/fix_weekly.py",
+      "action": "create",
+      "tokens": 2375,
+      "at": "2026-05-06T17:06:23.549Z"
+    }
+  ],
+  "edit_counts": {
+    "src/components/summary/WeeklySummary.tsx": 1,
+    "fix_weekly.py": 1
+  },
+  "anatomy_hits": 3,
   "anatomy_misses": 0,
-  "repeated_reads_warned": 0,
+  "repeated_reads_warned": 1,
   "cerebrum_warnings": 0,
   "stop_count": 0
 }

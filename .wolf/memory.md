@@ -436,3 +436,48 @@
 
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
+| 23:07 | Edited src/index.css | expanded (+8 lines) | ~99 |
+| 23:07 | Edited src/index.css | CSS: font-family | ~85 |
+| 23:12 | Edited src/index.css | 7→7 lines | ~48 |
+| 23:12 | Edited src/index.css | "PingFangJiangNanTi" → "YujiSyukuStd" | ~20 |
+| 23:15 | Edited src/index.css | 7→7 lines | ~46 |
+| 23:15 | Edited src/index.css | "YujiSyukuStd" → "FTMaru" | ~19 |
+| 23:23 | Edited src/index.css | 7→7 lines | ~48 |
+| 23:23 | Edited src/index.css | "FTMaru" → "AZhuPaoPaoTi" | ~20 |
+| 23:27 | Edited src/index.css | 7→7 lines | ~51 |
+| 23:27 | Edited src/index.css | "AZhuPaoPaoTi" → "YaoSuiXinShouXieTi" | ~22 |
+
+## Session: 2026-05-06 23:29
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 23:37 | Edited src/index.css | expanded (+541 lines) | ~3177 |
+| 23:39 | Created src/components/summary/DailySummary.tsx | — | ~4410 |
+| 23:41 | Created src/components/summary/WeeklySummary.tsx | — | ~5672 |
+| 23:42 | Edited src/components/summary/DailySummary.tsx | modified getTaskTag() | ~100 |
+| 23:43 | Summary page v2 redesign: DailySummary + WeeklySummary rewritten with stat cards (trend indicators ↑↓), refined task rows with difficulty tags, mood entries, point ledger, best-day card, mood trajectory bars, insight card placeholders for future custom icons. ~540 lines new CSS. tsc clean, vite build ok | DailySummary.tsx, WeeklySummary.tsx, index.css | ~13k |
+| 23:58 | Edited src/components/summary/DailySummary.tsx | 10→12 lines | ~159 |
+| 23:58 | Edited src/components/summary/DailySummary.tsx | added 1 condition(s) | ~427 |
+| 23:59 | Edited src/components/summary/DailySummary.tsx | expanded (+30 lines) | ~991 |
+| 23:59 | Edited src/components/summary/DailySummary.tsx | inline fix | ~30 |
+| 23:59 | Edited src/components/summary/DailySummary.tsx | 7→7 lines | ~90 |
+| 23:59 | Edited src/components/summary/DailySummary.tsx | 2→2 lines | ~28 |
+| 23:59 | Edited src/components/summary/DailySummary.tsx | 2→2 lines | ~29 |
+| 23:59 | Edited src/components/summary/DailySummary.tsx | CSS: 14, 00-16 | ~315 |
+| 00:00 | Edited src/components/summary/WeeklySummary.tsx | 7→9 lines | ~113 |
+| 00:00 | Edited src/components/summary/WeeklySummary.tsx | added 1 condition(s) | ~39 |
+| 00:00 | Edited src/components/summary/WeeklySummary.tsx | modified find() | ~610 |
+| 00:01 | Edited src/components/summary/WeeklySummary.tsx | 12→12 lines | ~144 |
+| 00:01 | Edited src/components/summary/WeeklySummary.tsx | added optional chaining | ~374 |
+| 00:02 | Edited src/components/summary/WeeklySummary.tsx | added optional chaining | ~280 |
+| 00:02 | Edited src/components/summary/WeeklySummary.tsx | 2→2 lines | ~44 |
+| 00:02 | Edited src/components/summary/WeeklySummary.tsx | 2→2 lines | ~31 |
+| 00:02 | Edited src/components/summary/WeeklySummary.tsx | 12→12 lines | ~224 |
+| 00:03 | Edited src/components/summary/DailySummary.tsx | CSS: taskId, taskId, taskId | ~123 |
+
+## Session: 2026-05-06 00:59
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 01:03 | Edited src/components/summary/WeeklySummary.tsx | inline fix | ~6 |
+| 01:06 | Created fix_weekly.py | — | ~2375 |

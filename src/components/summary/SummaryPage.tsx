@@ -17,7 +17,7 @@ const tabs: Array<{ key: SummaryTab; label: string }> = [
 ]
 
 export function SummaryPage({ showToast }: SummaryPageProps) {
-  const [activeTab, setActiveTab] = useState<SummaryTab>('daily')
+  const [activeTab, setActiveTab] = useState<SummaryTab>('weekly')
 
   return (
     <div className="summary-page">

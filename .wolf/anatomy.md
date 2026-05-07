@@ -1,10 +1,11 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T15:02:07.772Z
-> Files: 16 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T17:06:23.529Z
+> Files: 19 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
+- `fix_weekly.py` (~2375 tok)
 
 ## .claude/
 
@@ -78,7 +79,7 @@
 ## src/
 
 - `App.tsx` — fadeUp (~742 tok)
-- `index.css` — Styles: 5 rules, 29 vars (~17252 tok)
+- `index.css` — Styles: 6 rules, 29 vars (~20632 tok)
 
 ## src/components/__tests__/
 
@@ -124,6 +125,8 @@
 
 ## src/components/summary/
 
+- `DailySummary.tsx` — MOCK (~5228 tok)
+- `WeeklySummary.tsx` — MOCK (~6194 tok)
 
 ## src/components/tasks/
 
