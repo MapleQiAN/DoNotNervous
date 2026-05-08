@@ -1,14 +1,13 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
-import { eq, and, desc } from 'drizzle-orm'
+import { eq, and, desc, gte, lte } from 'drizzle-orm'
 import { db } from '../db/index.js'
 import { streakRecords } from '../db/schema.js'
 import { authMiddleware } from '../middleware/auth.js'
+import { computeCurrentStreak } from '../domain/streaks.js'
 
-type Variables = {
-  userId: string
-}
+type Variables = { userId: string }
 
 const route = new Hono<{ Variables: Variables }>()
 route.use('*', authMiddleware)
@@ -22,10 +21,27 @@ const streakUpsertSchema = z.object({
   createdAt: z.string().datetime().optional(),
 })
 
+// GET /streaks — optionally filter by date range
 route.get('/', async (c) => {
   const userId = c.get('userId')
-  const result = await db.select().from(streakRecords).where(eq(streakRecords.userId, userId)).orderBy(desc(streakRecords.date))
+  const from = c.req.query('from')
+  const to = c.req.query('to')
+
+  const conditions = [eq(streakRecords.userId, userId)]
+  if (from) conditions.push(gte(streakRecords.date, from))
+  if (to) conditions.push(lte(streakRecords.date, to))
+
+  const result = await db.select().from(streakRecords)
+    .where(and(...conditions))
+    .orderBy(desc(streakRecords.date))
   return c.json({ data: result })
+})
+
+// GET /streaks/current — compute current streak length
+route.get('/current', async (c) => {
+  const userId = c.get('userId')
+  const streakLength = await computeCurrentStreak(userId)
+  return c.json({ data: { streakLength } })
 })
 
 route.put('/:date', zValidator('json', streakUpsertSchema), async (c) => {
@@ -34,10 +50,7 @@ route.put('/:date', zValidator('json', streakUpsertSchema), async (c) => {
   const input = c.req.valid('json')
   const { createdAt: createdAtStr, ...rest } = input
   const values = {
-    ...rest,
-    userId,
-    date,
-    updatedAt: new Date(),
+    ...rest, userId, date, updatedAt: new Date(),
     ...(createdAtStr ? { createdAt: new Date(createdAtStr) } : {}),
   }
   const [record] = await db.insert(streakRecords).values(values)

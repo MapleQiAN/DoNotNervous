@@ -1,6 +1,4 @@
-import type { TaskDifficulty } from './types'
-
-export const POINT_VALUES: Record<TaskDifficulty, number> = {
+export const POINT_VALUES: Record<string, number> = {
   easy: 10,
   medium: 25,
   hard: 50,
@@ -22,10 +20,10 @@ export function calculateMultiplier(streakLength: number): number {
 }
 
 export function calculatePoints(
-  difficulty: TaskDifficulty,
+  difficulty: string,
   streakLength: number,
 ): { base: number; bonus: number; multiplier: number } {
-  const base = POINT_VALUES[difficulty]
+  const base = POINT_VALUES[difficulty] ?? 10
   const multiplier = calculateMultiplier(streakLength)
   const bonus = Math.round(base * (multiplier - 1))
   return { base, bonus, multiplier }
