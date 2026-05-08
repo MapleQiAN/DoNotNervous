@@ -1,5 +1,4 @@
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../../db'
+import { useCategories } from '../../hooks/useTaskQueries'
 import { useFilterStore } from '../../stores/filterStore'
 import { Button } from '../common/Button'
 
@@ -7,15 +6,7 @@ export function CategoryFilter() {
   const activeCategory = useFilterStore((s) => s.activeCategory)
   const setActiveCategory = useFilterStore((s) => s.setActiveCategory)
 
-  const categories = useLiveQuery(
-    async () => {
-      const tasks = await db.tasks.where('status').equals('active').toArray()
-      const unique = [...new Set(tasks.map((t) => t.category).filter(Boolean))]
-      return unique.sort()
-    },
-    [],
-    []
-  )
+  const categories = useCategories()
 
   if (categories.length === 0) return null
 

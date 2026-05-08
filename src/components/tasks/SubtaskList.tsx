@@ -1,6 +1,5 @@
-import { useLiveQuery } from 'dexie-react-hooks'
 import { motion, AnimatePresence } from 'framer-motion'
-import { db } from '../../db'
+import { useSubtasks } from '../../hooks/useTaskQueries'
 import { completeTask, deleteTask } from '../../hooks/useTaskActions'
 import type { Task } from '../../domain/types'
 
@@ -9,11 +8,7 @@ interface SubtaskListProps {
 }
 
 export function SubtaskList({ parentId }: SubtaskListProps) {
-  const subtasks = useLiveQuery(
-    () => db.tasks.where('parentId').equals(parentId).sortBy('sortOrder'),
-    [parentId],
-    []
-  )
+  const subtasks = useSubtasks(parentId)
 
   if (subtasks.length === 0) return null
 

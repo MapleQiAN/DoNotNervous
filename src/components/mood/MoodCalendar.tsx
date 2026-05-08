@@ -3,11 +3,10 @@ import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Activity, ArrowRight, CheckSquare, Clock3, Edit3, Leaf, Plus, Smile, SunMedium, Wallet } from 'lucide-react'
-import { format } from 'date-fns'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../../db'
+import { format, startOfWeek, endOfWeek } from 'date-fns'
 import { useMoodEntries, createMoodEntry } from '../../hooks/useMoodEntries'
 import { usePointBalance } from '../../hooks/usePoints'
+import { useCompletedTasksForWeek } from '../../hooks/useTaskQueries'
 import { MOODS } from '../../domain/mood'
 import { MOOD_SCORE } from '../../domain/summary'
 import type { MoodEmoji } from '../../domain/types'
@@ -51,16 +50,11 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
     ? (recentWeekMoods.reduce((sum, m) => sum + MOOD_SCORE[m.emoji], 0) / recentWeekMoods.length).toFixed(1)
     : '--'
 
-  const weekCompletedTasks = useLiveQuery(
-    async () => {
-      const weekAgo = new Date()
-      weekAgo.setDate(weekAgo.getDate() - 7)
-      const tasks = await db.tasks.where('status').equals('completed').toArray()
-      return tasks.filter(t => t.completedAt && t.completedAt >= weekAgo).length
-    },
-    [],
-    0
-  )
+  const now = new Date()
+  const weekStartKey = format(startOfWeek(now, { weekStartsOn: 1 }), 'yyyy-MM-dd')
+  const weekEndKey = format(endOfWeek(now, { weekStartsOn: 1 }), 'yyyy-MM-dd')
+  const weekCompleted = useCompletedTasksForWeek(weekStartKey, weekEndKey)
+  const weekCompletedTasks = weekCompleted.length
 
   const balance = usePointBalance()
 

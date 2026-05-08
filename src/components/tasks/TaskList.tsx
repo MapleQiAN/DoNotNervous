@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useLiveQuery } from 'dexie-react-hooks'
 import {
   CalendarCheck,
   CalendarClock,
@@ -11,7 +10,7 @@ import {
   ListChecks,
   Sun,
 } from 'lucide-react'
-import { db } from '../../db'
+import { useActiveTasks, useCompletedTasksForDate } from '../../hooks/useTaskQueries'
 import { completeTask } from '../../hooks/useTaskActions'
 import { useFilterStore } from '../../stores/filterStore'
 import { useTaskCount } from '../../hooks/useTaskCount'
@@ -129,17 +128,9 @@ export function TaskList() {
   const selectedTaskId = useUIStore((s) => s.selectedTaskId)
   const setSelectedTaskId = useUIStore((s) => s.setSelectedTaskId)
 
-  const activeTasks = useLiveQuery(
-    () => db.tasks.where('status').equals('active').sortBy('sortOrder'),
-    [],
-    []
-  )
-
-  const completedTasks = useLiveQuery(
-    () => db.tasks.where('status').equals('completed').reverse().sortBy('completedAt'),
-    [],
-    []
-  )
+  const activeTasks = useActiveTasks()
+  const todayKey = new Date().toISOString().slice(0, 10)
+  const completedTasks = useCompletedTasksForDate(todayKey)
 
   const topLevelActiveTasks = activeTasks.filter((t) => t.parentId === null)
   const topLevelCompletedTasks = completedTasks.filter((t) => t.parentId === null)

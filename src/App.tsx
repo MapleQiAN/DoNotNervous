@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './lib/queryClient'
 import { AuthGuard } from './components/auth/AuthGuard'
 import { AppShell } from './components/layout/AppShell'
 import { TaskList } from './components/tasks/TaskList'
@@ -13,7 +15,6 @@ import { RewardShop } from './components/rewards/RewardShop'
 import { MoodCalendar } from './components/mood/MoodCalendar'
 import { SummaryPage } from './components/summary/SummaryPage'
 import { useToast } from './hooks/useToast'
-import { useSync } from './hooks/useSync'
 import { useUIStore } from './stores/uiStore'
 
 const fadeUp = {
@@ -35,7 +36,6 @@ function TasksPage() {
 }
 
 function AuthenticatedApp() {
-  useSync()
   const isSettingsOpen = useUIStore((s) => s.isSettingsOpen)
   const setSettingsOpen = useUIStore((s) => s.setSettingsOpen)
   const { toast, showToast } = useToast()
@@ -66,9 +66,11 @@ function AuthenticatedApp() {
 
 function App() {
   return (
-    <AuthGuard>
-      <AuthenticatedApp />
-    </AuthGuard>
+    <QueryClientProvider client={queryClient}>
+      <AuthGuard>
+        <AuthenticatedApp />
+      </AuthGuard>
+    </QueryClientProvider>
   )
 }
 

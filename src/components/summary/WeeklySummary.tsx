@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { format, subWeeks, addWeeks, parse, addDays } from 'date-fns'
 import { zhCN } from 'date-fns/locale/zh-CN'
-import { useLiveQuery } from 'dexie-react-hooks'
 import { useWeeklySummary, refreshWeeklySummary } from '../../hooks/useSummary'
+import { useCompletedTasksForWeek } from '../../hooks/useTaskQueries'
 import { getWeekRange } from '../../domain/summary'
-import { db } from '../../db'
 
 interface WeeklySummaryProps {
   showToast: (message: string, type?: 'success' | 'error') => void
@@ -51,20 +50,7 @@ export function WeeklySummary({ showToast: _showToast }: WeeklySummaryProps) {
   const weekStartDate = parse(selectedWeekStart, 'yyyy-MM-dd', new Date())
   const weekEndDate = addDays(weekStartDate, 6)
 
-  const weeklyTasks = useLiveQuery(
-    async () => {
-      const start = new Date(`${selectedWeekStart}T00:00:00`)
-      const end = new Date(`${format(weekEndDate, 'yyyy-MM-dd')}T23:59:59.999`)
-      const tasks = await db.tasks
-        .where('completedAt')
-        .between(start, end, true, true)
-        .filter(task => task.status === 'completed')
-        .toArray()
-      return tasks
-    },
-    [selectedWeekStart],
-    [],
-  )
+  const weeklyTasks = useCompletedTasksForWeek(selectedWeekStart, format(weekEndDate, 'yyyy-MM-dd'))
 
   useEffect(() => {
     refreshWeeklySummary(selectedWeekStart).catch(() => { /* non-blocking */ })

@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
 import { motion } from 'framer-motion'
 import {
   ArrowRight,
@@ -9,7 +8,6 @@ import {
   Check,
   ChevronDown,
   ChevronRight,
-  Circle,
   Clock3,
   Flame,
   Gift,
@@ -21,10 +19,10 @@ import {
   Sun,
   TimerReset,
 } from 'lucide-react'
-import { db } from '../../db'
 import { usePointBalance } from '../../hooks/usePoints'
 import { useCurrentStreak } from '../../hooks/useStreaks'
 import { completeTask, uncompleteTask } from '../../hooks/useTaskActions'
+import { useActiveTasks, useCompletedTasksForDate, useLatestMood } from '../../hooks/useTaskQueries'
 import type { Task } from '../../domain/types'
 
 interface HomePageProps {
@@ -78,31 +76,12 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
   const streakLength = useCurrentStreak()
   const navigate = useNavigate()
 
-  const activeTasks = useLiveQuery(
-    () => db.tasks.where('status').equals('active').sortBy('sortOrder'),
-    [],
-    []
-  )
+  const activeTasks = useActiveTasks()
 
-  const completedToday = useLiveQuery(
-    async () => {
-      const start = new Date()
-      start.setHours(0, 0, 0, 0)
-      const all = await db.tasks.where('status').equals('completed').toArray()
-      return all.filter((t) => t.completedAt && t.completedAt >= start)
-    },
-    [],
-    []
-  )
+  const todayKey = new Date().toISOString().slice(0, 10)
+  const completedToday = useCompletedTasksForDate(todayKey)
 
-  const latestMood = useLiveQuery(
-    async () => {
-      const all = await db.moodEntries.orderBy('createdAt').reverse().first()
-      return all ?? null
-    },
-    [],
-    null
-  )
+  const latestMood = useLatestMood()
 
   const topLevelActive = activeTasks.filter((t) => t.parentId === null)
   const completedCount = completedToday.length
@@ -180,23 +159,25 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           {displayTasks.length > 0 ? (
             <div className="table-list">
               {displayTasks.map((task) => (
-                <div key={task.id} className={`task-row ${task.complete ? 'is-completed' : ''}`}>
+                <div key={task.id} className={`task-row home-focus-row ${task.complete ? 'is-completed' : ''}`}>
                   {task.complete ? (
-                    <span
+                    <button
+                      type="button"
                       className="check-active"
-                      role="button"
-                      tabIndex={0}
+                      aria-label="标记任务为未完成"
                       onClick={() => void handleToggleTask(task.id, true)}
-                      onKeyDown={(e) => { if (e.key === 'Enter') void handleToggleTask(task.id, true) }}
                     >
                       <Check size={16} strokeWidth={3} />
-                    </span>
+                    </button>
                   ) : (
-                    <Circle
+                    <button
+                      type="button"
                       className="check-muted clickable"
-                      size={24}
+                      aria-label="完成任务"
                       onClick={() => void handleToggleTask(task.id, false)}
-                    />
+                    >
+                      <span />
+                    </button>
                   )}
                   <span className="task-title">{task.title}</span>
                   {task.time && (

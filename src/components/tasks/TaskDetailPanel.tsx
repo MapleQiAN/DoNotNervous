@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useActiveTasks } from '../../hooks/useTaskQueries'
 import { CalendarClock, CheckCircle2, ChevronDown, Leaf, X } from 'lucide-react'
-import { db } from '../../db'
 import { completeTask } from '../../hooks/useTaskActions'
 import { useUIStore } from '../../stores/uiStore'
 import type { Task, TaskDifficulty } from '../../domain/types'
@@ -68,11 +67,7 @@ export function TaskDetailPanel() {
   const [activeMood, setActiveMood] = useState('专注')
   const selectedTaskId = useUIStore((s) => s.selectedTaskId)
 
-  const activeTasks = useLiveQuery(
-    () => db.tasks.where('status').equals('active').sortBy('sortOrder'),
-    [],
-    []
-  )
+  const activeTasks = useActiveTasks()
 
   const selectedTask = selectedTaskId
     ? activeTasks.find((task) => task.id === selectedTaskId)

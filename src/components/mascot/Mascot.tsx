@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import Lottie from 'lottie-react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useLiveQuery } from 'dexie-react-hooks'
 import { useMascotStore } from '../../stores/mascotStore'
 import { toDayKey } from '../../lib/date-utils'
-import { db } from '../../db'
+import { useCompletedTasksForDate } from '../../hooks/useTaskQueries'
 import './mascot.css'
 
 const SPEECH_MESSAGES = [
@@ -38,10 +37,8 @@ export function Mascot() {
 
   const [animations, setAnimations] = useState<Record<string, AnimationData>>({})
 
-  const todayCompletedTasks = useLiveQuery(
-    () => db.tasks.where('status').equals('completed').toArray(),
-    []
-  )
+  const todayKey = new Date().toISOString().slice(0, 10)
+  const todayCompletedTasks = useCompletedTasksForDate(todayKey)
 
   const hasCompletedToday = todayCompletedTasks
     ? todayCompletedTasks.some(

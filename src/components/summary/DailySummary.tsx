@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { format, subDays, addDays, isToday } from 'date-fns'
 import { zhCN } from 'date-fns/locale/zh-CN'
-import { useLiveQuery } from 'dexie-react-hooks'
 import { useDailySummary, refreshDailySummary } from '../../hooks/useSummary'
 import { useMoodEntriesForDate } from '../../hooks/useMoodEntries'
 import { computeCurrentStreak } from '../../hooks/useStreaks'
+import { useCompletedTasksForDate } from '../../hooks/useTaskQueries'
+import { usePointLedgerForDate } from '../../hooks/usePoints'
 import { MOOD_SCORE } from '../../domain/summary'
 import { toDayKey } from '../../lib/date-utils'
-import { db } from '../../db'
-import type { Task, PointLedgerEntry, MoodEntry, MoodEmoji } from '../../domain/types'
+import type { Task, MoodEntry, MoodEmoji } from '../../domain/types'
 
 interface DailySummaryProps {
   showToast: (message: string, type?: 'success' | 'error') => void
@@ -84,40 +84,11 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
   const prevDayKey = toDayKey(subDays(selectedDate, 1))
   const prevSummary = useDailySummary(prevDayKey)
 
-  const completedTasks = useLiveQuery(
-    async () => {
-      const start = new Date(`${dayKey}T00:00:00`)
-      const end = new Date(`${dayKey}T23:59:59.999`)
-      const tasks = await db.tasks
-        .where('completedAt')
-        .between(start, end, true, true)
-        .filter(task => task.status === 'completed')
-        .toArray()
-      return tasks.sort((a, b) => {
-        const aTime = a.completedAt?.getTime() ?? 0
-        const bTime = b.completedAt?.getTime() ?? 0
-        return bTime - aTime
-      })
-    },
-    [dayKey],
-    [] as Task[],
-  )
+  const completedTasks = useCompletedTasksForDate(dayKey) as Task[]
 
   const moodEntries = useMoodEntriesForDate(dayKey)
 
-  const ledgerEntries = useLiveQuery(
-    async () => {
-      const start = new Date(`${dayKey}T00:00:00`)
-      const end = new Date(`${dayKey}T23:59:59.999`)
-      const entries = await db.pointLedger
-        .where('createdAt')
-        .between(start, end, true, true)
-        .toArray()
-      return entries.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    },
-    [dayKey],
-    [] as PointLedgerEntry[],
-  )
+  const ledgerEntries = usePointLedgerForDate(dayKey)
 
   useEffect(() => {
     refreshDailySummary(dayKey).catch(() => { /* non-blocking */ })

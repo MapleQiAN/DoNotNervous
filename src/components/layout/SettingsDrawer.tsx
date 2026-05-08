@@ -2,7 +2,14 @@ import { useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Download, Upload } from 'lucide-react'
 import { Button } from '../common/Button'
-import { exportData, importData } from '../../hooks/useExportImport'
+
+async function exportData() {
+  // Export via server API TBD
+}
+
+async function importData(_file: File) {
+  // Import via server API TBD
+}
 
 interface SettingsDrawerProps {
   isOpen: boolean

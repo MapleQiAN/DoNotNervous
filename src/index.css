@@ -578,6 +578,57 @@
     opacity: 0.72;
   }
 
+  .task-row.home-focus-row {
+    grid-template-columns: 28px minmax(220px, 1.55fr) repeat(4, minmax(88px, 1fr));
+    gap: 12px;
+  }
+
+  .home-focus-row .task-title {
+    justify-self: stretch;
+  }
+
+  .home-focus-row .row-time,
+  .home-focus-row .soft-pill,
+  .home-focus-row .reward-text,
+  .home-focus-row .status-pill {
+    justify-self: center;
+    margin-right: 0;
+  }
+
+  .home-focus-row .row-time {
+    justify-content: center;
+  }
+
+  .home-focus-row .reward-text {
+    text-align: center;
+  }
+
+  .home-focus-row .soft-pill,
+  .home-focus-row .status-pill {
+    width: 100%;
+    max-width: 112px;
+  }
+
+  .home-focus-row .check-muted {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    border: 1.6px solid #9aa5ad;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .home-focus-row .check-active {
+    border: 0;
+  }
+
+  .home-focus-row button.check-active,
+  .home-focus-row button.check-muted {
+    min-width: 24px;
+    min-height: 24px;
+  }
+
   .task-title {
     min-width: 0;
     flex: none;
@@ -3520,6 +3571,11 @@
     padding-bottom: clamp(3px, 0.45dvh, 8px);
   }
 
+  .task-row.home-focus-row {
+    grid-template-columns: 28px minmax(200px, 1.45fr) repeat(4, minmax(72px, 1fr));
+    gap: 8px;
+  }
+
   .task-card .text-link {
     min-height: clamp(30px, 3.6dvh, 40px);
     margin-top: clamp(4px, 0.8dvh, 8px);
@@ -3826,6 +3882,11 @@
     gap: clamp(7px, 0.75vw, 9px);
   }
 
+  .task-row.home-focus-row {
+    grid-template-columns: 28px minmax(190px, 1.45fr) repeat(4, minmax(68px, 1fr));
+    gap: 8px;
+  }
+
   .task-row.screenshot-row {
     grid-template-columns: 28px minmax(190px, 1.45fr) repeat(4, minmax(68px, 1fr));
     gap: 8px;
@@ -3941,6 +4002,11 @@
     gap: 6px;
   }
 
+  .task-row.home-focus-row {
+    grid-template-columns: 24px minmax(180px, 1.35fr) repeat(4, minmax(64px, 1fr));
+    gap: 8px;
+  }
+
   .task-row.screenshot-row {
     grid-template-columns: 24px minmax(180px, 1.35fr) repeat(4, minmax(64px, 1fr));
     gap: 8px;
@@ -4031,6 +4097,10 @@
   }
 
   .task-row {
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+  }
+
+  .task-row.home-focus-row {
     grid-template-columns: 28px minmax(0, 1fr) auto;
   }
 

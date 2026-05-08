@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Gift, Plus, Wallet, Trophy, Coins, Sparkles,
   ArrowRight, ChevronDown,
 } from 'lucide-react'
 import { rewardIconKeys, rewardIconLabel, incomeTypeIcon, type RewardIconKey } from './rewardIcons'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../../db'
 import { useMascotStore } from '../../stores/mascotStore'
 import { celebrateRedemption } from '../../lib/celebrate'
 import { useRewards, useRedemptions, createReward, redeemReward, deleteReward } from '../../hooks/useRewards'
-import { usePointBalance } from '../../hooks/usePoints'
+import { usePointBalance, useRecentTransactions } from '../../hooks/usePoints'
+import { api } from '../../lib/api'
+import { useAuthStore } from '../../stores/authStore'
 import { RewardCard } from './RewardCard'
 import { RedemptionHistory } from './RedemptionHistory'
 import { ConfirmDialog } from '../common/ConfirmDialog'
@@ -86,45 +87,18 @@ export function RewardShop({ showToast }: RewardShopProps) {
 
   const totalSpent = redemptions.reduce((sum, r) => sum + r.pointsSpent, 0)
 
-  const recentIncome = useLiveQuery(
-    async () => {
-      const entries = await db.pointLedger
-        .where('amount').above(0)
-        .reverse()
-        .sortBy('createdAt')
-      return entries.slice(0, 6)
-    },
-    [],
-    []
-  )
+  const recentTransactions = useRecentTransactions(6)
+  const recentIncome = recentTransactions.filter((e) => e.amount > 0)
 
-  const thisWeekIncome = useLiveQuery(
-    async () => {
-      const weekAgo = new Date()
-      weekAgo.setDate(weekAgo.getDate() - 7)
-      const entries = await db.pointLedger
-        .where('createdAt').above(weekAgo)
-        .toArray()
-      return entries.filter(e => e.amount > 0).reduce((sum, e) => sum + e.amount, 0)
-    },
-    [],
-    0
-  )
-
-  const lastWeekIncome = useLiveQuery(
-    async () => {
-      const twoWeeksAgo = new Date()
-      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14)
-      const oneWeekAgo = new Date()
-      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
-      const entries = await db.pointLedger.toArray()
-      return entries
-        .filter(e => e.amount > 0 && e.createdAt >= twoWeeksAgo && e.createdAt < oneWeekAgo)
-        .reduce((sum, e) => sum + e.amount, 0)
-    },
-    [],
-    0
-  )
+  const token = useAuthStore((s) => s.accessToken)
+  const incomeData = useQuery({
+    queryKey: ['points', 'income-summary'],
+    queryFn: () =>
+      api.get<{ data: { thisWeek: number; lastWeek: number } }>('/points/income-summary', token!).then((r) => r.data),
+    enabled: !!token,
+  }).data
+  const thisWeekIncome = incomeData?.thisWeek ?? 0
+  const lastWeekIncome = incomeData?.lastWeek ?? 0
 
   const weeklyDiff = thisWeekIncome - lastWeekIncome
 
