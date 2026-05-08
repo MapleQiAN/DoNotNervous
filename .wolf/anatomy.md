@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-08T16:06:56.824Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-08T16:36:24.451Z
 > Files: 51 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
@@ -94,7 +94,7 @@
 ## src/
 
 - `App.tsx` — fadeUp (~781 tok)
-- `index.css` — Styles: 6 rules, 29 vars (~26833 tok)
+- `index.css` — Styles: 6 rules, 29 vars (~27650 tok)
 
 ## src/components/__tests__/
 
@@ -151,7 +151,7 @@
 - `CategoryFilter.tsx` — CategoryFilter (~348 tok)
 - `SubtaskList.tsx` — SubtaskList (~877 tok)
 - `TaskDetailPanel.tsx` — fallbackDetail (~1316 tok)
-- `TaskList.tsx` — difficultyLabel — renders form (~2762 tok)
+- `TaskList.tsx` — difficultyLabel — renders form (~4874 tok)
 
 ## src/components/tasks/__tests__/
 

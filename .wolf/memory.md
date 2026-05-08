@@ -3,6 +3,8 @@
 > Chronological action log. Hooks and AI append to this file automatically.
 > Old sessions are consolidated by the daemon weekly.
 
+| 00:23 | TaskList enhanced: create form (description, category, parentId), inline edit mode, delete with confirmation | TaskList.tsx, index.css | All 3 features implemented, tsc pass | ~5k |
+
 | 10:02 | Created integration tests: server tasks CRUD (7), sync (4), frontend auth (4) — all 15 passing | server/src/routes/__tests__, src/components/auth/__tests__ | committed | ~15k |
 
 | 09:38 | Added SyncQueueEntry type, Dexie v6 syncQueue+lastSyncState tables, useSync hook, AuthenticatedApp wrapper in App.tsx | src/domain/types.ts, src/db/index.ts, src/hooks/useSync.ts, src/App.tsx | tsc clean, committed | ~600 |
@@ -632,3 +634,16 @@
 | 00:06 | Edited src/components/summary/DailySummary.tsx | inline fix | ~32 |
 | 00:06 | Edited src/components/summary/DailySummary.tsx | 2→3 lines | ~30 |
 | 00:06 | Edited src/components/summary/DailySummary.tsx | inline fix | ~16 |
+
+## Session: 2026-05-08 00:09
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 00:22 | Created src/components/tasks/TaskList.tsx | — | ~4878 |
+| 00:23 | Edited src/index.css | expanded (+36 lines) | ~232 |
+
+## Session: 2026-05-08 00:36
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 00:36 | Edited src/components/tasks/TaskList.tsx | inline fix | ~18 |

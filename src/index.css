@@ -1350,6 +1350,42 @@
   .status-pill.tone-calm { background: #edf1f4; color: #4f7fc6; }
   .status-pill.tone-relax { background: #fff0e4; color: #c07a32; }
 
+  .task-row-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    margin-left: auto;
+  }
+
+  .task-row:hover .task-row-actions,
+  .task-row.is-selected .task-row-actions {
+    opacity: 1;
+  }
+
+  .task-action-btn {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .task-action-btn:hover {
+    background: var(--color-border);
+    color: var(--color-text-primary);
+  }
+
+  .task-action-danger:hover {
+    background: #fef2f2;
+    color: #ef4444;
+  }
+
   .task-gentle-footer {
     min-height: 43px;
     border-radius: 12px;

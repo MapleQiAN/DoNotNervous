@@ -7,11 +7,14 @@ import {
   Grid2X2,
   Leaf,
   ListChecks,
+  Pencil,
   Plus,
   Sun,
+  Trash2,
+  X,
 } from 'lucide-react'
 import { useActiveTasks, useCompletedTasksForDate } from '../../hooks/useTaskQueries'
-import { completeTask, createTask } from '../../hooks/useTaskActions'
+import { completeTask, createTask, deleteTask, updateTask } from '../../hooks/useTaskActions'
 import { useFilterStore } from '../../stores/filterStore'
 import { useTaskCount } from '../../hooks/useTaskCount'
 import { useUIStore } from '../../stores/uiStore'
@@ -73,12 +76,115 @@ interface TaskRowProps {
   row: TaskRowModel
   selected: boolean
   onSelect: () => void
+  parentOptions: Task[]
+}
+
+const inputStyle: React.CSSProperties = {
+  padding: '6px 10px', borderRadius: 8, border: '1px solid var(--color-border)',
+  background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)', fontSize: 14,
+}
+const selectStyle: React.CSSProperties = {
+  padding: '6px 8px', borderRadius: 8, border: '1px solid var(--color-border)',
+  background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)', fontSize: 13,
 }
 
 function TaskRow({ row, selected, onSelect }: TaskRowProps) {
+  const [mode, setMode] = useState<'view' | 'edit' | 'delete'>('view')
+  const [editTitle, setEditTitle] = useState(row.title)
+  const [editDifficulty, setEditDifficulty] = useState(row.difficulty)
+  const [editDescription, setEditDescription] = useState(row.task?.description ?? '')
+  const [editCategory, setEditCategory] = useState(row.task?.category ?? '')
+  const [saving, setSaving] = useState(false)
+
   const handleComplete = async () => {
     onSelect()
     if (row.task && !row.completed) await completeTask(row.task.id)
+  }
+
+  const startEdit = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setEditTitle(row.title)
+    setEditDifficulty(row.difficulty)
+    setEditDescription(row.task?.description ?? '')
+    setEditCategory(row.task?.category ?? '')
+    setMode('edit')
+  }
+
+  const handleSave = async () => {
+    if (!row.task || saving) return
+    setSaving(true)
+    try {
+      await updateTask(row.task.id, {
+        title: editTitle.trim(),
+        difficulty: editDifficulty,
+        description: editDescription,
+        category: editCategory,
+      })
+      setMode('view')
+    } catch {
+      // keep edit open on error
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    if (!row.task) return
+    await deleteTask(row.task.id)
+  }
+
+  if (mode === 'delete') {
+    return (
+      <div className="task-row screenshot-row" style={{ justifyContent: 'center', gap: 12, padding: '10px 12px', background: 'var(--color-danger-bg, #fef2f2)' }}>
+        <span style={{ color: 'var(--color-danger, #ef4444)', fontSize: 14 }}>确定删除「{row.title}」吗？此操作不可撤销。</span>
+        <button
+          type="button"
+          onClick={handleDelete}
+          style={{ padding: '4px 12px', borderRadius: 8, background: '#ef4444', color: '#fff', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer' }}
+        >
+          确认删除
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode('view')}
+          style={{ padding: '4px 12px', borderRadius: 8, background: 'var(--color-border)', color: 'var(--color-text-primary)', fontSize: 13, border: 'none', cursor: 'pointer' }}
+        >
+          取消
+        </button>
+      </div>
+    )
+  }
+
+  if (mode === 'edit') {
+    return (
+      <div className="task-row screenshot-row" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8, padding: '10px 12px' }}>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} style={{ ...inputStyle, flex: 1 }} autoFocus />
+          <select value={editDifficulty} onChange={(e) => setEditDifficulty(e.target.value as TaskDifficulty)} style={selectStyle}>
+            <option value="easy">简单 +¥10</option>
+            <option value="medium">中等 +¥20</option>
+            <option value="hard">困难 +¥35</option>
+          </select>
+        </div>
+        <input type="text" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} placeholder="描述（可选）" style={inputStyle} />
+        <div style={{ display: 'flex', gap: 8 }}>
+          <input type="text" value={editCategory} onChange={(e) => setEditCategory(e.target.value)} placeholder="分类（可选，如：工作、学习）" style={{ ...inputStyle, flex: 1 }} />
+          <button type="button" onClick={handleSave} disabled={saving || !editTitle.trim()} style={{
+            padding: '6px 14px', borderRadius: 8, background: 'var(--color-accent)', color: '#fff',
+            fontSize: 13, fontWeight: 600, border: 'none', cursor: saving ? 'wait' : 'pointer',
+            opacity: saving || !editTitle.trim() ? 0.5 : 1,
+          }}>
+            {saving ? '...' : '保存'}
+          </button>
+          <button type="button" onClick={() => setMode('view')} style={{
+            padding: '6px 14px', borderRadius: 8, background: 'var(--color-border)', color: 'var(--color-text-primary)',
+            fontSize: 13, border: 'none', cursor: 'pointer',
+          }}>
+            取消
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -99,6 +205,21 @@ function TaskRow({ row, selected, onSelect }: TaskRowProps) {
       <span className="row-time"><CalendarClock size={15} /> {row.deadline}</span>
       <span className="reward-text">+ ¥{row.reward}</span>
       <span className={`status-pill ${row.tone}`}>{row.mood}</span>
+      {!row.completed && (
+        <div className="task-row-actions">
+          <button type="button" className="task-action-btn" aria-label="编辑任务" onClick={startEdit}>
+            <Pencil size={14} />
+          </button>
+          <button
+            type="button"
+            className="task-action-btn task-action-danger"
+            aria-label="删除任务"
+            onClick={(e) => { e.stopPropagation(); setMode('delete') }}
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
@@ -106,8 +227,12 @@ function TaskRow({ row, selected, onSelect }: TaskRowProps) {
 export function TaskList() {
   const [showCompleted, setShowCompleted] = useState(true)
   const [showAddForm, setShowAddForm] = useState(false)
+  const [showExtraFields, setShowExtraFields] = useState(false)
   const [newTitle, setNewTitle] = useState('')
   const [newDifficulty, setNewDifficulty] = useState<TaskDifficulty>('medium')
+  const [newDescription, setNewDescription] = useState('')
+  const [newCategory, setNewCategory] = useState('')
+  const [newParentId, setNewParentId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
   const activeCategory = useFilterStore((s) => s.activeCategory)
   const taskCount = useTaskCount()
@@ -136,9 +261,19 @@ export function TaskList() {
     if (!newTitle.trim() || adding) return
     setAdding(true)
     try {
-      await createTask({ title: newTitle.trim(), difficulty: newDifficulty })
+      await createTask({
+        title: newTitle.trim(),
+        difficulty: newDifficulty,
+        description: newDescription,
+        category: newCategory,
+        parentId: newParentId,
+      })
       setNewTitle('')
+      setNewDescription('')
+      setNewCategory('')
+      setNewParentId(null)
       setShowAddForm(false)
+      setShowExtraFields(false)
     } catch {
       // error handled silently, form stays open
     } finally {
@@ -181,41 +316,89 @@ export function TaskList() {
         </div>
 
         {showAddForm && (
-          <form onSubmit={handleAddTask} style={{ display: 'flex', gap: 8, padding: '8px 12px', borderBottom: '1px solid var(--color-border)' }}>
-            <input
-              type="text"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="输入任务名称..."
-              autoFocus
-              style={{
-                flex: 1, padding: '6px 10px', borderRadius: 8, border: '1px solid var(--color-border)',
-                background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)', fontSize: 14,
-              }}
-            />
-            <select
-              value={newDifficulty}
-              onChange={(e) => setNewDifficulty(e.target.value as TaskDifficulty)}
-              style={{
-                padding: '6px 8px', borderRadius: 8, border: '1px solid var(--color-border)',
-                background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)', fontSize: 13,
-              }}
-            >
-              <option value="easy">简单 +¥10</option>
-              <option value="medium">中等 +¥20</option>
-              <option value="hard">困难 +¥35</option>
-            </select>
+          <form onSubmit={handleAddTask} style={{ padding: '10px 12px', borderBottom: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <input
+                type="text"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                placeholder="输入任务名称..."
+                autoFocus
+                style={{ ...inputStyle, flex: 1 }}
+              />
+              <select
+                value={newDifficulty}
+                onChange={(e) => setNewDifficulty(e.target.value as TaskDifficulty)}
+                style={selectStyle}
+              >
+                <option value="easy">简单 +¥10</option>
+                <option value="medium">中等 +¥20</option>
+                <option value="hard">困难 +¥35</option>
+              </select>
+              <button
+                type="submit"
+                disabled={adding || !newTitle.trim()}
+                style={{
+                  padding: '6px 14px', borderRadius: 8, background: 'var(--color-accent)', color: '#fff',
+                  fontSize: 13, fontWeight: 600, border: 'none', cursor: adding ? 'wait' : 'pointer',
+                  opacity: adding || !newTitle.trim() ? 0.5 : 1,
+                }}
+              >
+                {adding ? '...' : '添加'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAddForm(false)}
+                style={{
+                  padding: '6px 8px', borderRadius: 8, background: 'var(--color-border)', color: 'var(--color-text-secondary)',
+                  fontSize: 13, border: 'none', cursor: 'pointer',
+                }}
+                aria-label="关闭"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
             <button
-              type="submit"
-              disabled={adding || !newTitle.trim()}
-              style={{
-                padding: '6px 14px', borderRadius: 8, background: 'var(--color-accent)', color: '#fff',
-                fontSize: 13, fontWeight: 600, border: 'none', cursor: adding ? 'wait' : 'pointer',
-                opacity: adding || !newTitle.trim() ? 0.5 : 1,
-              }}
+              type="button"
+              onClick={() => setShowExtraFields(!showExtraFields)}
+              style={{ background: 'none', border: 'none', color: 'var(--color-accent)', fontSize: 13, cursor: 'pointer', padding: '6px 0', marginTop: 4 }}
             >
-              {adding ? '...' : '添加'}
+              {showExtraFields ? '收起更多选项 ▲' : '更多选项 ▼'}
             </button>
+
+            {showExtraFields && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
+                <textarea
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  placeholder="任务描述（可选）"
+                  maxLength={1000}
+                  rows={2}
+                  style={{ ...inputStyle, resize: 'vertical', fontFamily: 'inherit' }}
+                />
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <input
+                    type="text"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    placeholder="分类（可选，如：工作、学习）"
+                    maxLength={50}
+                    style={{ ...inputStyle, flex: 1 }}
+                  />
+                  <select
+                    value={newParentId ?? ''}
+                    onChange={(e) => setNewParentId(e.target.value || null)}
+                    style={selectStyle}
+                  >
+                    <option value="">无父任务</option>
+                    {topLevelActiveTasks.map((t) => (
+                      <option key={t.id} value={t.id}>{t.title}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
           </form>
         )}
 
@@ -226,6 +409,7 @@ export function TaskList() {
               row={row}
               selected={activeSelectedId === row.id}
               onSelect={() => setSelectedTaskId(row.task ? row.task.id : null)}
+              parentOptions={topLevelActiveTasks}
             />
           )) : (
             <div className="summary-empty" style={{ padding: '20px 0', textAlign: 'center' }}>
@@ -252,6 +436,7 @@ export function TaskList() {
                 row={row}
                 selected={false}
                 onSelect={() => setSelectedTaskId(row.task ? row.task.id : null)}
+                parentOptions={topLevelActiveTasks}
               />
             )) : (
               <div className="summary-empty" style={{ padding: '20px 0', textAlign: 'center' }}>
