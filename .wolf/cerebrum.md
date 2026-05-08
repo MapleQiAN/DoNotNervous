@@ -11,6 +11,11 @@
 ## Key Learnings
 
 - **Project:** donotnervous
+- **Auth flow:** authStore persists tokens to localStorage via `dnn_auth_tokens` key. `isAuthenticated` derived from `!!accessToken`. `useInitAuth` hook in `src/hooks/useAuth.ts` calls `/auth/me` to restore user on reload. Token refresh handled in `src/lib/api.ts` — on 401, tries `POST /auth/refresh`, retries request or logs out.
+- **API client token refresh:** `src/lib/api.ts` uses dynamic `import('../stores/authStore')` to avoid circular dependency. `refreshPromise` singleton prevents concurrent refresh calls.
+- **AuthGuard:** Shows LoginPage when no token. Shows loading spinner when token exists but user not yet restored (useInitAuth). Renders children when authenticated.
+- **Logout:** Available in SettingsDrawer. Calls `useAuthStore.logout()` which clears localStorage + resets state → AuthGuard shows LoginPage.
+- **Project:** donotnervous
 - **Description:** Healing/lifestyle anti-anxiety task tracker with gamification (points, streaks, rewards) and mood tracking.
 - **UI aesthetic:** Warm cream/green/orange palette, large border-radius, soft shadows, low saturation. NOT corporate/admin — more lifestyle/journal feel. CSS uses oklch colors via `@theme` tokens.
 - **Homepage layout:** Dashboard grid with `2.4fr 1fr` columns. Left: hero card + task list + reward banner. Right: stacked stat cards + quick-add form. Task rows use mood tags (tone-focus/tone-hope/tone-energy/tone-calm/tone-relax) and status pills (done/progress/default).

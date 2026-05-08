@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../lib/api'
-import { taskKeys, pointKeys, streakKeys } from '../lib/queryKeys'
+import { queryClient } from '../lib/queryClient'
+import { taskKeys, pointKeys, streakKeys, summaryKeys } from '../lib/queryKeys'
 import { useAuthStore } from '../stores/authStore'
 import { useMascotStore } from '../stores/mascotStore'
 import { celebrateTaskComplete } from '../lib/celebrate'
 import { checkStreakMilestone } from './useStreaks'
 import { taskCreateSchema } from '../domain/task'
-import { summaryKeys } from '../lib/queryKeys'
 import type { Task } from '../domain/types'
 
 function getToken(): string {
@@ -87,17 +87,27 @@ export function useUpdateTask() {
   })
 }
 
-// Legacy imperative functions (for non-hook contexts)
+async function invalidateTaskCaches() {
+  const todayKey = new Date().toISOString().slice(0, 10)
+  await Promise.all([
+    queryClient.invalidateQueries({ queryKey: taskKeys.all }),
+    queryClient.invalidateQueries({ queryKey: pointKeys.all }),
+    queryClient.invalidateQueries({ queryKey: streakKeys.all }),
+    queryClient.invalidateQueries({ queryKey: summaryKeys.daily(todayKey) }),
+  ])
+}
+
 export async function createTask(input: unknown): Promise<Task> {
   const validated = taskCreateSchema.parse(input)
   const result = await api.post<{ data: Task }>('/tasks', validated, getToken())
+  await queryClient.invalidateQueries({ queryKey: taskKeys.all })
   return result.data
 }
 
 export async function completeTask(id: string): Promise<Task> {
   const result = await api.post<{ data: { task: Task } }>(`/tasks/${id}/complete`, {}, getToken())
 
-  // Mascot celebration
+  await invalidateTaskCaches()
   useMascotStore.getState().setAnimation('celebrate')
   celebrateTaskComplete()
   checkStreakMilestone().catch(() => {})
@@ -107,18 +117,22 @@ export async function completeTask(id: string): Promise<Task> {
 
 export async function uncompleteTask(id: string): Promise<void> {
   await api.post(`/tasks/${id}/uncomplete`, {}, getToken())
+  await invalidateTaskCaches()
 }
 
 export async function archiveTask(id: string): Promise<void> {
   await api.patch(`/tasks/${id}`, { status: 'archived', archivedAt: new Date().toISOString() }, getToken())
+  await queryClient.invalidateQueries({ queryKey: taskKeys.all })
 }
 
 export async function unarchiveTask(id: string): Promise<void> {
   await api.patch(`/tasks/${id}`, { status: 'active', archivedAt: null }, getToken())
+  await queryClient.invalidateQueries({ queryKey: taskKeys.all })
 }
 
 export async function deleteTask(id: string): Promise<void> {
   await api.del(`/tasks/${id}`, getToken())
+  await invalidateTaskCaches()
 }
 
 export async function updateTask(id: string, updates: Partial<Task>): Promise<void> {
@@ -126,4 +140,5 @@ export async function updateTask(id: string, updates: Partial<Task>): Promise<vo
   if (updates.completedAt instanceof Date) patch.completedAt = updates.completedAt.toISOString()
   if (updates.archivedAt instanceof Date) patch.archivedAt = updates.archivedAt.toISOString()
   await api.patch(`/tasks/${id}`, patch, getToken())
+  await queryClient.invalidateQueries({ queryKey: taskKeys.all })
 }

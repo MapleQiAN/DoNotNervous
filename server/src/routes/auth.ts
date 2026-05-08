@@ -64,6 +64,26 @@ auth.post('/login', zValidator('json', registerSchema), async (c) => {
   })
 })
 
+auth.get('/me', async (c) => {
+  const header = c.req.header('Authorization')
+  if (!header?.startsWith('Bearer ')) {
+    return c.json({ error: 'Missing authorization header' }, 401)
+  }
+
+  try {
+    const payload = verifyToken(header.slice(7), 'access')
+    const [user] = await db
+      .select({ id: users.id, email: users.email })
+      .from(users)
+      .where(eq(users.id, payload.sub))
+      .limit(1)
+    if (!user) return c.json({ error: 'User not found' }, 404)
+    return c.json({ user })
+  } catch {
+    return c.json({ error: 'Invalid or expired token' }, 401)
+  }
+})
+
 auth.post('/refresh', async (c) => {
   const body = await c.req.json()
   const { refreshToken } = body

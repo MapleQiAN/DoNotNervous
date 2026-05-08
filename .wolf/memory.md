@@ -583,3 +583,52 @@
 
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
+
+## Session: 2026-05-08 19:39
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 19:47 | Created src/components/auth/AuthGuard.tsx | — | ~109 |
+| 19:49 | Fixed AuthGuard bypass - restored LoginPage for unauthenticated users | src/components/auth/AuthGuard.tsx | AuthGuard now shows LoginPage when no token | ~5 |
+
+## Session: 2026-05-08 22:36
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 22:47 | Created C:/Users/SerendyLin/.claude/plans/lovely-shimmying-brook.md | — | ~776 |
+| 23:09 | Edited server/src/routes/auth.ts | added error handling | ~178 |
+| 23:10 | Edited src/stores/authStore.ts | 9→10 lines | ~99 |
+| 23:10 | Edited src/stores/authStore.ts | 21→24 lines | ~235 |
+| 23:10 | Edited src/stores/authStore.ts | 10→9 lines | ~86 |
+| 23:11 | Edited src/stores/authStore.ts | 8→5 lines | ~53 |
+| 23:11 | Edited src/lib/api.ts | added error handling | ~636 |
+| 23:12 | Created src/hooks/useAuth.ts | — | ~292 |
+| 23:12 | Created src/components/auth/AuthGuard.tsx | — | ~204 |
+| 23:13 | Edited src/components/layout/SettingsDrawer.tsx | added 1 import(s) | ~71 |
+| 23:13 | Edited src/components/layout/SettingsDrawer.tsx | modified SettingsDrawer() | ~66 |
+| 23:13 | Edited src/components/layout/SettingsDrawer.tsx | CSS: hover | ~312 |
+| 23:14 | Created src/components/auth/LoginPage.tsx | — | ~1267 |
+| 23:14 | Full auth flow complete: /auth/me endpoint, authStore fix, token refresh, useInitAuth hook, AuthGuard loading state, logout in SettingsDrawer, LoginPage polished. tsc + vite build clean. | 7 files | ~4k |
+
+## Session: 2026-05-08 23:47
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 23:55 | Edited src/hooks/useTaskActions.ts | 10→10 lines | ~154 |
+| 23:55 | Edited src/hooks/useTaskActions.ts | modified invalidateTaskCaches() | ~641 |
+| 23:56 | Edited src/components/tasks/TaskList.tsx | reduced (-17 lines) | ~241 |
+| 23:57 | Edited src/components/tasks/TaskList.tsx | added error handling | ~1825 |
+| 23:57 | Edited src/components/tasks/TaskList.tsx | 12→11 lines | ~38 |
+| 23:57 | Edited src/components/home/HomePage.tsx | 26→25 lines | ~200 |
+| 23:58 | Edited src/components/home/HomePage.tsx | added error handling | ~598 |
+| 23:58 | Edited src/components/home/HomePage.tsx | expanded (+20 lines) | ~614 |
+| 00:00 | Edited src/components/home/HomePage.tsx | removed 33 lines | ~3 |
+
+## Session: 2026-05-08 00:05
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 00:06 | Edited src/components/home/HomePage.tsx | modified formatTaskTime() | ~132 |
+| 00:06 | Edited src/components/summary/DailySummary.tsx | inline fix | ~32 |
+| 00:06 | Edited src/components/summary/DailySummary.tsx | 2→3 lines | ~30 |
+| 00:06 | Edited src/components/summary/DailySummary.tsx | inline fix | ~16 |

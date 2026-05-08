@@ -1,7 +1,8 @@
 import { useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Download, Upload } from 'lucide-react'
+import { X, Download, Upload, LogOut, User } from 'lucide-react'
 import { Button } from '../common/Button'
+import { useAuthStore } from '../../stores/authStore'
 
 async function exportData() {
   // Export via server API TBD
@@ -19,6 +20,8 @@ interface SettingsDrawerProps {
 
 export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
 
   async function handleExport() {
     try {
@@ -108,6 +111,28 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
                     onChange={(e) => void handleFileChange(e)}
                   />
                 </div>
+              </div>
+
+              <div className="border-t border-border pt-6">
+                <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3">
+                  Account
+                </p>
+                {user && (
+                  <div className="flex items-center gap-3 mb-4 px-1">
+                    <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
+                      <User className="w-4 h-4 text-accent" />
+                    </div>
+                    <span className="text-sm text-text-primary truncate">{user.email}</span>
+                  </div>
+                )}
+                <Button
+                  variant="secondary"
+                  className="w-full flex items-center justify-center gap-2 text-red-500 hover:bg-red-50"
+                  onClick={() => { logout(); onClose() }}
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </Button>
               </div>
             </div>
           </motion.div>

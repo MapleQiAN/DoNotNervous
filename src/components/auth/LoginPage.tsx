@@ -30,51 +30,71 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-primary)]">
-      <div className="w-full max-w-sm p-8 bg-[var(--color-bg-secondary)] rounded-2xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-6 text-[var(--color-text-primary)]">
-          {isRegister ? 'Create Account' : 'Welcome Back'}
-        </h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]"
-            />
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-primary)] p-4">
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[var(--color-accent)]/15 mb-4">
+            <span className="text-3xl">🌿</span>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={8}
-              className="w-full px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]"
-            />
-          </div>
-          {error && <p className="text-sm text-red-500">{error}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2 px-4 rounded-lg bg-[var(--color-accent)] text-white font-medium hover:opacity-90 disabled:opacity-50"
-          >
-            {loading ? 'Please wait...' : isRegister ? 'Register' : 'Login'}
-          </button>
-        </form>
-        <p className="text-sm text-center mt-4 text-[var(--color-text-secondary)]">
-          {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
-          <button
-            onClick={() => { setIsRegister(!isRegister); setError('') }}
-            className="text-[var(--color-accent)] hover:underline"
-          >
-            {isRegister ? 'Login' : 'Register'}
-          </button>
-        </p>
+          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+            {isRegister ? 'Create Account' : 'Welcome Back'}
+          </h1>
+          <p className="text-sm text-[var(--color-text-secondary)] mt-1">
+            {isRegister ? 'Start your calm journey today' : 'Take a breath and continue'}
+          </p>
+        </div>
+
+        <div className="bg-[var(--color-bg-secondary)] rounded-2xl shadow-lg p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors"
+                placeholder="you@example.com"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={8}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors"
+                placeholder="Min. 8 characters"
+              />
+            </div>
+            {error && (
+              <p className="text-sm text-red-500 bg-red-50 px-3 py-2 rounded-lg">{error}</p>
+            )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-2.5 px-4 rounded-xl bg-[var(--color-accent)] text-white font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+            >
+              {loading ? 'Please wait...' : isRegister ? 'Create Account' : 'Sign In'}
+            </button>
+          </form>
+
+          <p className="text-sm text-center mt-5 text-[var(--color-text-secondary)]">
+            {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
+            <button
+              onClick={() => { setIsRegister(!isRegister); setError('') }}
+              className="text-[var(--color-accent)] font-medium hover:underline"
+            >
+              {isRegister ? 'Sign In' : 'Create one'}
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   )

@@ -1,10 +1,49 @@
 {
-  "session_id": "session-2026-05-08-1549",
-  "started": "2026-05-08T07:49:33.479Z",
-  "files_read": {},
-  "files_written": [],
-  "edit_counts": {},
-  "anatomy_hits": 0,
+  "session_id": "session-2026-05-08-0005",
+  "started": "2026-05-08T16:05:25.362Z",
+  "files_read": {
+    "E:/DoNotNervous/src/components/home/HomePage.tsx": {
+      "count": 1,
+      "tokens": 3456,
+      "first_read": "2026-05-08T16:06:02.712Z"
+    },
+    "E:/DoNotNervous/src/components/summary/DailySummary.tsx": {
+      "count": 1,
+      "tokens": 6986,
+      "first_read": "2026-05-08T16:06:37.741Z"
+    }
+  },
+  "files_written": [
+    {
+      "file": "E:/DoNotNervous/src/components/home/HomePage.tsx",
+      "action": "edit",
+      "tokens": 132,
+      "at": "2026-05-08T16:06:18.901Z"
+    },
+    {
+      "file": "E:/DoNotNervous/src/components/summary/DailySummary.tsx",
+      "action": "edit",
+      "tokens": 32,
+      "at": "2026-05-08T16:06:53.604Z"
+    },
+    {
+      "file": "E:/DoNotNervous/src/components/summary/DailySummary.tsx",
+      "action": "edit",
+      "tokens": 30,
+      "at": "2026-05-08T16:06:55.225Z"
+    },
+    {
+      "file": "E:/DoNotNervous/src/components/summary/DailySummary.tsx",
+      "action": "edit",
+      "tokens": 16,
+      "at": "2026-05-08T16:06:56.832Z"
+    }
+  ],
+  "edit_counts": {
+    "src/components/home/HomePage.tsx": 1,
+    "src/components/summary/DailySummary.tsx": 3
+  },
+  "anatomy_hits": 2,
   "anatomy_misses": 0,
   "repeated_reads_warned": 0,
   "cerebrum_warnings": 0,

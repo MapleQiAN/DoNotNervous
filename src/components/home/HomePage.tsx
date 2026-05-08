@@ -1,10 +1,9 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   ArrowRight,
   BadgeDollarSign,
-  CalendarPlus,
   Check,
   ChevronDown,
   ChevronRight,
@@ -21,9 +20,9 @@ import {
 } from 'lucide-react'
 import { usePointBalance } from '../../hooks/usePoints'
 import { useCurrentStreak } from '../../hooks/useStreaks'
-import { completeTask, uncompleteTask } from '../../hooks/useTaskActions'
+import { completeTask, createTask, uncompleteTask } from '../../hooks/useTaskActions'
 import { useActiveTasks, useCompletedTasksForDate, useLatestMood } from '../../hooks/useTaskQueries'
-import type { Task } from '../../domain/types'
+import type { Task, TaskDifficulty } from '../../domain/types'
 
 interface HomePageProps {
   showToast: (message: string, type?: 'success' | 'error') => void
@@ -58,13 +57,15 @@ function formatReward(task: Task) {
 
 function formatTaskTime(task: Task): string {
   if (task.completedAt) {
-    const h = task.completedAt.getHours()
-    const m = task.completedAt.getMinutes()
+    const d = new Date(task.completedAt)
+    const h = d.getHours()
+    const m = d.getMinutes()
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')} 完成`
   }
   if (task.createdAt) {
-    const h = task.createdAt.getHours()
-    const m = task.createdAt.getMinutes()
+    const d = new Date(task.createdAt)
+    const h = d.getHours()
+    const m = d.getMinutes()
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')} 创建`
   }
   return ''
@@ -82,6 +83,10 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
   const completedToday = useCompletedTasksForDate(todayKey)
 
   const latestMood = useLatestMood()
+
+  const [quickTitle, setQuickTitle] = useState('')
+  const [quickDifficulty, setQuickDifficulty] = useState<TaskDifficulty>('medium')
+  const [quickAdding, setQuickAdding] = useState(false)
 
   const topLevelActive = activeTasks.filter((t) => t.parentId === null)
   const completedCount = completedToday.length
@@ -114,6 +119,20 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
       await completeTask(taskId)
     }
   }, [])
+
+  async function handleQuickAdd(e: React.FormEvent) {
+    e.preventDefault()
+    if (!quickTitle.trim() || quickAdding) return
+    setQuickAdding(true)
+    try {
+      await createTask({ title: quickTitle.trim(), difficulty: quickDifficulty })
+      setQuickTitle('')
+    } catch {
+      // silent
+    } finally {
+      setQuickAdding(false)
+    }
+  }
 
   return (
     <div className="dashboard-grid home-dashboard">
@@ -285,32 +304,52 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           className="quick-card home-quick-card"
         >
           <h3>快速添加任务 <Sparkles size={16} /></h3>
-          <label className="quick-field quick-name">
-            <span>任务名称</span>
-            <input readOnly value="" placeholder="输入任务名称..." />
-            <CalendarPlus size={16} />
-          </label>
-          <div className="quick-grid">
-            <label className="quick-field">
-              <span>奖励金额</span>
-              <div className="quick-input-shell">
-                <em>¥</em>
-                <input readOnly value="" aria-label="奖励金额" />
-                <TimerReset size={15} />
-              </div>
+          <form onSubmit={handleQuickAdd}>
+            <label className="quick-field quick-name">
+              <span>任务名称</span>
+              <input
+                value={quickTitle}
+                onChange={(e) => setQuickTitle(e.target.value)}
+                placeholder="输入任务名称..."
+              />
+              <TimerReset size={16} />
             </label>
-            <label className="quick-field">
-              <span>心情感受</span>
-              <button type="button" onClick={() => navigate('/mood')} className="quick-select">
-                <Smile size={18} />
-                {moodLabel}
-                <ChevronDown size={15} />
-              </button>
-            </label>
-          </div>
-          <button type="button" onClick={() => navigate('/tasks')} className="quick-submit">
-            添加任务 <PlusCircle size={17} />
-          </button>
+            <div className="quick-grid">
+              <label className="quick-field">
+                <span>难度</span>
+                <div className="quick-input-shell">
+                  <select
+                    value={quickDifficulty}
+                    onChange={(e) => setQuickDifficulty(e.target.value as TaskDifficulty)}
+                    style={{
+                      flex: 1, border: 'none', background: 'transparent',
+                      color: 'var(--color-text-primary)', fontSize: 14,
+                    }}
+                  >
+                    <option value="easy">简单 +¥10</option>
+                    <option value="medium">中等 +¥20</option>
+                    <option value="hard">困难 +¥35</option>
+                  </select>
+                </div>
+              </label>
+              <label className="quick-field">
+                <span>心情感受</span>
+                <button type="button" onClick={() => navigate('/mood')} className="quick-select">
+                  <Smile size={18} />
+                  {moodLabel}
+                  <ChevronDown size={15} />
+                </button>
+              </label>
+            </div>
+            <button
+              type="submit"
+              disabled={quickAdding || !quickTitle.trim()}
+              className="quick-submit"
+              style={{ opacity: quickAdding || !quickTitle.trim() ? 0.5 : 1 }}
+            >
+              {quickAdding ? '添加中...' : '添加任务'} <PlusCircle size={17} />
+            </button>
+          </form>
         </motion.div>
 
       </aside>

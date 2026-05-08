@@ -4,5 +4,29 @@
     "root_cause": "Unresolved git merge conflicts in src/components/rewards/RewardShop.tsx and src/index.css caused typescript compilation error TS1185 and css syntax error.",
     "fix": "Removed merge conflict markers and successfully merged the conflicting imports and UI elements in RewardShop.tsx and index.css.",
     "tags": ["build-error", "git-conflict", "typescript"]
+  },
+  {
+    "id": "bug-002",
+    "timestamp": "2026-05-08T16:00:00Z",
+    "error_message": "After login all pages and components are non-functional and non-interactive",
+    "file": "src/hooks/useTaskActions.ts",
+    "root_cause": "Imperative functions (completeTask, uncompleteTask, createTask, etc.) made API calls but never invalidated React Query caches. UI stayed stale after every action. Additionally, TaskList had hardcoded fallback demo data with undefined task references that made clicks no-ops, and HomePage quick-add section had readOnly inputs with no state.",
+    "fix": "Added queryClient.invalidateQueries() calls to all imperative functions. Removed fake fallback demo data from TaskList. Replaced HomePage readOnly inputs with functional form backed by createTask(). Added inline task creation form to TaskList.",
+    "tags": ["auth", "react-query", "cache-invalidation", "ui-interaction"],
+    "related_bugs": [],
+    "occurrences": 1,
+    "last_seen": "2026-05-08T16:00:00Z"
+  },
+  {
+    "id": "bug-003",
+    "timestamp": "2026-05-09T00:07:00Z",
+    "error_message": "Uncaught TypeError: e.createdAt.getHours is not a function",
+    "file": "src/components/home/HomePage.tsx, src/components/summary/DailySummary.tsx",
+    "root_cause": "API returns date fields (createdAt, completedAt) as ISO strings, not Date objects. Calling .getHours() / .getTime() directly on strings throws TypeError.",
+    "fix": "Wrapped all date field access in new Date() before calling Date methods in formatTaskTime (HomePage.tsx) and buildMoodCurve/peakHour (DailySummary.tsx).",
+    "tags": ["date-serialization", "api-migration", "runtime-error"],
+    "related_bugs": [],
+    "occurrences": 1,
+    "last_seen": "2026-05-09T00:07:00Z"
   }
 ]

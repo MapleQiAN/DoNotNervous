@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import {
-  CalendarCheck,
   CalendarClock,
   ChevronUp,
   Check,
@@ -8,10 +7,11 @@ import {
   Grid2X2,
   Leaf,
   ListChecks,
+  Plus,
   Sun,
 } from 'lucide-react'
 import { useActiveTasks, useCompletedTasksForDate } from '../../hooks/useTaskQueries'
-import { completeTask } from '../../hooks/useTaskActions'
+import { completeTask, createTask } from '../../hooks/useTaskActions'
 import { useFilterStore } from '../../stores/filterStore'
 import { useTaskCount } from '../../hooks/useTaskCount'
 import { useUIStore } from '../../stores/uiStore'
@@ -30,24 +30,6 @@ interface TaskRowModel {
   completed?: boolean
   task?: Task
 }
-
-const fallbackToday: TaskRowModel[] = [
-  { id: 'demo-today-1', title: '完成项目方案初稿', difficulty: 'hard', deadline: '今天 10:00 截止', reward: 35, mood: '专注', tone: 'tone-focus' },
-  { id: 'demo-today-2', title: '与团队同步需求', difficulty: 'medium', deadline: '今天 14:00 截止', reward: 20, mood: '期待', tone: 'tone-hope' },
-  { id: 'demo-today-3', title: '阅读 20 页', difficulty: 'easy', deadline: '今天 21:30 截止', reward: 10, mood: '平静', tone: 'tone-calm' },
-  { id: 'demo-today-4', title: '睡前记录心情', difficulty: 'easy', deadline: '今天 22:30 截止', reward: 10, mood: '放松', tone: 'tone-relax' },
-]
-
-const weeklyPlan: TaskRowModel[] = [
-  { id: 'demo-week-1', title: '健身 30 分钟（每周 ≥ 3 次）', difficulty: 'hard', deadline: '本周日 截止', reward: 15, mood: '活力', tone: 'tone-energy' },
-  { id: 'demo-week-2', title: '整理桌面和文件', difficulty: 'medium', deadline: '本周六 截止', reward: 10, mood: '期待', tone: 'tone-hope' },
-  { id: 'demo-week-3', title: '学习心理学课程一节', difficulty: 'easy', deadline: '本周日 截止', reward: 15, mood: '平静', tone: 'tone-calm' },
-]
-
-const fallbackCompleted: TaskRowModel[] = [
-  { id: 'demo-done-1', title: '喝够 8 杯水', difficulty: 'easy', deadline: '今天 09:00 完成', reward: 5, mood: '活力', tone: 'tone-energy', completed: true },
-  { id: 'demo-done-2', title: '冥想 10 分钟', difficulty: 'easy', deadline: '今天 08:30 完成', reward: 5, mood: '平静', tone: 'tone-calm', completed: true },
-]
 
 function difficultyLabel(difficulty: TaskDifficulty) {
   if (difficulty === 'hard') return '高优先级'
@@ -123,6 +105,10 @@ function TaskRow({ row, selected, onSelect }: TaskRowProps) {
 
 export function TaskList() {
   const [showCompleted, setShowCompleted] = useState(true)
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [newTitle, setNewTitle] = useState('')
+  const [newDifficulty, setNewDifficulty] = useState<TaskDifficulty>('medium')
+  const [adding, setAdding] = useState(false)
   const activeCategory = useFilterStore((s) => s.activeCategory)
   const taskCount = useTaskCount()
   const selectedTaskId = useUIStore((s) => s.selectedTaskId)
@@ -139,16 +125,26 @@ export function TaskList() {
     ? topLevelActiveTasks.filter((t) => t.category === activeCategory)
     : topLevelActiveTasks
 
-  const todayRows = filtered.length > 0
-    ? filtered.slice(0, 4).map((task, index) => taskToRow(task, index))
-    : fallbackToday
-
-  const completedRows = topLevelCompletedTasks.length > 0
-    ? topLevelCompletedTasks.slice(0, 6).map((task, index) => taskToRow(task, index, true))
-    : fallbackCompleted
+  const todayRows = filtered.map((task, index) => taskToRow(task, index))
+  const completedRows = topLevelCompletedTasks.map((task, index) => taskToRow(task, index, true))
 
   const firstRowId = todayRows[0]?.id ?? null
   const activeSelectedId = selectedTaskId ?? firstRowId
+
+  async function handleAddTask(e: React.FormEvent) {
+    e.preventDefault()
+    if (!newTitle.trim() || adding) return
+    setAdding(true)
+    try {
+      await createTask({ title: newTitle.trim(), difficulty: newDifficulty })
+      setNewTitle('')
+      setShowAddForm(false)
+    } catch {
+      // error handled silently, form stays open
+    } finally {
+      setAdding(false)
+    }
+  }
 
   return (
     <div className="task-page">
@@ -173,34 +169,69 @@ export function TaskList() {
       <section className="content-card grouped-list task-group-card">
         <div className="group-title">
           <span><Sun size={18} /> 今日任务（{todayRows.length}）</span>
-          <ChevronUp size={17} />
+          <button
+            type="button"
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="clickable"
+            aria-label="添加任务"
+            style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--color-accent)', fontSize: 14 }}
+          >
+            <Plus size={16} /> 添加
+          </button>
         </div>
+
+        {showAddForm && (
+          <form onSubmit={handleAddTask} style={{ display: 'flex', gap: 8, padding: '8px 12px', borderBottom: '1px solid var(--color-border)' }}>
+            <input
+              type="text"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              placeholder="输入任务名称..."
+              autoFocus
+              style={{
+                flex: 1, padding: '6px 10px', borderRadius: 8, border: '1px solid var(--color-border)',
+                background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)', fontSize: 14,
+              }}
+            />
+            <select
+              value={newDifficulty}
+              onChange={(e) => setNewDifficulty(e.target.value as TaskDifficulty)}
+              style={{
+                padding: '6px 8px', borderRadius: 8, border: '1px solid var(--color-border)',
+                background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)', fontSize: 13,
+              }}
+            >
+              <option value="easy">简单 +¥10</option>
+              <option value="medium">中等 +¥20</option>
+              <option value="hard">困难 +¥35</option>
+            </select>
+            <button
+              type="submit"
+              disabled={adding || !newTitle.trim()}
+              style={{
+                padding: '6px 14px', borderRadius: 8, background: 'var(--color-accent)', color: '#fff',
+                fontSize: 13, fontWeight: 600, border: 'none', cursor: adding ? 'wait' : 'pointer',
+                opacity: adding || !newTitle.trim() ? 0.5 : 1,
+              }}
+            >
+              {adding ? '...' : '添加'}
+            </button>
+          </form>
+        )}
+
         <div className="table-list">
-          {todayRows.map((row) => (
+          {todayRows.length > 0 ? todayRows.map((row) => (
             <TaskRow
               key={row.id}
               row={row}
               selected={activeSelectedId === row.id}
               onSelect={() => setSelectedTaskId(row.task ? row.task.id : null)}
             />
-          ))}
-        </div>
-      </section>
-
-      <section className="content-card grouped-list task-group-card">
-        <div className="group-title">
-          <span><CalendarCheck size={18} /> 本周计划（{weeklyPlan.length}）</span>
-          <ChevronUp size={17} />
-        </div>
-        <div className="table-list">
-          {weeklyPlan.map((row) => (
-            <TaskRow
-              key={row.id}
-              row={row}
-              selected={false}
-              onSelect={() => setSelectedTaskId(null)}
-            />
-          ))}
+          )) : (
+            <div className="summary-empty" style={{ padding: '20px 0', textAlign: 'center' }}>
+              还没有任务，点击上方"添加"开始吧
+            </div>
+          )}
         </div>
       </section>
 
@@ -215,14 +246,18 @@ export function TaskList() {
         </button>
         {showCompleted && (
           <div className="table-list">
-            {completedRows.map((row) => (
+            {completedRows.length > 0 ? completedRows.map((row) => (
               <TaskRow
                 key={row.id}
                 row={row}
                 selected={false}
                 onSelect={() => setSelectedTaskId(row.task ? row.task.id : null)}
               />
-            ))}
+            )) : (
+              <div className="summary-empty" style={{ padding: '20px 0', textAlign: 'center' }}>
+                还没有完成的任务
+              </div>
+            )}
           </div>
         )}
       </section>

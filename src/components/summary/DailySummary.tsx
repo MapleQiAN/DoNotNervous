@@ -46,7 +46,7 @@ const moodScale = [
 
 function buildMoodCurve(entries: MoodEntry[]): Array<{ time: string; x: number; y: number; tone: string }> {
   if (entries.length === 0) return []
-  const sorted = [...entries].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+  const sorted = [...entries].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
   const n = sorted.length
   const xStart = 34
   const xEnd = 488
@@ -55,8 +55,9 @@ function buildMoodCurve(entries: MoodEntry[]): Array<{ time: string; x: number; 
     const y = Math.round(162 - ((score - 1) / 4) * 128)
     const x = Math.round(n === 1 ? (xStart + xEnd) / 2 : xStart + (i / (n - 1)) * (xEnd - xStart))
     const tone = score >= 4 ? 'good' : score >= 3 ? 'plain' : 'calm'
-    const hour = entry.createdAt.getHours()
-    const minute = entry.createdAt.getMinutes()
+    const d = new Date(entry.createdAt)
+    const hour = d.getHours()
+    const minute = d.getMinutes()
     const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
     return { time, x, y, tone }
   })
@@ -126,7 +127,7 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
     const buckets = new Map<number, number>()
     for (const task of completedTasks) {
       if (task.completedAt) {
-        const h = task.completedAt.getHours()
+        const h = new Date(task.completedAt).getHours()
         buckets.set(h, (buckets.get(h) ?? 0) + 1)
       }
     }
