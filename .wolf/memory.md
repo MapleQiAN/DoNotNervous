@@ -502,3 +502,84 @@
 | 14:40 | Edited src/index.css | 2→2 lines | ~24 |
 | 14:40 | Edited src/index.css | CSS: text-align | ~73 |
 | 14:41 | Edited src/index.css | CSS: justify-content, justify-content | ~111 |
+
+## Session: 2026-05-08 14:59
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 15:13 | Created C:/Users/SerendyLin/.claude/plans/typed-hugging-crystal.md | — | ~1108 |
+| 15:15 | Created src/lib/queryClient.ts | — | ~72 |
+| 15:15 | Created src/lib/queryKeys.ts | — | ~512 |
+| 15:16 | Edited src/App.tsx | added 2 import(s) | ~79 |
+| 15:16 | Edited src/App.tsx | modified App() | ~50 |
+| 15:18 | Created server/src/domain/points.ts | — | ~234 |
+| 15:18 | Created server/src/domain/streaks.ts | — | ~291 |
+| 15:19 | Created server/src/domain/summary.ts | — | ~1818 |
+| 15:20 | Created server/src/routes/tasks.ts | — | ~2033 |
+| 15:20 | Created server/src/routes/rewards.ts | — | ~1076 |
+| 15:21 | Created server/src/routes/streaks.ts | — | ~834 |
+| 15:21 | Created server/src/routes/mood.ts | — | ~923 |
+| 15:21 | Created server/src/routes/summaries.ts | — | ~580 |
+| 15:22 | Created server/src/routes/points.ts | — | ~662 |
+
+## Session: 2026-05-08 15:23
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 15:28 | Created src/hooks/usePoints.ts | — | ~252 |
+| 15:28 | Created src/hooks/useStreaks.ts | — | ~1230 |
+| 15:28 | Created src/hooks/useMoodEntries.ts | — | ~714 |
+| 15:28 | Created src/hooks/useRewards.ts | — | ~1034 |
+| 15:28 | Created src/hooks/useSummary.ts | — | ~711 |
+| 15:28 | Created src/hooks/useTaskQueries.ts | — | ~529 |
+| 15:29 | Created src/hooks/useTaskActions.ts | — | ~1362 |
+| 15:32 | Edited src/hooks/useStreaks.ts | added 1 condition(s) | ~140 |
+| 15:32 | Edited src/hooks/usePoints.ts | added nullish coalescing | ~123 |
+| 15:32 | Edited src/components/home/HomePage.tsx | 27→26 lines | ~194 |
+| 15:32 | Edited src/components/home/HomePage.tsx | reduced (-19 lines) | ~56 |
+
+## Session: 2026-05-08 15:36
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+
+## Session: 2026-05-08 15:36
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 15:38 | Edited src/hooks/useTaskQueries.ts | added nullish coalescing | ~260 |
+| 15:38 | Edited src/components/tasks/CategoryFilter.tsx | modified CategoryFilter() | ~106 |
+| 15:38 | Edited src/components/tasks/SubtaskList.tsx | modified SubtaskList() | ~110 |
+| 15:38 | Edited src/components/tasks/TaskDetailPanel.tsx | "dexie-react-hooks" → "../../hooks/useTaskQuerie" | ~17 |
+| 15:38 | Edited src/components/tasks/TaskDetailPanel.tsx | 6→5 lines | ~81 |
+| 15:39 | Edited src/components/tasks/TaskDetailPanel.tsx | 5→1 lines | ~11 |
+| 15:39 | Created src/hooks/useTaskCount.ts | — | ~128 |
+| 15:39 | Edited src/components/tasks/TaskList.tsx | 15→14 lines | ~92 |
+| 15:39 | Edited src/components/tasks/TaskList.tsx | reduced (-8 lines) | ~45 |
+| 15:40 | Edited src/components/mood/MoodCalendar.tsx | 8→7 lines | ~116 |
+| 15:40 | Edited src/components/mood/MoodCalendar.tsx | CSS: weekStartsOn, weekStartsOn | ~89 |
+| 15:41 | Edited src/components/summary/WeeklySummary.tsx | 8→7 lines | ~114 |
+| 15:41 | Edited src/components/summary/WeeklySummary.tsx | reduced (-13 lines) | ~29 |
+| 15:41 | Edited src/components/summary/DailySummary.tsx | 12→12 lines | ~204 |
+| 15:41 | Edited src/components/summary/DailySummary.tsx | removed 18 lines | ~20 |
+| 15:41 | Edited src/components/summary/DailySummary.tsx | removed 13 lines | ~16 |
+| 15:42 | Edited src/components/mascot/Mascot.tsx | 8→7 lines | ~99 |
+| 15:42 | Edited src/components/mascot/Mascot.tsx | 4→2 lines | ~35 |
+| 15:42 | Edited src/components/rewards/RewardShop.tsx | added 1 import(s) | ~234 |
+| 15:42 | Edited src/components/rewards/RewardShop.tsx | added optional chaining | ~147 |
+| 15:44 | Edited src/App.tsx | 3→2 lines | ~26 |
+| 15:44 | Edited src/App.tsx | modified AuthenticatedApp() | ~26 |
+| 15:44 | Edited src/components/layout/SettingsDrawer.tsx | CSS: _file | ~91 |
+| 15:45 | Edited src/hooks/usePoints.ts | inline fix | ~29 |
+| 15:46 | Edited src/hooks/useStreaks.ts | inline fix | ~32 |
+| 15:46 | Edited src/hooks/useStreaks.ts | inline fix | ~27 |
+| 15:46 | Edited src/components/rewards/RewardShop.tsx | inline fix | ~34 |
+| 15:46 | Edited src/components/summary/DailySummary.tsx | inline fix | ~20 |
+| 15:46 | Edited src/hooks/useTaskActions.ts | inline fix | ~11 |
+| 15:47 | Created src/domain/summary.ts | — | ~153 |
+| 15:47 | Phase 2-5 migration complete. 6 hooks rewritten (useQuery), 8+ components updated, 6 Dexie files deleted. tsc clean (source). | src/hooks/*, src/components/*, server/src/domain/* | ~25k |
+
+## Session: 2026-05-08 15:49
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|

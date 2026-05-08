@@ -1,69 +1,12 @@
 {
-  "session_id": "session-2026-05-07-1313",
-  "started": "2026-05-07T05:13:48.147Z",
-  "files_read": {
-    "E:/DoNotNervous/src/index.css": {
-      "count": 8,
-      "tokens": 26810,
-      "first_read": "2026-05-07T05:17:15.548Z"
-    }
-  },
-  "files_written": [
-    {
-      "file": "E:/DoNotNervous/src/index.css",
-      "action": "edit",
-      "tokens": 78,
-      "at": "2026-05-07T05:17:35.200Z"
-    },
-    {
-      "file": "E:/DoNotNervous/src/index.css",
-      "action": "edit",
-      "tokens": 21,
-      "at": "2026-05-07T05:33:49.198Z"
-    },
-    {
-      "file": "E:/DoNotNervous/src/index.css",
-      "action": "edit",
-      "tokens": 34,
-      "at": "2026-05-07T05:36:32.893Z"
-    },
-    {
-      "file": "E:/DoNotNervous/src/index.css",
-      "action": "edit",
-      "tokens": 1,
-      "at": "2026-05-07T05:36:39.411Z"
-    },
-    {
-      "file": "E:/DoNotNervous/src/index.css",
-      "action": "edit",
-      "tokens": 24,
-      "at": "2026-05-07T06:36:50.966Z"
-    },
-    {
-      "file": "E:/DoNotNervous/src/index.css",
-      "action": "edit",
-      "tokens": 24,
-      "at": "2026-05-07T06:40:09.850Z"
-    },
-    {
-      "file": "E:/DoNotNervous/src/index.css",
-      "action": "edit",
-      "tokens": 73,
-      "at": "2026-05-07T06:40:45.537Z"
-    },
-    {
-      "file": "E:/DoNotNervous/src/index.css",
-      "action": "edit",
-      "tokens": 111,
-      "at": "2026-05-07T06:41:24.328Z"
-    }
-  ],
-  "edit_counts": {
-    "src/index.css": 8
-  },
-  "anatomy_hits": 1,
+  "session_id": "session-2026-05-08-1549",
+  "started": "2026-05-08T07:49:33.479Z",
+  "files_read": {},
+  "files_written": [],
+  "edit_counts": {},
+  "anatomy_hits": 0,
   "anatomy_misses": 0,
-  "repeated_reads_warned": 7,
+  "repeated_reads_warned": 0,
   "cerebrum_warnings": 0,
   "stop_count": 0
 }

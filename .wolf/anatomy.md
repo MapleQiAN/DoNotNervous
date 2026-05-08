@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-07T06:41:24.315Z
-> Files: 19 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-08T07:47:26.182Z
+> Files: 45 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
@@ -43,6 +43,10 @@
 ## .planning/research/
 
 
+## C:/Users/SerendyLin/.claude/plans/
+
+- `typed-hugging-crystal.md` — Plan: 前端 Dexie → 后端 API 迁移 (~1038 tok)
+
 ## docs/plans/
 
 
@@ -63,6 +67,9 @@
 
 ## server/src/domain/
 
+- `points.ts` — Exports POINT_VALUES, STREAK_TIERS, calculateMultiplier, calculatePoints (~234 tok)
+- `streaks.ts` — Exports computeCurrentStreak (~291 tok)
+- `summary.ts` — Exports computeAndStoreDailySummary, computeAndStoreWeeklySummary (~1818 tok)
 
 ## server/src/domain/__tests__/
 
@@ -72,13 +79,19 @@
 
 ## server/src/routes/
 
+- `mood.ts` — API routes: GET, POST, PATCH, DELETE (12 endpoints) (~923 tok)
+- `points.ts` — API routes: GET (6 endpoints) (~662 tok)
+- `rewards.ts` — API routes: GET, POST, PATCH, DELETE (12 endpoints) (~1076 tok)
+- `streaks.ts` — API routes: GET, PUT, DELETE (10 endpoints) (~834 tok)
+- `summaries.ts` — API routes: GET (8 endpoints) (~580 tok)
+- `tasks.ts` — API routes: GET, POST, PATCH, DELETE (14 endpoints) (~2033 tok)
 
 ## server/src/routes/__tests__/
 
 
 ## src/
 
-- `App.tsx` — fadeUp (~742 tok)
+- `App.tsx` — fadeUp (~781 tok)
 - `index.css` — Styles: 6 rules, 29 vars (~26833 tok)
 
 ## src/components/__tests__/
@@ -103,15 +116,17 @@
 
 ## src/components/home/
 
-- `HomePage.tsx` — taskTagMap (~3162 tok)
+- `HomePage.tsx` — taskTagMap (~3054 tok)
 
 ## src/components/layout/
 
 - `AppShell.tsx` — subtitles (~1065 tok)
 - `Header.tsx` — navItems (~987 tok)
+- `SettingsDrawer.tsx` — exportData (~1102 tok)
 
 ## src/components/mascot/
 
+- `Mascot.tsx` — SPEECH_MESSAGES (~814 tok)
 
 ## src/components/mood/
 
@@ -121,15 +136,19 @@
 
 - `RewardCard.tsx` — categoryTone (~697 tok)
 - `rewardIcons.ts` — Exports rewardIconKeys, RewardIconKey, rewardIconLabel, getRewardIconSrc, incomeTypeIcon (~179 tok)
-- `RewardShop.tsx` — categories (~3780 tok)
+- `RewardShop.tsx` — categories (~3646 tok)
 
 ## src/components/summary/
 
-- `DailySummary.tsx` — MOOD_DESC (~7224 tok)
-- `WeeklySummary.tsx` — DAY_LABELS (~8591 tok)
+- `DailySummary.tsx` — MOOD_DESC (~6986 tok)
+- `WeeklySummary.tsx` — DAY_LABELS (~8492 tok)
 
 ## src/components/tasks/
 
+- `CategoryFilter.tsx` — CategoryFilter (~348 tok)
+- `SubtaskList.tsx` — SubtaskList (~877 tok)
+- `TaskDetailPanel.tsx` — fallbackDetail (~1316 tok)
+- `TaskList.tsx` — fallbackToday (~2474 tok)
 
 ## src/components/tasks/__tests__/
 
@@ -144,6 +163,7 @@
 ## src/domain/
 
 - `reward.ts` — Zod schemas: rewardCreateSchema, rewardEditSchema (~200 tok)
+- `summary.ts` — Exports MOOD_SCORE, getWeekRange (~153 tok)
 - `types.ts` — Exports TaskType, TaskStatus, TaskDifficulty, Task + 10 more (~775 tok)
 
 ## src/domain/__tests__/
@@ -151,13 +171,22 @@
 
 ## src/hooks/
 
-- `useRewards.ts` — Exports createReward, updateReward, deleteReward, redeemReward + 3 more (~786 tok)
+- `useMoodEntries.ts` — Exports useMoodEntries, useMoodEntriesForTask, useMoodEntriesForDate, useCreateMoodEntry, createMood (~714 tok)
+- `usePoints.ts` — Exports usePointBalance, usePointLedgerForDate, useRecentTransactions (~358 tok)
+- `useRewards.ts` — API routes: PATCH (1 endpoints) (~1034 tok)
+- `useStreaks.ts` — Exports useCurrentStreak, useStreakFreezes, useEarnBackOpportunity, StreakDayState + 5 more (~1360 tok)
+- `useSummary.ts` — API routes: GET (2 endpoints) (~711 tok)
+- `useTaskActions.ts` — API routes: PATCH, POST (5 endpoints) (~1363 tok)
+- `useTaskCount.ts` — Exports useTaskCount (~128 tok)
+- `useTaskQueries.ts` — Exports useActiveTasks, useCompletedTasksForDate, useCompletedTasksForWeek, useSubtasks + 2 more (~774 tok)
 
 ## src/hooks/__tests__/
 
 
 ## src/lib/
 
+- `queryClient.ts` — Exports queryClient (~72 tok)
+- `queryKeys.ts` — Exports taskKeys, pointKeys, streakKeys, moodKeys + 2 more (~512 tok)
 
 ## src/stores/
 
