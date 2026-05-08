@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T17:06:23.529Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-07T06:41:24.315Z
 > Files: 19 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
@@ -79,7 +79,7 @@
 ## src/
 
 - `App.tsx` — fadeUp (~742 tok)
-- `index.css` — Styles: 6 rules, 29 vars (~20632 tok)
+- `index.css` — Styles: 6 rules, 29 vars (~26833 tok)
 
 ## src/components/__tests__/
 
@@ -103,7 +103,7 @@
 
 ## src/components/home/
 
-- `HomePage.tsx` — focusRows (~3263 tok)
+- `HomePage.tsx` — taskTagMap (~3162 tok)
 
 ## src/components/layout/
 
@@ -125,8 +125,8 @@
 
 ## src/components/summary/
 
-- `DailySummary.tsx` — MOCK (~5228 tok)
-- `WeeklySummary.tsx` — MOCK (~6194 tok)
+- `DailySummary.tsx` — MOOD_DESC (~7224 tok)
+- `WeeklySummary.tsx` — DAY_LABELS (~8591 tok)
 
 ## src/components/tasks/
 

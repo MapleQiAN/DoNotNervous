@@ -1,6 +1,11 @@
 {
   "version": 1,
   "lifetime": {
-    "total_sessions": 15
-  }
+    "total_sessions": 17,
+    "total_reads": 0,
+    "total_writes": 0,
+    "total_tokens_estimated": 0,
+    "estimated_savings_vs_bare_cli": 0
+  },
+  "created_at": "2026-05-07T03:24:20.393Z"
 }

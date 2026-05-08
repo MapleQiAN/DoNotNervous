@@ -5,7 +5,7 @@ import {
   Gift, Plus, Wallet, Trophy, Coins, Sparkles,
   ArrowRight, ChevronDown,
 } from 'lucide-react'
-import { rewardIconKeys, rewardIconLabel, type RewardIconKey } from './rewardIcons'
+import { rewardIconKeys, rewardIconLabel, incomeTypeIcon, type RewardIconKey } from './rewardIcons'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../../db'
 import { useMascotStore } from '../../stores/mascotStore'

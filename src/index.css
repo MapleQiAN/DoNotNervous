@@ -650,6 +650,12 @@
     white-space: nowrap;
   }
 
+  .soft-pill,
+  .row-time,
+  .reward-text {
+    margin-right: 18px;
+  }
+
   .tone-focus   { background: #eaf3ff; color: #4a82b8; }
   .tone-hope    { background: #f0ecff; color: #7c68b8; }
   .tone-energy  { background: #e8f6e8; color: #3d8a47; }
@@ -1212,9 +1218,9 @@
     fill: rgba(245, 170, 58, 0.12);
   }
 
-  .screenshot-row {
+  .task-row.screenshot-row {
     min-height: 43px;
-    grid-template-columns: 28px minmax(180px, 1fr) 98px 158px 72px 70px;
+    grid-template-columns: 28px minmax(220px, 1.55fr) repeat(4, minmax(88px, 1fr));
     gap: 12px;
     border-radius: 9px;
     border-bottom: 1px solid rgba(140, 120, 85, 0.07);
@@ -1257,12 +1263,31 @@
   }
 
   .screenshot-row .task-title {
+    justify-self: stretch;
     font-size: 14px;
     font-weight: 700;
   }
 
   .screenshot-row .soft-pill,
+  .screenshot-row .row-time,
+  .screenshot-row .reward-text,
   .screenshot-row .status-pill {
+    justify-self: center;
+    margin-right: 0;
+  }
+
+  .screenshot-row .row-time {
+    justify-content: center;
+  }
+
+  .screenshot-row .reward-text {
+    text-align: center;
+  }
+
+  .screenshot-row .soft-pill,
+  .screenshot-row .status-pill {
+    width: 100%;
+    max-width: 112px;
     min-width: 62px;
     padding: 5px 11px;
     font-size: 12px;
@@ -3801,8 +3826,8 @@
     gap: clamp(7px, 0.75vw, 9px);
   }
 
-  .screenshot-row {
-    grid-template-columns: 28px minmax(150px, 1fr) 86px 136px 62px 64px;
+  .task-row.screenshot-row {
+    grid-template-columns: 28px minmax(190px, 1.45fr) repeat(4, minmax(68px, 1fr));
     gap: 8px;
     padding-left: 8px;
     padding-right: 8px;
@@ -3916,6 +3941,11 @@
     gap: 6px;
   }
 
+  .task-row.screenshot-row {
+    grid-template-columns: 24px minmax(180px, 1.35fr) repeat(4, minmax(64px, 1fr));
+    gap: 8px;
+  }
+
   .task-title {
     font-size: 13px;
   }
@@ -4004,7 +4034,7 @@
     grid-template-columns: 28px minmax(0, 1fr) auto;
   }
 
-  .screenshot-row {
+  .task-row.screenshot-row {
     grid-template-columns: 28px minmax(0, 1fr) auto;
   }
 

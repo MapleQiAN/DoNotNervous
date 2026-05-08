@@ -31,15 +31,7 @@ interface HomePageProps {
   showToast: (message: string, type?: 'success' | 'error') => void
 }
 
-const focusRows = [
-  { title: '完成项目方案初稿', time: '10:00 截止', tag: '专注', tone: 'tone-focus', reward: '+ ¥35', status: '已完成', statusTone: 'done', complete: true },
-  { title: '与团队同步需求', time: '14:00 截止', tag: '期待', tone: 'tone-hope', reward: '+ ¥20', status: '进行中', statusTone: 'progress', complete: false },
-  { title: '健身 30 分钟', time: '18:30 截止', tag: '活力', tone: 'tone-energy', reward: '+ ¥15', status: '未开始', statusTone: '', complete: false },
-  { title: '阅读 20 页', time: '21:30 截止', tag: '平静', tone: 'tone-calm', reward: '+ ¥10', status: '未开始', statusTone: '', complete: false },
-  { title: '睡前记录心情', time: '22:30 截止', tag: '放松', tone: 'tone-relax', reward: '+ ¥10', status: '未开始', statusTone: '', complete: false },
-]
-
-const taskTagMap: Record<string, Pick<(typeof focusRows)[number], 'tag' | 'tone'>> = {
+const taskTagMap: Record<string, { tag: string; tone: string }> = {
   hard: { tag: '专注', tone: 'tone-focus' },
   medium: { tag: '期待', tone: 'tone-hope' },
   easy: { tag: '活力', tone: 'tone-energy' },
@@ -56,15 +48,28 @@ const moodLabelMap: Record<string, string> = {
   strong: '有力',
 }
 
-function formatReward(task: Task) {
-  if (task.difficulty === 'hard') return '+ ¥35'
-  if (task.difficulty === 'medium') return '+ ¥20'
-  return '+ ¥10'
+const REWARD_BY_DIFFICULTY: Record<string, string> = {
+  hard: '+ ¥35',
+  medium: '+ ¥20',
+  easy: '+ ¥10',
 }
 
-function formatTaskTime(task: Task, index: number) {
-  void task
-  return focusRows[index % focusRows.length].time
+function formatReward(task: Task) {
+  return REWARD_BY_DIFFICULTY[task.difficulty] ?? '+ ¥10'
+}
+
+function formatTaskTime(task: Task): string {
+  if (task.completedAt) {
+    const h = task.completedAt.getHours()
+    const m = task.completedAt.getMinutes()
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')} 完成`
+  }
+  if (task.createdAt) {
+    const h = task.createdAt.getHours()
+    const m = task.createdAt.getMinutes()
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')} 创建`
+  }
+  return ''
 }
 
 export function HomePage({ showToast: _showToast }: HomePageProps) {
@@ -101,29 +106,27 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
 
   const topLevelActive = activeTasks.filter((t) => t.parentId === null)
   const completedCount = completedToday.length
-  const total = topLevelActive.length + completedCount || 5
+  const total = topLevelActive.length + completedCount
   const progressPercent = total > 0 ? Math.round((completedCount / total) * 100) : 0
-  const visiblePercent = progressPercent || 60
   const circumference = 2 * Math.PI * 42
-  const strokeDashoffset = circumference - (visiblePercent / 100) * circumference
+  const strokeDashoffset = circumference - (progressPercent / 100) * circumference
   const moodLabel = latestMood ? moodLabelMap[latestMood.label] ?? '平静' : '平静'
-  const displayTasks = topLevelActive.length > 0
-    ? topLevelActive.slice(0, 5).map((task, index) => {
-        const tag = taskTagMap[task.difficulty] ?? focusRows[index % focusRows.length]
-        const isDone = task.status === 'completed'
-        return {
-          id: task.id,
-          title: task.title,
-          time: formatTaskTime(task, index),
-          tag: tag.tag,
-          tone: tag.tone,
-          reward: formatReward(task),
-          status: isDone ? '已完成' : '未开始',
-          statusTone: isDone ? 'done' : '',
-          complete: isDone,
-        }
-      })
-    : focusRows.map((row) => ({ ...row, id: null as string | null }))
+
+  const displayTasks = topLevelActive.slice(0, 5).map((task) => {
+    const tagInfo = taskTagMap[task.difficulty] ?? { tag: '任务', tone: 'tone-calm' }
+    const isDone = task.status === 'completed'
+    return {
+      id: task.id,
+      title: task.title,
+      time: formatTaskTime(task),
+      tag: tagInfo.tag,
+      tone: tagInfo.tone,
+      reward: formatReward(task),
+      status: isDone ? '已完成' : '未开始',
+      statusTone: isDone ? 'done' : '',
+      complete: isDone,
+    }
+  })
 
   const handleToggleTask = useCallback(async (taskId: string, isComplete: boolean) => {
     if (isComplete) {
@@ -170,41 +173,49 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
             <h2>今日焦点任务</h2>
             <span className="muted-label">
               <Clock3 size={14} />
-              {topLevelActive.length || 5} 项任务
+              {total} 项任务
             </span>
           </div>
 
-          <div className="table-list">
-            {displayTasks.map((task) => (
-              <div key={task.id ?? task.title} className={`task-row ${task.complete ? 'is-completed' : ''}`}>
-                {task.complete ? (
-                  <span
-                    className="check-active"
-                    role="button"
-                    tabIndex={0}
-                    onClick={task.id ? () => void handleToggleTask(task.id!, true) : undefined}
-                    onKeyDown={(e) => { if (e.key === 'Enter' && task.id) void handleToggleTask(task.id!, true) }}
-                  >
-                    <Check size={16} strokeWidth={3} />
-                  </span>
-                ) : (
-                  <Circle
-                    className="check-muted clickable"
-                    size={24}
-                    onClick={task.id ? () => void handleToggleTask(task.id!, false) : undefined}
-                  />
-                )}
-                <span className="task-title">{task.title}</span>
-                <span className="row-time">
-                  <Clock3 size={14} />
-                  {task.time}
-                </span>
-                <span className={`soft-pill ${task.tone}`}>{task.tag}</span>
-                <span className="reward-text">{task.reward}</span>
-                <span className={`status-pill ${task.statusTone}`}>{task.status}</span>
-              </div>
-            ))}
-          </div>
+          {displayTasks.length > 0 ? (
+            <div className="table-list">
+              {displayTasks.map((task) => (
+                <div key={task.id} className={`task-row ${task.complete ? 'is-completed' : ''}`}>
+                  {task.complete ? (
+                    <span
+                      className="check-active"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => void handleToggleTask(task.id, true)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') void handleToggleTask(task.id, true) }}
+                    >
+                      <Check size={16} strokeWidth={3} />
+                    </span>
+                  ) : (
+                    <Circle
+                      className="check-muted clickable"
+                      size={24}
+                      onClick={() => void handleToggleTask(task.id, false)}
+                    />
+                  )}
+                  <span className="task-title">{task.title}</span>
+                  {task.time && (
+                    <span className="row-time">
+                      <Clock3 size={14} />
+                      {task.time}
+                    </span>
+                  )}
+                  <span className={`soft-pill ${task.tone}`}>{task.tag}</span>
+                  <span className="reward-text">{task.reward}</span>
+                  <span className={`status-pill ${task.statusTone}`}>{task.status}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="summary-empty" style={{ padding: '24px 0' }}>
+              还没有任务，去添加一些吧
+            </div>
+          )}
 
           <button type="button" onClick={() => navigate('/tasks')} className="text-link">
             查看全部任务 <ArrowRight size={15} />
@@ -222,8 +233,8 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
             <span className="metric-icon soft-cycle"><Sprout size={22} /></span>
             <div>
               <p>今日进度</p>
-              <strong>{visiblePercent}%</strong>
-              <span>已完成 {completedCount || 3} / {total || 5} 项任务</span>
+              <strong>{progressPercent}%</strong>
+              <span>已完成 {completedCount} / {total} 项任务</span>
             </div>
           </div>
           <svg width="86" height="86" viewBox="0 0 92 92" aria-hidden="true">
@@ -249,8 +260,8 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           <BadgeDollarSign size={27} />
           <div>
             <span>已累计奖励</span>
-            <strong>¥ {balance || 235}</strong>
-            <p>可用余额 <b>¥{balance || 168}</b></p>
+            <strong>¥ {balance}</strong>
+            <p>可用余额 <b>¥{balance}</b></p>
           </div>
           <ChevronRight size={20} className="side-arrow" />
         </motion.button>
@@ -264,8 +275,8 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           <Flame size={27} />
           <div>
             <span>连续完成天数</span>
-            <strong>{streakLength || 12} <small>天</small></strong>
-            <p>{streakLength > 0 ? '继续加油，保持节奏！' : '继续加油，保持节奏！'}</p>
+            <strong>{streakLength} <small>天</small></strong>
+            <p>{streakLength > 0 ? '继续加油，保持节奏！' : '开始完成任务建立连续记录'}</p>
           </div>
         </motion.div>
 
@@ -281,7 +292,7 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
           <div>
             <span>心情状态</span>
             <strong>{moodLabel}</strong>
-            <p>很棒！记得保持哦～</p>
+            <p>{latestMood ? '很棒！记得保持哦～' : '记录心情了解自己'}</p>
           </div>
           <ChevronRight size={20} className="side-arrow" />
         </motion.button>
@@ -303,7 +314,7 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
               <span>奖励金额</span>
               <div className="quick-input-shell">
                 <em>¥</em>
-                <input readOnly value="20" aria-label="奖励金额" />
+                <input readOnly value="" aria-label="奖励金额" />
                 <TimerReset size={15} />
               </div>
             </label>
@@ -311,7 +322,7 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
               <span>心情感受</span>
               <button type="button" onClick={() => navigate('/mood')} className="quick-select">
                 <Smile size={18} />
-                平静
+                {moodLabel}
                 <ChevronDown size={15} />
               </button>
             </label>

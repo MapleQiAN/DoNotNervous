@@ -13,6 +13,7 @@ describe('Reward type', () => {
       description: 'Take a 15 min coffee break',
       pointCost: 1,
       active: true,
+      icon: 'coffee',
       createdAt: new Date(),
     }
     expectType<Reward>(reward)
@@ -26,6 +27,7 @@ describe('Reward type', () => {
       description: 'Watch a movie of your choice',
       pointCost: 100,
       active: true,
+      icon: 'movie',
       createdAt: new Date(),
     }
     expect(reward.name).toBe('Movie night')
@@ -38,6 +40,7 @@ describe('Reward type', () => {
       name: 'Old reward',
       description: 'No longer available',
       pointCost: 50,
+      icon: 'gift',
       active: false,
       createdAt: new Date(),
     }

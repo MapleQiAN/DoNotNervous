@@ -5,11 +5,11 @@ import { zhCN } from 'date-fns/locale/zh-CN'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useDailySummary, refreshDailySummary } from '../../hooks/useSummary'
 import { useMoodEntriesForDate } from '../../hooks/useMoodEntries'
+import { computeCurrentStreak } from '../../hooks/useStreaks'
+import { MOOD_SCORE } from '../../domain/summary'
 import { toDayKey } from '../../lib/date-utils'
 import { db } from '../../db'
-import type { Task, PointLedgerEntry, MoodEntry } from '../../domain/types'
-
-const MOCK = true
+import type { Task, PointLedgerEntry, MoodEntry, MoodEmoji } from '../../domain/types'
 
 interface DailySummaryProps {
   showToast: (message: string, type?: 'success' | 'error') => void
@@ -44,18 +44,41 @@ const moodScale = [
   { label: '很糟', color: 'var(--color-coral-500)' },
 ]
 
-const mockMoodCurve = [
-  { time: '06:00', y: 64, tone: 'calm' },
-  { time: '09:00', y: 38, tone: 'good' },
-  { time: '12:00', y: 76, tone: 'plain' },
-  { time: '15:00', y: 36, tone: 'good' },
-  { time: '18:00', y: 20, tone: 'bright' },
-  { time: '21:00', y: 26, tone: 'good' },
-]
+function buildMoodCurve(entries: MoodEntry[]): Array<{ time: string; x: number; y: number; tone: string }> {
+  if (entries.length === 0) return []
+  const sorted = [...entries].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+  const n = sorted.length
+  const xStart = 34
+  const xEnd = 488
+  return sorted.map((entry, i) => {
+    const score = MOOD_SCORE[entry.emoji as MoodEmoji] ?? 3
+    const y = Math.round(162 - ((score - 1) / 4) * 128)
+    const x = Math.round(n === 1 ? (xStart + xEnd) / 2 : xStart + (i / (n - 1)) * (xEnd - xStart))
+    const tone = score >= 4 ? 'good' : score >= 3 ? 'plain' : 'calm'
+    const hour = entry.createdAt.getHours()
+    const minute = entry.createdAt.getMinutes()
+    const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+    return { time, x, y, tone }
+  })
+}
+
+function buildLinePath(points: Array<{ x: number; y: number }>): string {
+  if (points.length < 2) return ''
+  return points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ')
+}
+
+function buildFillPath(points: Array<{ x: number; y: number }>, bottom: number): string {
+  if (points.length < 2) return ''
+  const line = buildLinePath(points)
+  const last = points[points.length - 1]
+  const first = points[0]
+  return `${line} L${last.x},${bottom} L${first.x},${bottom} Z`
+}
 
 export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
   const [selectedDate, setSelectedDate] = useState(() => new Date())
   const dayKey = toDayKey(selectedDate)
+  const [streakDays, setStreakDays] = useState(0)
 
   const summary = useDailySummary(dayKey)
   const prevDayKey = toDayKey(subDays(selectedDate, 1))
@@ -97,8 +120,12 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
   )
 
   useEffect(() => {
-    if (!MOCK) refreshDailySummary(dayKey).catch(() => { /* non-blocking */ })
+    refreshDailySummary(dayKey).catch(() => { /* non-blocking */ })
   }, [dayKey])
+
+  useEffect(() => {
+    computeCurrentStreak().then(setStreakDays).catch(() => {})
+  }, [])
 
   function goPrev() {
     setSelectedDate(prev => subDays(prev, 1))
@@ -111,44 +138,38 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
   const canGoNext = !isToday(selectedDate)
   const formattedDate = format(selectedDate, 'M月d日 EEE', { locale: zhCN })
 
-  // Mock data override
-  const today = toDayKey(new Date())
-  const isMockDay = MOCK && dayKey === today
+  const tasksCompleted = summary?.tasksCompleted ?? 0
+  const pointsEarned = summary?.pointsEarned ?? 0
+  const dominantMood = summary?.dominantMood ?? null
+  const prevTasks = prevSummary?.tasksCompleted ?? 0
+  const prevPoints = prevSummary?.pointsEarned ?? 0
 
-  const mockTasks: Task[] = [
-    { id: 'm1', type: 'simple', parentId: null, title: '完成项目方案初稿', description: '', status: 'completed', difficulty: 'hard', category: 'work', sortOrder: 0, createdAt: new Date(`${dayKey}T09:00:00`), completedAt: new Date(`${dayKey}T10:15:00`), archivedAt: null },
-    { id: 'm2', type: 'simple', parentId: null, title: '与团队同步需求', description: '', status: 'completed', difficulty: 'medium', category: 'work', sortOrder: 1, createdAt: new Date(`${dayKey}T13:20:00`), completedAt: new Date(`${dayKey}T14:00:00`), archivedAt: null },
-    { id: 'm3', type: 'simple', parentId: null, title: '健身 30 分钟', description: '', status: 'completed', difficulty: 'easy', category: 'wellness', sortOrder: 2, createdAt: new Date(`${dayKey}T18:00:00`), completedAt: new Date(`${dayKey}T18:30:00`), archivedAt: null },
-    { id: 'm4', type: 'simple', parentId: null, title: '阅读 20 页', description: '', status: 'completed', difficulty: 'easy', category: 'growth', sortOrder: 3, createdAt: new Date(`${dayKey}T21:00:00`), completedAt: new Date(`${dayKey}T21:30:00`), archivedAt: null },
-    { id: 'm5', type: 'simple', parentId: null, title: '睡前记录心情', description: '', status: 'completed', difficulty: 'hard', category: 'wellness', sortOrder: 4, createdAt: new Date(`${dayKey}T22:00:00`), completedAt: new Date(`${dayKey}T22:30:00`), archivedAt: null },
-  ]
+  const hasData = tasksCompleted > 0 || pointsEarned > 0 || moodEntries.length > 0
 
-  const mockMoodEntries: MoodEntry[] = [
-    { id: 'me1', emoji: '😌', label: '平静', journal: '睡前记录，心情很好~', taskId: null, createdAt: new Date(`${dayKey}T22:30:00`) },
-    { id: 'me2', emoji: '😌', label: '愉快', journal: '运动后心情特别棒！', taskId: null, createdAt: new Date(`${dayKey}T18:30:00`) },
-    { id: 'me3', emoji: '😌', label: '平静', journal: '专注工作，状态稳定', taskId: null, createdAt: new Date(`${dayKey}T14:00:00`) },
-    { id: 'me4', emoji: '😐', label: '一般', journal: '上午有点忙，但还行', taskId: null, createdAt: new Date(`${dayKey}T10:00:00`) },
-    { id: 'me5', emoji: '😌', label: '平静', journal: '早起心情不错', taskId: null, createdAt: new Date(`${dayKey}T08:00:00`) },
-  ]
+  const moodCurvePoints = buildMoodCurve(moodEntries)
+  const moodLinePath = buildLinePath(moodCurvePoints)
+  const moodFillPath = buildFillPath(moodCurvePoints, 190)
 
-  const mockLedger: PointLedgerEntry[] = [
-    { id: 'l1', amount: 25, type: 'task_complete', reason: '完成项目方案初稿', taskId: 'm1', streakLength: 3, multiplier: 1, createdAt: new Date(`${dayKey}T10:15:00`) },
-    { id: 'l2', amount: 20, type: 'task_complete', reason: '与团队同步需求', taskId: 'm2', streakLength: 3, multiplier: 1, createdAt: new Date(`${dayKey}T14:00:00`) },
-    { id: 'l3', amount: 15, type: 'task_complete', reason: '健身 30 分钟', taskId: 'm3', streakLength: 3, multiplier: 1, createdAt: new Date(`${dayKey}T18:30:00`) },
-    { id: 'l4', amount: 10, type: 'task_complete', reason: '阅读 20 页', taskId: 'm4', streakLength: 3, multiplier: 1, createdAt: new Date(`${dayKey}T21:30:00`) },
-    { id: 'l5', amount: 8, type: 'task_complete', reason: '睡前记录心情', taskId: 'm5', streakLength: 3, multiplier: 1, createdAt: new Date(`${dayKey}T22:30:00`) },
-  ]
+  const efficientPeriod = (() => {
+    if (completedTasks.length === 0) return null
+    const buckets = new Map<number, number>()
+    for (const task of completedTasks) {
+      if (task.completedAt) {
+        const h = task.completedAt.getHours()
+        buckets.set(h, (buckets.get(h) ?? 0) + 1)
+      }
+    }
+    let best = 0
+    let count = 0
+    for (const [h, c] of buckets) { if (c > count) { count = c; best = h } }
+    if (count === 0) return null
+    const end = Math.min(best + 2, 23)
+    return { range: `${String(best).padStart(2, '0')}:00-${String(end).padStart(2, '0')}:00`, count }
+  })()
 
-  // Use mock or real data
-  const tasksCompleted = isMockDay ? 5 : (summary?.tasksCompleted ?? 0)
-  const pointsEarned = isMockDay ? 68 : (summary?.pointsEarned ?? 0)
-  const dominantMood = isMockDay ? '😊' as const : (summary?.dominantMood ?? null)
-  const prevTasks = isMockDay ? 4 : (prevSummary?.tasksCompleted ?? 0)
-  const prevPoints = isMockDay ? 50 : (prevSummary?.pointsEarned ?? 0)
-
-  const displayTasks = isMockDay ? mockTasks : completedTasks
-  const displayMoodEntries = isMockDay ? mockMoodEntries : moodEntries
-  const displayLedger = isMockDay ? mockLedger : ledgerEntries
+  const bestLedgerEntry = ledgerEntries.length > 0
+    ? ledgerEntries.reduce((a, b) => a.amount > b.amount ? a : b)
+    : null
 
   function trendText(current: number, previous: number, unit: string) {
     const diff = current - previous
@@ -159,8 +180,6 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
 
   const tasksTrend = trendText(tasksCompleted, prevTasks, '个')
   const pointsTrend = trendText(pointsEarned, prevPoints, '分')
-
-  const hasData = isMockDay || tasksCompleted > 0 || pointsEarned > 0 || displayMoodEntries.length > 0
 
   const fadeVariants = {
     initial: { opacity: 0, y: 4 },
@@ -261,13 +280,13 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
                     </div>
                     完成的任务
                   </div>
-                  {displayTasks.length > 3 && (
+                  {completedTasks.length > 3 && (
                     <button type="button" className="summary-section-link">查看全部</button>
                   )}
                 </div>
                 <div className="summary-section-body">
-                  {displayTasks.length > 0 ? (
-                    displayTasks.slice(0, 5).map(task => {
+                  {completedTasks.length > 0 ? (
+                    completedTasks.slice(0, 5).map(task => {
                       const tag = getTaskTag(task)
                       return (
                         <div key={task.id} className="summary-task">
@@ -305,46 +324,47 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
                   <button type="button" className="small-select">全天</button>
                 </div>
                 <div className="summary-section-body mood-body">
-                  <div className="mood-chart-shell">
-                    <div className="mood-scale">
-                      {moodScale.map(item => (
-                        <span key={item.label} style={{ color: item.color }}>{item.label}</span>
-                      ))}
-                    </div>
-                    <svg className="mood-line-chart" viewBox="0 0 520 190" preserveAspectRatio="none" aria-hidden="true">
-                      <defs>
-                        <linearGradient id="dailyMoodFill" x1="0" x2="0" y1="0" y2="1">
-                          <stop offset="0%" stopColor="rgba(114, 157, 90, 0.20)" />
-                          <stop offset="100%" stopColor="rgba(114, 157, 90, 0.02)" />
-                        </linearGradient>
-                      </defs>
-                      {[34, 66, 98, 130, 162].map(y => (
-                        <line key={y} x1="0" x2="520" y1={y} y2={y} className="mood-grid-line" />
-                      ))}
-                      <path
-                        d="M34 126 C78 116 96 74 126 67 C154 60 169 139 202 145 C244 151 257 73 306 67 C352 61 358 27 404 28 C450 30 454 44 488 36"
-                        className="mood-fill"
-                      />
-                      <path
-                        d="M34 126 C78 116 96 74 126 67 C154 60 169 139 202 145 C244 151 257 73 306 67 C352 61 358 27 404 28 C450 30 454 44 488 36"
-                        className="mood-line"
-                      />
-                      {mockMoodCurve.map((point, index) => {
-                        const x = 34 + index * 91
-                        return (
+                  {moodCurvePoints.length > 0 ? (
+                    <div className="mood-chart-shell">
+                      <div className="mood-scale">
+                        {moodScale.map(item => (
+                          <span key={item.label} style={{ color: item.color }}>{item.label}</span>
+                        ))}
+                      </div>
+                      <svg className="mood-line-chart" viewBox="0 0 520 190" preserveAspectRatio="none" aria-hidden="true">
+                        <defs>
+                          <linearGradient id="dailyMoodFill" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stopColor="rgba(114, 157, 90, 0.20)" />
+                            <stop offset="100%" stopColor="rgba(114, 157, 90, 0.02)" />
+                          </linearGradient>
+                        </defs>
+                        {[34, 66, 98, 130, 162].map(y => (
+                          <line key={y} x1="0" x2="520" y1={y} y2={y} className="mood-grid-line" />
+                        ))}
+                        {moodCurvePoints.length >= 2 && (
+                          <>
+                            <path d={moodFillPath} className="mood-fill" />
+                            <path d={moodLinePath} className="mood-line" />
+                          </>
+                        )}
+                        {moodCurvePoints.map(point => (
                           <g key={point.time}>
-                            <circle cx={x} cy={point.y} r="11" className={`mood-dot ${point.tone}`} />
-                            <circle cx={x} cy={point.y} r="4" className="mood-dot-core" />
+                            <circle cx={point.x} cy={point.y} r="11" className={`mood-dot ${point.tone}`} />
+                            <circle cx={point.x} cy={point.y} r="4" className="mood-dot-core" />
                           </g>
-                        )
-                      })}
-                    </svg>
-                    <div className="mood-time-axis">
-                      {mockMoodCurve.map(point => <span key={point.time}>{point.time}</span>)}
+                        ))}
+                      </svg>
+                      <div className="mood-time-axis">
+                        {moodCurvePoints.map(point => <span key={point.time}>{point.time}</span>)}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="summary-empty" style={{ padding: '16px 0' }}>
+                      这天还没有心情记录
+                    </div>
+                  )}
                   <div className="mood-timeline">
-                    {(displayMoodEntries.length > 0 ? displayMoodEntries : []).slice(0, 4).map(entry => (
+                    {moodEntries.slice(0, 4).map(entry => (
                       <div key={entry.id} className="summary-mood-row">
                         <span className="summary-mood-time">{format(entry.createdAt, 'HH:mm')}</span>
                         <div className="summary-mood-content">
@@ -365,27 +385,42 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
                 <LeafIcon />
                 <span>今日洞察</span>
               </div>
-              <div className="rail-card">
-                <FlowerIcon />
-                <div>
-                  <strong>下午的专注力最佳</strong>
-                  <p>14:00-16:00 完成了重要任务，效率和质量都很棒！</p>
+              {efficientPeriod && (
+                <div className="rail-card">
+                  <FlowerIcon />
+                  <div>
+                    <strong>高效时段 {efficientPeriod.range}</strong>
+                    <p>完成了 {efficientPeriod.count} 个任务，效率和质量都很棒！</p>
+                  </div>
                 </div>
-              </div>
-              <div className="rail-card">
-                <RunIcon />
-                <div>
-                  <strong>运动让心情更好</strong>
-                  <p>运动后心情上升明显，记得保持这个好习惯。</p>
+              )}
+              {moodEntries.length > 0 && dominantMood && (
+                <div className="rail-card">
+                  <RunIcon />
+                  <div>
+                    <strong>今天心情{MOOD_DESC[dominantMood] ? '不错' : '平稳'}</strong>
+                    <p>{MOOD_DESC[dominantMood] ?? '继续关注自己的感受，保持好状态。'}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="rail-card">
-                <NotebookIcon />
-                <div>
-                  <strong>记录带来成长</strong>
-                  <p>坚持记录心情 12 天了，你在认真照顾自己的感受！</p>
+              )}
+              {streakDays > 0 && (
+                <div className="rail-card">
+                  <NotebookIcon />
+                  <div>
+                    <strong>坚持记录 {streakDays} 天</strong>
+                    <p>持续记录心情，你在认真照顾自己的感受！</p>
+                  </div>
                 </div>
-              </div>
+              )}
+              {!efficientPeriod && moodEntries.length === 0 && streakDays === 0 && (
+                <div className="rail-card">
+                  <FlowerIcon />
+                  <div>
+                    <strong>开始记录吧</strong>
+                    <p>完成任务和记录心情后，这里会出现个性化洞察。</p>
+                  </div>
+                </div>
+              )}
               <img className="rail-sofa" src="/illustrations/sofa.png" alt="" aria-hidden="true" />
             </motion.aside>
 
@@ -404,8 +439,8 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
                 </div>
                 <div className="summary-section-body">
                   <div className="ledger-head"><span>来源任务</span><span>积分</span><span>时间</span></div>
-                  {displayLedger.length > 0 ? (
-                    displayLedger.slice(0, 3).map(entry => (
+                  {ledgerEntries.length > 0 ? (
+                    ledgerEntries.slice(0, 3).map(entry => (
                       <div key={entry.id} className="summary-ledger-row">
                         <span className="summary-ledger-reason">{entry.reason}</span>
                         <span className={`summary-ledger-amount ${entry.amount > 0 ? 'positive' : 'negative'}`}>
@@ -429,16 +464,16 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
                     <ClockIcon />
                   </div>
                   <div className="summary-insight-title">高效时段</div>
-                  <div className="summary-insight-value">{isMockDay ? '14:00-16:00' : '--'}</div>
-                  <div className="summary-insight-desc">{isMockDay ? '完成 2 个任务，获得 38 积分' : '完成任务最集中的时段'}</div>
+                  <div className="summary-insight-value">{efficientPeriod?.range ?? '--'}</div>
+                  <div className="summary-insight-desc">{efficientPeriod ? `完成 ${efficientPeriod.count} 个任务，获得 ${pointsEarned} 积分` : '完成任务最集中的时段'}</div>
                 </div>
                 <div className="summary-insight achievement-card">
                   <div className="summary-insight-icon" style={{ background: 'rgba(250, 204, 21, 0.12)' }}>
                     <TrophyIcon />
                   </div>
                   <div className="summary-insight-title">最有成就感任务</div>
-                  <div className="summary-insight-value">完成项目方案初稿</div>
-                  <div className="summary-insight-desc">{isMockDay ? '带来 25 积分，成就感满满！' : '得分最高的任务'}</div>
+                  <div className="summary-insight-value">{bestLedgerEntry?.reason ?? '--'}</div>
+                  <div className="summary-insight-desc">{bestLedgerEntry ? `带来 ${bestLedgerEntry.amount} 积分，成就感满满！` : '得分最高的任务'}</div>
                   <img className="insight-plant" src="/illustrations/heart_plant.png" alt="" aria-hidden="true" />
                 </div>
                 <div className="summary-insight streak-card">
@@ -446,8 +481,8 @@ export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
                     <FlameIcon />
                   </div>
                   <div className="summary-insight-title">连续记录</div>
-                  <div className="summary-insight-value">{isMockDay ? '12 天' : '--'}</div>
-                  <div className="summary-insight-desc">坚持记录心情，继续保持！</div>
+                  <div className="summary-insight-value">{streakDays > 0 ? `${streakDays} 天` : '--'}</div>
+                  <div className="summary-insight-desc">{streakDays > 0 ? '坚持记录心情，继续保持！' : '开始记录来建立连续记录'}</div>
                 </div>
               </motion.div>
             </div>
