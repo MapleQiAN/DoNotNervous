@@ -1,61 +1,73 @@
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../db'
-import { generateId } from '../lib/id'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '../lib/api'
+import { moodKeys } from '../lib/queryKeys'
+import { useAuthStore } from '../stores/authStore'
 import { moodCreateSchema, MOODS } from '../domain/mood'
-import { refreshDailySummaryForToday } from './useSummary'
+import { summaryKeys } from '../lib/queryKeys'
 import type { MoodEntry } from '../domain/types'
 
-export async function createMoodEntry(input: unknown): Promise<MoodEntry> {
-  const validated = moodCreateSchema.parse(input)
-
-  const moodMeta = MOODS.find((m) => m.emoji === validated.emoji)
-  const label = moodMeta?.label ?? ''
-
-  const entry: MoodEntry = {
-    id: generateId(),
-    emoji: validated.emoji,
-    label,
-    journal: validated.journal,
-    taskId: validated.taskId ?? null,
-    createdAt: new Date(),
-  }
-
-  await db.moodEntries.add(entry)
-
-  // Eager refresh: update daily/weekly summary (D-02)
-  refreshDailySummaryForToday().catch(() => { /* non-blocking */ })
-
-  return entry
-}
-
 export function useMoodEntries(): MoodEntry[] {
-  return useLiveQuery(
-    async () => db.moodEntries.orderBy('createdAt').reverse().toArray(),
-    [],
-    []
-  )
+  const token = useAuthStore((s) => s.accessToken)
+  return useQuery({
+    queryKey: moodKeys.list(),
+    queryFn: () =>
+      api.get<{ data: MoodEntry[] }>('/mood', token!).then((r) => r.data),
+    enabled: !!token,
+  }).data ?? []
 }
 
 export function useMoodEntriesForTask(taskId: string): MoodEntry[] {
-  return useLiveQuery(
-    async () => db.moodEntries.where('taskId').equals(taskId).toArray(),
-    [taskId],
-    []
-  )
+  const token = useAuthStore((s) => s.accessToken)
+  return useQuery({
+    queryKey: moodKeys.forTask(taskId),
+    queryFn: () =>
+      api.get<{ data: MoodEntry[] }>(`/mood?taskId=${taskId}`, token!).then((r) => r.data),
+    enabled: !!token && !!taskId,
+  }).data ?? []
 }
 
 export function useMoodEntriesForDate(dayKey: string): MoodEntry[] {
-  return useLiveQuery(
-    async () => {
-      const start = new Date(dayKey + 'T00:00:00')
-      const end = new Date(dayKey + 'T23:59:59.999')
-      const entries = await db.moodEntries
-        .where('createdAt')
-        .between(start, end, true, true)
-        .toArray()
-      return entries.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+  const token = useAuthStore((s) => s.accessToken)
+  return useQuery({
+    queryKey: moodKeys.forDate(dayKey),
+    queryFn: () =>
+      api.get<{ data: MoodEntry[] }>(`/mood?date=${dayKey}`, token!).then((r) => r.data),
+    enabled: !!token && !!dayKey,
+  }).data ?? []
+}
+
+export function useCreateMoodEntry() {
+  const token = useAuthStore((s) => s.accessToken)
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (input: unknown) => {
+      const validated = moodCreateSchema.parse(input)
+      const moodMeta = MOODS.find((m) => m.emoji === validated.emoji)
+      const payload = {
+        ...validated,
+        label: moodMeta?.label ?? '',
+      }
+      return api.post<{ data: MoodEntry }>('/mood', payload, token!).then((r) => r.data)
     },
-    [dayKey],
-    []
-  )
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: moodKeys.all })
+      qc.invalidateQueries({ queryKey: summaryKeys.daily(new Date().toISOString().slice(0, 10)) })
+    },
+  })
+}
+
+export async function createMoodEntry(input: unknown): Promise<MoodEntry> {
+  const token = useAuthStore.getState().accessToken
+  if (!token) throw new Error('Not authenticated')
+
+  const validated = moodCreateSchema.parse(input)
+  const moodMeta = MOODS.find((m) => m.emoji === validated.emoji)
+  const payload = {
+    ...validated,
+    label: moodMeta?.label ?? '',
+  }
+
+  const result = await api.post<{ data: MoodEntry }>('/mood', payload, token)
+  return result.data
 }

@@ -1,85 +1,67 @@
-import { useLiveQuery } from 'dexie-react-hooks'
-import { computeDailySummary, computeWeeklySummary, getWeekRange } from '../domain/summary'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '../lib/api'
+import { summaryKeys } from '../lib/queryKeys'
+import { useAuthStore } from '../stores/authStore'
 import type { DailySummary, WeeklySummary } from '../domain/types'
-import { toDayKey, daysAgo } from '../lib/date-utils'
-import { db } from '../db'
 
-/**
- * Compute daily summary for a given day and write to db.dailySummaries (upsert).
- * Also triggers weekly summary refresh for the week containing this day (D-02 eager).
- */
-export async function refreshDailySummary(dayKey: string): Promise<void> {
-  const daily = await computeDailySummary(dayKey)
-  await db.dailySummaries.put(daily)
-
-  // Eager weekly refresh for the week containing this day
-  const weekDate = new Date(`${dayKey}T12:00:00`)
-  const { startDayKey } = getWeekRange(weekDate)
-  await refreshWeeklySummary(startDayKey)
-}
-
-/**
- * Compute weekly summary for a given week start date and write to db.weeklySummaries (upsert).
- */
-export async function refreshWeeklySummary(weekStartDate: string): Promise<void> {
-  const weekly = await computeWeeklySummary(weekStartDate)
-  await db.weeklySummaries.put(weekly)
-}
-
-/**
- * Convenience helper: refresh daily summary for today.
- */
-export async function refreshDailySummaryForToday(): Promise<void> {
-  await refreshDailySummary(toDayKey(new Date()))
-}
-
-/**
- * Reactive hook: read DailySummary for a given dayKey.
- * Returns null if no summary has been computed yet.
- */
 export function useDailySummary(dayKey: string): DailySummary | null {
-  return useLiveQuery(
-    async () => (await db.dailySummaries.get(dayKey)) ?? null,
-    [dayKey],
-    null,
-  )
+  const token = useAuthStore((s) => s.accessToken)
+  return useQuery({
+    queryKey: summaryKeys.daily(dayKey),
+    queryFn: () =>
+      api.get<{ data: DailySummary }>(`/summaries/daily/${dayKey}`, token!).then((r) => r.data),
+    enabled: !!token && !!dayKey,
+  }).data ?? null
 }
 
-/**
- * Reactive hook: read WeeklySummary for a given week start date.
- * Returns null if no summary has been computed yet.
- */
 export function useWeeklySummary(weekStart: string): WeeklySummary | null {
-  return useLiveQuery(
-    async () => (await db.weeklySummaries.get(weekStart)) ?? null,
-    [weekStart],
-    null,
-  )
+  const token = useAuthStore((s) => s.accessToken)
+  return useQuery({
+    queryKey: summaryKeys.weekly(weekStart),
+    queryFn: () =>
+      api.get<{ data: WeeklySummary }>(`/summaries/weekly/${weekStart}`, token!).then((r) => r.data),
+    enabled: !!token && !!weekStart,
+  }).data ?? null
 }
 
-/**
- * Reactive hook: returns array of {date, moodScore} for the last N days.
- * Used by the Recharts area chart (D-08, D-10).
- * Days with no summary or no mood entry get moodScore 0.
- * Array is sorted by date ascending.
- */
 export function useMoodChartDays(days: number): Array<{ date: string; moodScore: number }> {
-  return useLiveQuery(
-    async () => {
+  const token = useAuthStore((s) => s.accessToken)
+  return useQuery({
+    queryKey: summaryKeys.moodChart(days),
+    queryFn: async () => {
       const results: Array<{ date: string; moodScore: number }> = []
-
+      const today = new Date()
       for (let i = days - 1; i >= 0; i--) {
-        const dayKey = daysAgo(i)
-        const summary = await db.dailySummaries.get(dayKey)
-        results.push({
-          date: dayKey,
-          moodScore: summary?.dominantMoodScore ?? 0,
-        })
+        const d = new Date(today)
+        d.setDate(d.getDate() - i)
+        const dayKey = d.toISOString().slice(0, 10)
+        try {
+          const summary = await api.get<{ data: DailySummary }>(`/summaries/daily/${dayKey}`, token!)
+          results.push({ date: dayKey, moodScore: summary.data?.dominantMoodScore ?? 0 })
+        } catch {
+          results.push({ date: dayKey, moodScore: 0 })
+        }
       }
-
       return results
     },
-    [days],
-    [],
-  )
+    enabled: !!token,
+  }).data ?? []
+}
+
+// Refresh helpers — server handles compute-if-missing on GET
+export async function refreshDailySummary(dayKey: string): Promise<void> {
+  const token = useAuthStore.getState().accessToken
+  if (!token) return
+  await api.get(`/summaries/daily/${dayKey}`, token)
+}
+
+export async function refreshWeeklySummary(weekStartDate: string): Promise<void> {
+  const token = useAuthStore.getState().accessToken
+  if (!token) return
+  await api.get(`/summaries/weekly/${weekStartDate}`, token)
+}
+
+export async function refreshDailySummaryForToday(): Promise<void> {
+  const dayKey = new Date().toISOString().slice(0, 10)
+  await refreshDailySummary(dayKey)
 }

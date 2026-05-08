@@ -1,153 +1,129 @@
-import { db } from '../db'
-import { generateId } from '../lib/id'
-import { taskCreateSchema } from '../domain/task'
-import { calculatePoints } from '../domain/points'
-import { computeCurrentStreak, checkStreakMilestone } from './useStreaks'
-import { detectEarnBackOpportunity, applyEarnBackRecovery } from '../domain/streaks'
-import { toDayKey } from '../lib/date-utils'
-import { useUIStore } from '../stores/uiStore'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '../lib/api'
+import { taskKeys, pointKeys, streakKeys } from '../lib/queryKeys'
+import { useAuthStore } from '../stores/authStore'
 import { useMascotStore } from '../stores/mascotStore'
 import { celebrateTaskComplete } from '../lib/celebrate'
-import { refreshDailySummaryForToday } from './useSummary'
+import { checkStreakMilestone } from './useStreaks'
+import { taskCreateSchema } from '../domain/task'
+import { summaryKeys } from '../lib/queryKeys'
 import type { Task } from '../domain/types'
 
+function getToken(): string {
+  const token = useAuthStore.getState().accessToken
+  if (!token) throw new Error('Not authenticated')
+  return token
+}
+
+export function useCreateTask() {
+  const token = useAuthStore((s) => s.accessToken)
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: (input: unknown) => {
+      const validated = taskCreateSchema.parse(input)
+      return api.post<{ data: Task }>('/tasks', validated, token!).then((r) => r.data)
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: taskKeys.all }),
+  })
+}
+
+export function useCompleteTask() {
+  const token = useAuthStore((s) => s.accessToken)
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      api.post<{ data: { task: Task; points: { base: number; bonus: number; multiplier: number }; streakLength: number } }>(`/tasks/${id}/complete`, {}, token!).then((r) => r.data),
+    onSuccess: (_data, _taskId) => {
+      qc.invalidateQueries({ queryKey: taskKeys.all })
+      qc.invalidateQueries({ queryKey: pointKeys.all })
+      qc.invalidateQueries({ queryKey: streakKeys.all })
+      const todayKey = new Date().toISOString().slice(0, 10)
+      qc.invalidateQueries({ queryKey: summaryKeys.daily(todayKey) })
+
+      // Mascot celebration
+      useMascotStore.getState().setAnimation('celebrate')
+      celebrateTaskComplete()
+      checkStreakMilestone().catch(() => {})
+    },
+  })
+}
+
+export function useUncompleteTask() {
+  const token = useAuthStore((s) => s.accessToken)
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      api.post<{ data: Task }>(`/tasks/${id}/uncomplete`, {}, token!).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: taskKeys.all }),
+  })
+}
+
+export function useDeleteTask() {
+  const token = useAuthStore((s) => s.accessToken)
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      api.del(`/tasks/${id}`, token!),
+    onSuccess: () => qc.invalidateQueries({ queryKey: taskKeys.all }),
+  })
+}
+
+export function useUpdateTask() {
+  const token = useAuthStore((s) => s.accessToken)
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, updates }: { id: string; updates: Partial<Task> }) => {
+      const patch: Record<string, unknown> = { ...updates }
+      if (updates.completedAt instanceof Date) patch.completedAt = updates.completedAt.toISOString()
+      if (updates.archivedAt instanceof Date) patch.archivedAt = updates.archivedAt.toISOString()
+      return api.patch(`/tasks/${id}`, patch, token!)
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: taskKeys.all }),
+  })
+}
+
+// Legacy imperative functions (for non-hook contexts)
 export async function createTask(input: unknown): Promise<Task> {
   const validated = taskCreateSchema.parse(input)
-  const task: Task = {
-    id: generateId(),
-    title: validated.title,
-    description: validated.description ?? '',
-    type: validated.type,
-    difficulty: validated.difficulty,
-    category: validated.category ?? '',
-    parentId: validated.parentId ?? null,
-    status: 'active',
-    sortOrder: await db.tasks.where('status').equals('active').count(),
-    createdAt: new Date(),
-    completedAt: null,
-    archivedAt: null,
-  }
-  await db.tasks.add(task)
-  return task
+  const result = await api.post<{ data: Task }>('/tasks', validated, getToken())
+  return result.data
 }
 
 export async function completeTask(id: string): Promise<Task> {
-  const now = new Date()
-  const task = await db.tasks.get(id)
+  const result = await api.post<{ data: { task: Task } }>(`/tasks/${id}/complete`, {}, getToken())
 
-  if (!task) {
-    throw new Error(`Task not found: ${id}`)
-  }
-
-  // Compute current streak length before this completion
-  const streakLength = await computeCurrentStreak(now)
-  const { base, bonus, multiplier } = calculatePoints(task.difficulty, streakLength)
-  const todayKey = toDayKey(now)
-
-  await db.transaction('rw', [db.tasks, db.pointLedger, db.streakRecords], async () => {
-    // 1. Update task status
-    await db.tasks.update(id, {
-      status: 'completed',
-      completedAt: now,
-    })
-
-    // 2. Write base point ledger entry
-    await db.pointLedger.add({
-      id: generateId(),
-      amount: base,
-      type: 'task_complete',
-      reason: 'Completed: ' + task.title,
-      taskId: task.id,
-      streakLength,
-      multiplier,
-      createdAt: now,
-    })
-
-    // 3. Write streak bonus ledger entry if multiplier > 1
-    if (bonus > 0) {
-      await db.pointLedger.add({
-        id: generateId(),
-        amount: bonus,
-        type: 'streak_bonus',
-        reason: `Streak bonus (${multiplier}x)`,
-        taskId: task.id,
-        streakLength,
-        multiplier,
-        createdAt: now,
-      })
-    }
-
-    // 4. Upsert today's streak record (put, not add -- prevents duplicate key errors)
-    const existingRecord = await db.streakRecords.get(todayKey)
-    if (existingRecord) {
-      const updatedTaskIds = [...existingRecord.completedTaskIds, task.id]
-      await db.streakRecords.put({
-        ...existingRecord,
-        completedTaskIds: updatedTaskIds,
-      })
-    } else {
-      await db.streakRecords.put({
-        date: todayKey,
-        completedTaskIds: [task.id],
-        freezeUsed: false,
-        freezeCountRemaining: 2,
-        createdAt: now,
-      })
-    }
-  })
-
-  // Eager refresh: update daily/weekly summary (D-02)
-  refreshDailySummaryForToday().catch(() => { /* non-blocking */ })
-
-  // Trigger mascot celebration + confetti per D-07
+  // Mascot celebration
   useMascotStore.getState().setAnimation('celebrate')
   celebrateTaskComplete()
+  checkStreakMilestone().catch(() => {})
 
-  // Check streak milestone (non-blocking — celebration is best-effort)
-  checkStreakMilestone(now).catch(() => { /* non-blocking */ })
-
-  // Auto-recovery: check if this task completion can earn back a broken streak
-  detectEarnBackOpportunity(now)
-    .then(opportunity => {
-      if (opportunity) {
-        applyEarnBackRecovery(task.id, opportunity.gapDay).catch(() => { /* non-blocking */ })
-      }
-    })
-    .catch(() => { /* non-blocking */ })
-
-  useUIStore.getState().setMoodPickerTaskId(task.id)
-  return task
+  return result.data.task
 }
 
 export async function uncompleteTask(id: string): Promise<void> {
-  // Anti-anxiety principle: do NOT reverse point ledger entries
-  await db.tasks.update(id, {
-    status: 'active',
-    completedAt: null,
-  })
+  await api.post(`/tasks/${id}/uncomplete`, {}, getToken())
 }
 
 export async function archiveTask(id: string): Promise<void> {
-  await db.tasks.update(id, {
-    status: 'archived',
-    archivedAt: new Date(),
-  })
+  await api.patch(`/tasks/${id}`, { status: 'archived', archivedAt: new Date().toISOString() }, getToken())
 }
 
 export async function unarchiveTask(id: string): Promise<void> {
-  await db.tasks.update(id, {
-    status: 'active',
-    archivedAt: null,
-  })
+  await api.patch(`/tasks/${id}`, { status: 'active', archivedAt: null }, getToken())
 }
 
 export async function deleteTask(id: string): Promise<void> {
-  await db.transaction('rw', db.tasks, async () => {
-    await db.tasks.where('parentId').equals(id).delete()
-    await db.tasks.delete(id)
-  })
+  await api.del(`/tasks/${id}`, getToken())
 }
 
 export async function updateTask(id: string, updates: Partial<Task>): Promise<void> {
-  await db.tasks.update(id, updates)
+  const patch: Record<string, unknown> = { ...updates }
+  if (updates.completedAt instanceof Date) patch.completedAt = updates.completedAt.toISOString()
+  if (updates.archivedAt instanceof Date) patch.archivedAt = updates.archivedAt.toISOString()
+  await api.patch(`/tasks/${id}`, patch, getToken())
 }
