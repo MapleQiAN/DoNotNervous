@@ -1,41 +1,26 @@
 # Cerebrum
 
-> OpenWolf's learning memory. Updated automatically as the AI learns from interactions.
-> Do not edit manually unless correcting an error.
-> Last updated: 2026-05-05
-
 ## User Preferences
-
-<!-- How the user likes things done. Code style, tools, patterns, communication. -->
+- App language is Chinese — all UI text must be in Chinese, never English
+- User prefers terse caveman-style responses during implementation
+- User expects comprehensive fixes, not partial — "implement all issues" means all
 
 ## Key Learnings
-
-- **Project:** donotnervous
-- **Auth flow:** authStore persists tokens to localStorage via `dnn_auth_tokens` key. `isAuthenticated` derived from `!!accessToken`. `useInitAuth` hook in `src/hooks/useAuth.ts` calls `/auth/me` to restore user on reload. Token refresh handled in `src/lib/api.ts` — on 401, tries `POST /auth/refresh`, retries request or logs out.
-- **API client token refresh:** `src/lib/api.ts` uses dynamic `import('../stores/authStore')` to avoid circular dependency. `refreshPromise` singleton prevents concurrent refresh calls.
-- **AuthGuard:** Shows LoginPage when no token. Shows loading spinner when token exists but user not yet restored (useInitAuth). Renders children when authenticated.
-- **Logout:** Available in SettingsDrawer. Calls `useAuthStore.logout()` which clears localStorage + resets state → AuthGuard shows LoginPage.
-- **Project:** donotnervous
-- **Description:** Healing/lifestyle anti-anxiety task tracker with gamification (points, streaks, rewards) and mood tracking.
-- **UI aesthetic:** Warm cream/green/orange palette, large border-radius, soft shadows, low saturation. NOT corporate/admin — more lifestyle/journal feel. CSS uses oklch colors via `@theme` tokens.
-- **Homepage layout:** Dashboard grid with `2.4fr 1fr` columns. Left: hero card + task list + reward banner. Right: stacked stat cards + quick-add form. Task rows use mood tags (tone-focus/tone-hope/tone-energy/tone-calm/tone-relax) and status pills (done/progress/default).
-- **npm vs node_modules:** TypeScript must be run via `./node_modules/.bin/tsc` — `npx tsc` resolves to wrong `tsc` package. Always use `--project tsconfig.app.json`.
-- **Hono route typing:** Every route file that uses `c.get('userId')` from authMiddleware must declare `type Variables = { userId: string }` and instantiate `new Hono<{ Variables: Variables }>()`. Without this, `c.get('userId')` returns `unknown` and breaks Drizzle ORM's `eq()` calls.
-- **Hono route typing:** Every route file that uses `c.get('userId')` from authMiddleware must declare `type Variables = { userId: string }` and instantiate `new Hono<{ Variables: Variables }>()`. Without this, `c.get('userId')` returns `unknown` and breaks Drizzle ORM's `eq()` calls.
-- **Hono route values typing:** When passing validated Zod input to Drizzle `.values()`, destructure datetime fields and convert them with `new Date()` in a spread object. Do not use `Record<string, unknown>` — Drizzle's typed insert/update expects specific field types.
-- **Drizzle generic upsert:** Drizzle's `.values()` has strict per-table typing. For generic sync layers that handle dynamic `Record<string, unknown>` data across multiple tables, cast to `any` on `.values()` and `.set()` calls. There is no way to satisfy Drizzle's inferred types with a generic record.
-- **Sync timestamp use in tests:** When testing sync endpoints, always use the `serverTimestamp` from a previous sync response as `lastSyncTimestamp` — never `new Date().toISOString()` from the client. Client clocks and network latency can cause false positives with the `gt` filter.
-- **Testing Library label association:** `getByLabelText` requires the label to be associated with the input (via `htmlFor`/`id` or wrapping). Sibling labels without association won't work. Use `getByRole('textbox')` or `querySelector` for inputs that lack proper label association.
-- **LoginPage form structure:** The email and password inputs use sibling labels (no htmlFor/id binding). Email is the only `textbox` role on the page; password can be found via `querySelector('input[type="password"]')`.
+- authStore user only has `id` and `email` — no name field. Derive display name from email prefix
+- Frontend hooks have dual exports: React Query hook versions AND imperative async functions (for non-hook contexts)
+- SettingsDrawer export/import are backend TBD — currently show "coming soon" toast
+- MoodPicker is triggered via `useUIStore.setMoodPickerTaskId()` — task completion should trigger it
+- Reward domain type may include `icon?: RewardIconKey` — cast needed when reading from API
+- date-fns locale `zhCN` available for Chinese relative time formatting
 
 ## Do-Not-Repeat
-
-<!-- Mistakes made and corrected. Each entry prevents the same mistake recurring. -->
-<!-- Format: [YYYY-MM-DD] Description of what went wrong and what to do instead. -->
-
-- [2026-05-06] Do not use client-side `new Date().toISOString()` as sync `lastSyncTimestamp` in tests. The server's `updatedAt` may be slightly later due to processing time, causing the `gt` filter to still match records. Always capture and reuse `serverTimestamp` from the sync response.
-- [2026-05-06] Do not use `getByLabelText` on LoginPage inputs. The labels are siblings, not wrapping or associated via htmlFor. Use `getByRole('textbox')` for email and `querySelector('input[type="password"]')` for password.
+- (2026-05-12) Never leave buttons without onClick handlers — dead buttons = broken UX. Every interactive element needs behavior or should be removed
+- (2026-05-12) Never hardcode user names or time-of-day greetings — derive from authStore and Date
+- (2026-05-12) Never leave textarea/input uncontrolled when state is needed — always wire value + onChange
+- (2026-05-12) handleEdit that only populates form without saving is not an edit — must call update API
 
 ## Decision Log
-
-<!-- Significant technical decisions with rationale. Why X was chosen over Y. -->
+- (2026-05-12) Removed grid view toggle from TaskList since only list view exists — dead toggle is misleading
+- (2026-05-12) Removed "今日小贴士" button from sidebar since tips feature doesn't exist
+- (2026-05-12) Export/import buttons show "coming soon" toast instead of silently failing
+- (2026-05-12) Notification bell wired to open settings drawer as interim behavior

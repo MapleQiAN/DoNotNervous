@@ -18,10 +18,10 @@ export function StreakDisplay({ onCalendarOpen }: StreakDisplayProps = {}) {
           type="button"
           onClick={onCalendarOpen}
           className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium animate-pulse"
-          aria-label="Streak recovery available"
+          aria-label="连续记录可恢复"
         >
           <Sparkles size={14} />
-          <span>Streak can be recovered!</span>
+          <span>连续记录可恢复！</span>
         </button>
       )}
 
@@ -30,7 +30,7 @@ export function StreakDisplay({ onCalendarOpen }: StreakDisplayProps = {}) {
           type="button"
           onClick={onCalendarOpen}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-100 hover:bg-orange-200 transition-colors"
-          aria-label={`${streakLength} day streak -- click to view calendar`}
+          aria-label={`连续 ${streakLength} 天 — 点击查看日历`}
         >
           <Flame size={18} className="text-orange-500" />
           <span className="text-sm font-semibold text-orange-700">{streakLength}</span>

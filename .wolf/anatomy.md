@@ -1,10 +1,11 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-08T16:36:24.451Z
-> Files: 51 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-12T03:01:38.924Z
+> Files: 56 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
+- `docker-compose.yml` — Docker Compose services (~308 tok)
 - `fix_weekly.py` (~2375 tok)
 
 ## .claude/
@@ -62,6 +63,7 @@
 
 ## server/src/
 
+- `index.ts` — API routes: GET (1 endpoints) (~360 tok)
 
 ## server/src/db/
 
@@ -113,19 +115,21 @@
 
 ## src/components/gamification/
 
+- `StreakDisplay.tsx` — StreakDisplay (~386 tok)
+- `TransactionPopover.tsx` — TransactionPopover (~730 tok)
 
 ## src/components/gamification/__tests__/
 
 
 ## src/components/home/
 
-- `HomePage.tsx` — taskTagMap — renders form (~3463 tok)
+- `HomePage.tsx` — taskTagMap — renders form (~3466 tok)
 
 ## src/components/layout/
 
-- `AppShell.tsx` — subtitles (~1065 tok)
-- `Header.tsx` — navItems (~987 tok)
-- `SettingsDrawer.tsx` — exportData (~1434 tok)
+- `AppShell.tsx` — subtitles (~1172 tok)
+- `Header.tsx` — navItems (~967 tok)
+- `SettingsDrawer.tsx` — exportData (~1307 tok)
 
 ## src/components/mascot/
 
@@ -133,13 +137,14 @@
 
 ## src/components/mood/
 
-- `MoodCalendar.tsx` — MoodCalendar (~2903 tok)
+- `MoodCalendar.tsx` — MoodCalendar (~2940 tok)
+- `MoodPicker.tsx` — moodLabels (~1403 tok)
 
 ## src/components/rewards/
 
 - `RewardCard.tsx` — categoryTone (~697 tok)
 - `rewardIcons.ts` — Exports rewardIconKeys, RewardIconKey, rewardIconLabel, getRewardIconSrc, incomeTypeIcon (~179 tok)
-- `RewardShop.tsx` — categories (~3646 tok)
+- `RewardShop.tsx` — categories (~3987 tok)
 
 ## src/components/summary/
 
@@ -150,8 +155,8 @@
 
 - `CategoryFilter.tsx` — CategoryFilter (~348 tok)
 - `SubtaskList.tsx` — SubtaskList (~877 tok)
-- `TaskDetailPanel.tsx` — fallbackDetail (~1316 tok)
-- `TaskList.tsx` — difficultyLabel — renders form (~4874 tok)
+- `TaskDetailPanel.tsx` — moods (~1581 tok)
+- `TaskList.tsx` — difficultyLabel — renders form (~4858 tok)
 
 ## src/components/tasks/__tests__/
 

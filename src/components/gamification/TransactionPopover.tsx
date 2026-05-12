@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { formatDistanceToNow } from 'date-fns'
+import { zhCN } from 'date-fns/locale'
 import { X } from 'lucide-react'
 import { useRecentTransactions } from '../../hooks/usePoints'
 import { useUIStore } from '../../stores/uiStore'
@@ -31,12 +32,12 @@ export function TransactionPopover() {
       className="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl shadow-lg border border-border z-50 overflow-hidden"
     >
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-        <h3 className="text-sm font-semibold text-text-primary">Recent Points</h3>
+        <h3 className="text-sm font-semibold text-text-primary">最近积分</h3>
         <button
           type="button"
           onClick={() => setPointsPopoverOpen(false)}
           className="text-text-secondary hover:text-text-primary cursor-pointer"
-          aria-label="Close"
+          aria-label="关闭"
         >
           <X size={16} />
         </button>
@@ -44,7 +45,7 @@ export function TransactionPopover() {
       <div className="max-h-80 overflow-y-auto">
         {transactions.length === 0 ? (
           <p className="px-4 py-6 text-sm text-text-secondary text-center">
-            Complete a task to start earning points!
+            完成任务即可获得奖励金！
           </p>
         ) : (
           transactions.map((tx) => (
@@ -55,7 +56,7 @@ export function TransactionPopover() {
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-text-primary truncate">{tx.reason}</p>
                 <p className="text-xs text-text-secondary">
-                  {formatDistanceToNow(tx.createdAt, { addSuffix: true })}
+                  {formatDistanceToNow(tx.createdAt, { addSuffix: true, locale: zhCN })}
                 </p>
               </div>
               <span className="text-sm font-semibold text-amber-600 ml-2">

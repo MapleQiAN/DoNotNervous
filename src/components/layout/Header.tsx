@@ -57,7 +57,6 @@ export function Header({ onSettingsClick }: HeaderProps) {
           <p>照顾好自己，</p>
           <p>才有能量走更远的路。</p>
           <img className="plant-card" src="/illustrations/sidebar-plant.png" alt="" aria-hidden="true" />
-          <button type="button" className="daily-chip">今日小贴士</button>
         </div>
       </aside>
 

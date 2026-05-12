@@ -31,7 +31,7 @@ app.route('/points', pointRoutes)
 app.route('/summaries', summaryRoutes)
 app.route('/sync', syncRoutes)
 
-const port = Number(process.env.PORT) || 3001
+const port = Number(process.env.PORT) || 5052
 
 serve({ fetch: app.fetch, port }, (info) => {
   console.log(`Server running on http://localhost:${info.port}`)

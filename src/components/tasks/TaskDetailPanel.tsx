@@ -15,19 +15,10 @@ interface DetailModel {
   task?: Task
 }
 
-const fallbackDetail: DetailModel = {
-  title: '完成项目方案初稿',
-  difficulty: 'hard',
-  time: '今天 10:00',
-  reward: 35,
-  mood: '专注',
-  note: '先梳理核心思路，再完善细节和数据部分。',
-}
-
 const moods = [
   { icon: '😊', label: '开心' },
   { icon: '😌', label: '平静' },
-  { icon: '😊', label: '专注' },
+  { icon: '🧠', label: '专注' },
   { icon: '😆', label: '期待' },
   { icon: '☺️', label: '放松' },
   { icon: '😟', label: '低落' },
@@ -51,21 +42,36 @@ function difficultyTone(difficulty: TaskDifficulty) {
   return 'tone-green'
 }
 
+function formatTaskTime(task: Task): string {
+  if (task.completedAt) {
+    const d = new Date(task.completedAt)
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} 完成`
+  }
+  if (task.createdAt) {
+    const d = new Date(task.createdAt)
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} 创建`
+  }
+  return '今天'
+}
+
 function taskToDetail(task: Task): DetailModel {
   return {
     title: task.title,
     difficulty: task.difficulty,
-    time: '今天 10:00',
+    time: formatTaskTime(task),
     reward: rewardFor(task),
     mood: task.category || '专注',
-    note: task.description || '先梳理核心思路，再完善细节和数据部分。',
+    note: task.description || '',
     task,
   }
 }
 
 export function TaskDetailPanel() {
   const [activeMood, setActiveMood] = useState('专注')
+  const [note, setNote] = useState('')
   const selectedTaskId = useUIStore((s) => s.selectedTaskId)
+  const setSelectedTaskId = useUIStore((s) => s.setSelectedTaskId)
+  const setMoodPickerTaskId = useUIStore((s) => s.setMoodPickerTaskId)
 
   const activeTasks = useActiveTasks()
 
@@ -73,10 +79,25 @@ export function TaskDetailPanel() {
     ? activeTasks.find((task) => task.id === selectedTaskId)
     : activeTasks.find((task) => task.parentId === null)
 
-  const detail = selectedTask ? taskToDetail(selectedTask) : fallbackDetail
+  const detail = selectedTask ? taskToDetail(selectedTask) : null
+
+  if (!detail) {
+    return (
+      <div className="task-detail-stack">
+        <section className="side-panel task-detail-panel">
+          <p style={{ color: 'var(--color-text-secondary)', textAlign: 'center', padding: '40px 16px' }}>
+            选择一个任务查看详情
+          </p>
+        </section>
+      </div>
+    )
+  }
 
   const handleComplete = async () => {
-    if (detail.task) await completeTask(detail.task.id)
+    if (!detail.task) return
+    await completeTask(detail.task.id)
+    setMoodPickerTaskId(detail.task.id)
+    setNote('')
   }
 
   return (
@@ -84,7 +105,7 @@ export function TaskDetailPanel() {
       <section className="side-panel task-detail-panel">
         <div className="panel-heading-row">
           <h2>任务详情</h2>
-          <button type="button" className="panel-icon-button" aria-label="关闭任务详情">
+          <button type="button" className="panel-icon-button" aria-label="关闭任务详情" onClick={() => setSelectedTaskId(null)}>
             <X size={18} />
           </button>
         </div>
@@ -99,7 +120,7 @@ export function TaskDetailPanel() {
             <dd><span className={`soft-pill ${difficultyTone(detail.difficulty)}`}>{difficultyLabel(detail.difficulty)}</span></dd>
           </div>
           <div>
-            <dt>截止时间</dt>
+            <dt>时间</dt>
             <dd className="detail-icon-value"><CalendarClock size={15} /> {detail.time}</dd>
           </div>
           <div>
@@ -107,17 +128,19 @@ export function TaskDetailPanel() {
             <dd className="detail-reward">+ ¥{detail.reward}</dd>
           </div>
           <div>
-            <dt>心情标签</dt>
+            <dt>分类</dt>
             <dd>
-              <button type="button" className="detail-select">
+              <span className="detail-select">
                 {detail.mood} <ChevronDown size={15} />
-              </button>
+              </span>
             </dd>
           </div>
-          <div className="detail-note-row">
-            <dt>备注</dt>
-            <dd>{detail.note}</dd>
-          </div>
+          {detail.note && (
+            <div className="detail-note-row">
+              <dt>备注</dt>
+              <dd>{detail.note}</dd>
+            </div>
+          )}
         </dl>
       </section>
 
@@ -139,8 +162,8 @@ export function TaskDetailPanel() {
         </div>
         <label className="mood-note-field">
           <span>想对自己说点什么...</span>
-          <textarea maxLength={200} />
-          <em>0/200</em>
+          <textarea maxLength={200} value={note} onChange={(e) => setNote(e.target.value.slice(0, 200))} />
+          <em>{note.length}/200</em>
         </label>
         <button type="button" className="primary-wide task-complete-button" onClick={() => void handleComplete()}>
           <CheckCircle2 size={19} /> 完成任务

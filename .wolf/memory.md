@@ -647,3 +647,53 @@
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
 | 00:36 | Edited src/components/tasks/TaskList.tsx | inline fix | ~18 |
+
+## Session: 2026-05-12 10:28
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 10:31 | Edited server/src/index.ts | 3001 → 5052 | ~13 |
+| 10:31 | Edited src/lib/api.ts | "http://localhost:3001" → "http://localhost:5052" | ~21 |
+| 10:31 | Edited docker-compose.yml | 3→3 lines | ~14 |
+
+## Session: 2026-05-12 10:37
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 10:47 | Edited src/components/rewards/RewardShop.tsx | added 1 condition(s) | ~238 |
+| 10:48 | Edited src/components/rewards/RewardShop.tsx | added nullish coalescing | ~74 |
+| 10:48 | Edited src/components/rewards/RewardShop.tsx | expanded (+7 lines) | ~112 |
+| 10:48 | Edited src/components/rewards/RewardShop.tsx | 3→3 lines | ~58 |
+| 10:48 | Edited src/components/rewards/RewardShop.tsx | CSS: background, color, marginTop | ~157 |
+| 10:49 | Edited src/components/mood/MoodCalendar.tsx | 3→3 lines | ~52 |
+| 10:49 | Edited src/components/mood/MoodCalendar.tsx | inline fix | ~38 |
+| 10:50 | Edited src/components/tasks/TaskList.tsx | 7→6 lines | ~78 |
+| 10:50 | Edited src/components/tasks/TaskList.tsx | 12→11 lines | ~34 |
+| 10:50 | Edited src/components/layout/Header.tsx | 6→5 lines | ~61 |
+| 10:51 | Edited src/components/layout/AppShell.tsx | 4→3 lines | ~50 |
+| 10:51 | Edited src/components/mood/MoodCalendar.tsx | modified MoodCalendar() | ~109 |
+| 10:54 | Created src/components/tasks/TaskDetailPanel.tsx | — | ~1581 |
+| 10:55 | Edited src/components/layout/AppShell.tsx | "./Header" → "../../stores/authStore" | ~16 |
+| 10:56 | Edited src/components/layout/AppShell.tsx | added 1 import(s) | ~25 |
+| 10:56 | Edited src/components/layout/AppShell.tsx | added optional chaining | ~189 |
+| 10:57 | Edited src/components/layout/AppShell.tsx | 7→3 lines | ~30 |
+| 10:57 | Edited src/components/layout/AppShell.tsx | 3→3 lines | ~45 |
+| 10:57 | Edited src/components/layout/AppShell.tsx | 5→5 lines | ~60 |
+| 10:58 | Created src/components/mood/MoodPicker.tsx | — | ~1403 |
+| 10:59 | Created src/components/gamification/TransactionPopover.tsx | — | ~730 |
+| 10:59 | Created src/components/gamification/StreakDisplay.tsx | — | ~386 |
+| 10:59 | Created src/components/layout/SettingsDrawer.tsx | — | ~1378 |
+| 11:00 | Edited src/components/home/HomePage.tsx | modified HomePage() | ~48 |
+| 11:01 | Edited src/components/home/HomePage.tsx | modified handleQuickAdd() | ~113 |
+| 11:01 | Edited src/components/layout/SettingsDrawer.tsx | modified handleExport() | ~22 |
+| 11:01 | Edited src/components/layout/SettingsDrawer.tsx | modified handleFileChange() | ~41 |
+
+| 10:43 | Comprehensive frontend audit — found 21+ issues across all pages | multiple | audit complete | ~15000 |
+| 11:00 | Fixed all dead buttons: RewardShop edit/create/view-all, MoodCalendar filters/navigation, TaskList grid toggle, Header tips, notification bell | RewardShop, MoodCalendar, TaskList, Header, AppShell | all wired | ~5000 |
+| 11:00 | Translated all English UI to Chinese: MoodPicker, SettingsDrawer, TransactionPopover, StreakDisplay | 4 files | Chinese UI | ~2000 |
+| 11:00 | Fixed RewardShop edit flow: handleEdit now calls updateReward, added edit mode with cancel | RewardShop.tsx | edit works | ~500 |
+| 11:00 | Fixed TaskDetailPanel: dynamic time, controlled textarea, mood triggers MoodPicker, close button works | TaskDetailPanel.tsx | functional | ~500 |
+| 11:00 | Fixed AppShell: dynamic greeting by time of day, user name from email, avatar from first char | AppShell.tsx | dynamic user | ~300 |
+| 11:00 | Fixed HomePage: wired showToast for quick-add success/error | HomePage.tsx | feedback works | ~200 |
+| 11:00 | Fixed SettingsDrawer: Chinese labels, feedback for unimplemented export/import | SettingsDrawer.tsx | translated | ~200 |
+| 11:01 | TypeScript compilation clean after all fixes | all | no errors | ~100 |

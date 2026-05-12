@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Bell, ChevronDown, Leaf } from 'lucide-react'
+import { useAuthStore } from '../../stores/authStore'
 import { Header } from './Header'
 import { useUIStore } from '../../stores/uiStore'
 import { checkAndApplyFreezes } from '../../hooks/useStreaks'
@@ -38,8 +39,15 @@ export function AppShell({ children, showToast }: AppShellProps) {
   const setSettingsOpen = useUIStore((s) => s.setSettingsOpen)
   const showStreakCalendar = useUIStore((s) => s.showStreakCalendar)
   const setShowStreakCalendar = useUIStore((s) => s.setShowStreakCalendar)
+  const user = useAuthStore((s) => s.user)
   const location = useLocation()
   const currentPage = pathToPage[location.pathname] ?? 'home'
+
+  const displayName = user?.email ? user.email.split('@')[0] : '用户'
+  const avatarChar = displayName.charAt(0).toUpperCase()
+
+  const hour = new Date().getHours()
+  const greeting = hour < 6 ? '夜深了' : hour < 12 ? '早上好' : hour < 18 ? '下午好' : '晚上好'
 
   useEffect(() => {
     checkAndApplyFreezes(showToast)
@@ -71,7 +79,7 @@ export function AppShell({ children, showToast }: AppShellProps) {
           <header className="topbar">
             <div>
               <p className="topbar-title">
-                下午好，林小满 <Leaf size={18} strokeWidth={2} aria-hidden="true" />
+                {greeting}，{displayName} <Leaf size={18} strokeWidth={2} aria-hidden="true" />
               </p>
               <p className="topbar-subtitle">{subtitles[currentPage]}</p>
             </div>
@@ -85,13 +93,12 @@ export function AppShell({ children, showToast }: AppShellProps) {
                   </div>
                 </div>
               )}
-              <button type="button" className="icon-button" aria-label="通知">
+              <button type="button" className="icon-button" aria-label="通知" onClick={() => setSettingsOpen(true)}>
                 <Bell size={21} />
-                <span className="notify-dot" />
               </button>
               <div className="avatar-lockup">
-                <div className="avatar">林</div>
-                <span>林小满</span>
+                <div className="avatar">{avatarChar}</div>
+                <span>{displayName}</span>
                 <ChevronDown size={16} />
               </div>
             </div>

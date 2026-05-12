@@ -36,6 +36,8 @@ export function RewardShop({ showToast }: RewardShopProps) {
   const [selectedCategory, setSelectedCategory] = useState('生活享受')
   const [selectedIcon, setSelectedIcon] = useState<RewardIconKey>('gift')
 
+  const [editingId, setEditingId] = useState<string | null>(null)
+
   async function handleCreate() {
     const cost = parseInt(newCost, 10)
     if (!newName.trim() || isNaN(cost) || cost < 1) {
@@ -43,14 +45,20 @@ export function RewardShop({ showToast }: RewardShopProps) {
       return
     }
     try {
-      await createReward({ name: newName.trim(), description: selectedCategory, pointCost: cost, icon: selectedIcon })
+      if (editingId) {
+        await updateReward(editingId, { name: newName.trim(), description: newDesc || selectedCategory, pointCost: cost, icon: selectedIcon })
+        setEditingId(null)
+        showToast('奖励已更新')
+      } else {
+        await createReward({ name: newName.trim(), description: newDesc || selectedCategory, pointCost: cost, icon: selectedIcon })
+        showToast('奖励创建成功')
+      }
       setNewName('')
       setNewDesc('')
       setNewCost('')
       setSelectedIcon('gift')
-      showToast('奖励创建成功')
     } catch {
-      showToast('创建失败', 'error')
+      showToast(editingId ? '更新失败' : '创建失败', 'error')
     }
   }
 
@@ -80,9 +88,11 @@ export function RewardShop({ showToast }: RewardShopProps) {
   }
 
   function handleEdit(reward: Reward) {
+    setEditingId(reward.id)
     setNewName(reward.name)
     setNewDesc(reward.description)
     setNewCost(String(reward.pointCost))
+    setSelectedIcon((reward as Reward & { icon?: RewardIconKey }).icon ?? 'gift')
   }
 
   const totalSpent = redemptions.reduce((sum, r) => sum + r.pointsSpent, 0)
@@ -182,7 +192,14 @@ export function RewardShop({ showToast }: RewardShopProps) {
               </div>
             )}
 
-            <button type="button" className="create-reward-inline">
+            <button type="button" className="create-reward-inline" onClick={() => {
+              setEditingId(null)
+              setNewName('')
+              setNewDesc('')
+              setNewCost('')
+              setSelectedIcon('gift')
+              setSelectedCategory('生活享受')
+            }}>
               <Plus size={16} strokeWidth={2.2} />
               创建新奖励
             </button>
@@ -234,8 +251,8 @@ export function RewardShop({ showToast }: RewardShopProps) {
               )}
             </AnimatePresence>
 
-            <button type="button" className="view-all-link">
-              查看全部记录 <ArrowRight size={15} />
+            <button type="button" className="view-all-link" onClick={() => setShowHistory(!showHistory)}>
+              {showHistory ? '收起记录' : '查看全部记录'} <ArrowRight size={15} />
             </button>
           </section>
         </motion.div>
@@ -298,8 +315,13 @@ export function RewardShop({ showToast }: RewardShopProps) {
             </div>
           </label>
           <button type="button" onClick={handleCreate} className="primary-wide">
-            创建奖励 <Plus size={17} />
+            {editingId ? '更新奖励' : '创建奖励'} {editingId ? <Sparkles size={17} /> : <Plus size={17} />}
           </button>
+          {editingId && (
+            <button type="button" onClick={() => { setEditingId(null); setNewName(''); setNewDesc(''); setNewCost(''); setSelectedIcon('gift') }} className="primary-wide" style={{ background: 'var(--color-border)', color: 'var(--color-text-primary)', marginTop: 4 }}>
+              取消编辑
+            </button>
+          )}
         </section>
 
         <section className="quote-card reward-quote">

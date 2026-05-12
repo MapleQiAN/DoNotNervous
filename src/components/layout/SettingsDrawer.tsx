@@ -24,12 +24,7 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
   const logout = useAuthStore((s) => s.logout)
 
   async function handleExport() {
-    try {
-      await exportData()
-      showToast('Backup saved -- your data is safe.', 'success')
-    } catch {
-      showToast('Something went wrong. Try again -- your data is safe.', 'error')
-    }
+    showToast('备份功能开发中，敬请期待', 'error')
   }
 
   async function handleImport() {
@@ -37,17 +32,8 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
   }
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    try {
-      await importData(file)
-      showToast('Data restored successfully.', 'success')
-    } catch {
-      showToast('Could not import this file. Make sure it is a DoNotNervous backup.', 'error')
-    }
-
     e.target.value = ''
+    showToast('恢复功能开发中，敬请期待', 'error')
   }
 
   return (
@@ -70,12 +56,12 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
             className="fixed right-0 top-0 h-full w-80 max-w-full bg-cream-50 shadow-xl z-50"
           >
             <div className="flex items-center justify-between p-6 border-b border-border">
-              <h2 className="text-xl font-semibold text-text-primary">Settings</h2>
+              <h2 className="text-xl font-semibold text-text-primary">设置</h2>
               <button
                 type="button"
                 onClick={onClose}
                 className="min-h-[44px] min-w-[44px] flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-cream-100 rounded-lg transition-colors cursor-pointer"
-                aria-label="Close settings"
+                aria-label="关闭设置"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -84,7 +70,7 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
             <div className="p-6 space-y-6">
               <div>
                 <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3">
-                  Data
+                  数据
                 </p>
                 <div className="space-y-3">
                   <Button
@@ -93,7 +79,7 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
                     onClick={() => void handleExport()}
                   >
                     <Download className="w-4 h-4" />
-                    Save Backup
+                    保存备份
                   </Button>
                   <Button
                     variant="secondary"
@@ -101,7 +87,7 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
                     onClick={() => void handleImport()}
                   >
                     <Upload className="w-4 h-4" />
-                    Restore from Backup
+                    恢复备份
                   </Button>
                   <input
                     ref={fileInputRef}
@@ -115,7 +101,7 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
 
               <div className="border-t border-border pt-6">
                 <p className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3">
-                  Account
+                  账户
                 </p>
                 {user && (
                   <div className="flex items-center gap-3 mb-4 px-1">
@@ -131,7 +117,7 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
                   onClick={() => { logout(); onClose() }}
                 >
                   <LogOut className="w-4 h-4" />
-                  Sign Out
+                  退出登录
                 </Button>
               </div>
             </div>

@@ -20,6 +20,7 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
   const [showStandalonePicker, setShowStandalonePicker] = useState(false)
   const [selectedEmoji, setSelectedEmoji] = useState<MoodEmoji | null>(null)
   const [journal, setJournal] = useState('')
+  const [moodFilter, setMoodFilter] = useState<string>('all')
   const allMoods = useMoodEntries()
   const navigate = useNavigate()
 
@@ -91,7 +92,7 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
         <section className="content-card chart-card">
           <div className="section-title-row">
             <h2>本周心情趋势</h2>
-            <button type="button" className="small-select">本周</button>
+            <span className="small-select">本周</span>
           </div>
           <div className="mood-legend">
             {['很糟', '低落', '平静', '愉快', '很棒'].map((label, index) => <span key={label}>{['😡','😔','😐','😊','🥳'][index]} {label}</span>)}
@@ -138,7 +139,7 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
         <section className="content-card mood-records">
           <div className="section-title-row">
             <h2>心情与任务记录</h2>
-            <button type="button" className="small-select">全部情绪</button>
+            <button type="button" className="small-select" onClick={() => setMoodFilter(moodFilter === "all" ? "positive" : "all")}>'{moodFilter === "all" ? "全部情绪" : "正面情绪"}</button>
           </div>
           {allMoods.length === 0 ? (
             <p className="empty-hint">暂无心情记录，点击右侧记录今日心情</p>
@@ -151,8 +152,8 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
               </div>
             ))
           )}
-          {allMoods.length > 0 && (
-            <button type="button" className="text-link">查看更多记录 <ArrowRight size={16} /></button>
+          {allMoods.length > 4 && (
+            <button type="button" className="text-link" onClick={() => navigate('/data')}>查看更多记录 <ArrowRight size={16} /></button>
           )}
         </section>
         </motion.div>
@@ -202,7 +203,7 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
               <Insight icon={<SunMedium />} title="继续记录，解锁更多洞察" text="记录越多，洞察越准确" />
             </>
           )}
-          <button type="button" className="text-link">查看完整复盘报告 <ArrowRight size={16} /></button>
+          <button type="button" className="text-link" onClick={() => navigate('/data')}>查看完整复盘报告 <ArrowRight size={16} /></button>
         </section>
 
         <section className="quote-card">

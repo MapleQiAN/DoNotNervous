@@ -71,8 +71,7 @@ function formatTaskTime(task: Task): string {
   return ''
 }
 
-export function HomePage({ showToast: _showToast }: HomePageProps) {
-  void _showToast
+export function HomePage({ showToast }: HomePageProps) {
   const balance = usePointBalance()
   const streakLength = useCurrentStreak()
   const navigate = useNavigate()
@@ -127,8 +126,9 @@ export function HomePage({ showToast: _showToast }: HomePageProps) {
     try {
       await createTask({ title: quickTitle.trim(), difficulty: quickDifficulty })
       setQuickTitle('')
+      showToast('任务已添加')
     } catch {
-      // silent
+      showToast('添加失败', 'error')
     } finally {
       setQuickAdding(false)
     }

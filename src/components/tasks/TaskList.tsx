@@ -4,7 +4,6 @@ import {
   ChevronUp,
   Check,
   CheckCircle2,
-  Grid2X2,
   Leaf,
   ListChecks,
   Pencil,
@@ -294,8 +293,7 @@ export function TaskList() {
       <div className="section-title-row task-list-heading">
         <h2>我的任务清单</h2>
         <div className="view-toggle" aria-label="视图切换">
-          <button type="button" className="is-active"><ListChecks size={18} /></button>
-          <button type="button"><Grid2X2 size={17} /></button>
+          <button type="button" className="is-active" aria-label="列表视图"><ListChecks size={18} /></button>
         </div>
       </div>
 

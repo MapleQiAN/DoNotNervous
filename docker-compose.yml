@@ -24,9 +24,9 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5525}
-      PORT: 3001
+      PORT: 5052
     ports:
-      - "3001:3001"
+      - "5052:5052"
     depends_on:
       postgres:
         condition: service_healthy
