@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-12T03:01:38.924Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-12T03:22:36.084Z
 > Files: 56 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
@@ -129,7 +129,7 @@
 
 - `AppShell.tsx` — subtitles (~1172 tok)
 - `Header.tsx` — navItems (~967 tok)
-- `SettingsDrawer.tsx` — exportData (~1307 tok)
+- `SettingsDrawer.tsx` — SettingsDrawer (~1267 tok)
 
 ## src/components/mascot/
 
@@ -144,7 +144,7 @@
 
 - `RewardCard.tsx` — categoryTone (~697 tok)
 - `rewardIcons.ts` — Exports rewardIconKeys, RewardIconKey, rewardIconLabel, getRewardIconSrc, incomeTypeIcon (~179 tok)
-- `RewardShop.tsx` — categories (~3987 tok)
+- `RewardShop.tsx` — categories (~3991 tok)
 
 ## src/components/summary/
 

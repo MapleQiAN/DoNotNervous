@@ -697,3 +697,10 @@
 | 11:00 | Fixed HomePage: wired showToast for quick-add success/error | HomePage.tsx | feedback works | ~200 |
 | 11:00 | Fixed SettingsDrawer: Chinese labels, feedback for unimplemented export/import | SettingsDrawer.tsx | translated | ~200 |
 | 11:01 | TypeScript compilation clean after all fixes | all | no errors | ~100 |
+
+## Session: 2026-05-12 11:21
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 11:22 | Edited src/components/rewards/RewardShop.tsx | inline fix | ~36 |
+| 11:22 | Edited src/components/layout/SettingsDrawer.tsx | removed 9 lines | ~9 |

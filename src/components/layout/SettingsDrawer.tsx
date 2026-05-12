@@ -4,14 +4,6 @@ import { X, Download, Upload, LogOut, User } from 'lucide-react'
 import { Button } from '../common/Button'
 import { useAuthStore } from '../../stores/authStore'
 
-async function exportData() {
-  // Export via server API TBD
-}
-
-async function importData(_file: File) {
-  // Import via server API TBD
-}
-
 interface SettingsDrawerProps {
   isOpen: boolean
   onClose: () => void

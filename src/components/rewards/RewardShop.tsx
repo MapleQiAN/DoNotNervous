@@ -9,7 +9,7 @@ import {
 import { rewardIconKeys, rewardIconLabel, incomeTypeIcon, type RewardIconKey } from './rewardIcons'
 import { useMascotStore } from '../../stores/mascotStore'
 import { celebrateRedemption } from '../../lib/celebrate'
-import { useRewards, useRedemptions, createReward, redeemReward, deleteReward } from '../../hooks/useRewards'
+import { useRewards, useRedemptions, createReward, updateReward, redeemReward, deleteReward } from '../../hooks/useRewards'
 import { usePointBalance, useRecentTransactions } from '../../hooks/usePoints'
 import { api } from '../../lib/api'
 import { useAuthStore } from '../../stores/authStore'
