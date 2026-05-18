@@ -11,12 +11,30 @@ import rewardRoutes from './routes/rewards.js'
 import pointRoutes from './routes/points.js'
 import summaryRoutes from './routes/summaries.js'
 import syncRoutes from './routes/sync.js'
+import companionRoutes from './routes/companion.js'
 
 const app = new Hono()
 
+const configuredCorsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map((origin) => origin.trim()).filter(Boolean)
+  : [
+      'http://localhost:5525',
+      'http://127.0.0.1:5525',
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+    ]
+const corsOrigins = Array.from(new Set(configuredCorsOrigins.flatMap((origin) => {
+  const loopbackAlias = origin.includes('localhost')
+    ? origin.replace('localhost', '127.0.0.1')
+    : origin.includes('127.0.0.1')
+      ? origin.replace('127.0.0.1', 'localhost')
+      : null
+  return loopbackAlias ? [origin, loopbackAlias] : [origin]
+})))
+
 app.use('*', logger())
 app.use('*', cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5525',
+  origin: corsOrigins,
   credentials: true,
 }))
 
@@ -30,6 +48,7 @@ app.route('/rewards', rewardRoutes)
 app.route('/points', pointRoutes)
 app.route('/summaries', summaryRoutes)
 app.route('/sync', syncRoutes)
+app.route('/companion', companionRoutes)
 
 const port = Number(process.env.PORT) || 5052
 

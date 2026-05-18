@@ -69,6 +69,43 @@ describe('sync', () => {
     expect(data.changes.tasks.length).toBeGreaterThanOrEqual(2)
   })
 
+  it('syncs iOS companion tables for local-first clients', async () => {
+    const res = await fetch(`${BASE}/sync`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
+      body: JSON.stringify({
+        lastSyncTimestamp: '1970-01-01T00:00:00Z',
+        changes: {
+          companionProfiles: [{
+            displayName: '圆圆',
+            level: 2,
+            experience: 140,
+            energy: 90,
+            mood: 'happy',
+            activeCosmeticIds: ['sprout-hat'],
+          }],
+          reminderPreferences: [{
+            enabled: false,
+            hour: 20,
+            minute: 30,
+            message: '如果愿意，可以回来看看今天的小进步。',
+            timezone: 'Asia/Shanghai',
+          }],
+          syncStates: [{
+            deviceId: 'ios-test-device',
+            pendingLocalChangeCount: 0,
+          }],
+        },
+      }),
+    })
+
+    expect(res.status).toBe(200)
+    const data = await res.json()
+    expect(data.changes.companionProfiles[0].level).toBe(2)
+    expect(data.changes.reminderPreferences[0].hour).toBe(20)
+    expect(data.changes.syncStates[0].deviceId).toBe('ios-test-device')
+  })
+
   it('isolates data between users', async () => {
     const email2 = `sync-test2-${Date.now()}@example.com`
     const res2 = await fetch(`${BASE}/auth/register`, {

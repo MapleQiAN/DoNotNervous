@@ -1,4 +1,4 @@
-import { eq, and, gte, lte, desc, sql } from 'drizzle-orm'
+import { eq, and, gte, lte } from 'drizzle-orm'
 import { db } from '../db/index.js'
 import { tasks, pointLedger, moodEntries, redemptions, streakRecords, dailySummaries, weeklySummaries } from '../db/schema.js'
 

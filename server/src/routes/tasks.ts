@@ -8,6 +8,7 @@ import { authMiddleware } from '../middleware/auth.js'
 import { calculatePoints } from '../domain/points.js'
 import { computeCurrentStreak } from '../domain/streaks.js'
 import { computeAndStoreDailySummary, computeAndStoreWeeklySummary } from '../domain/summary.js'
+import { awardCompanionExperience, experienceForDifficulty } from '../domain/companion.js'
 
 type Variables = { userId: string }
 
@@ -104,6 +105,7 @@ route.post('/:id/complete', async (c) => {
 
   const streakLength = await computeCurrentStreak(userId, now)
   const { base, bonus, multiplier } = calculatePoints(task.difficulty, streakLength)
+  const companionExperience = experienceForDifficulty(task.difficulty)
 
   const todayKey = formatDateKey(now)
 
@@ -114,7 +116,7 @@ route.post('/:id/complete', async (c) => {
   // Create base point entry
   await db.insert(pointLedger).values({
     userId, amount: base, type: 'task_complete',
-    reason: 'Completed: ' + task.title, taskId: task.id,
+    reason: '完成任务：' + task.title, taskId: task.id,
     streakLength, multiplier: multiplier * 100, updatedAt: now,
   })
 
@@ -122,7 +124,7 @@ route.post('/:id/complete', async (c) => {
   if (bonus > 0) {
     await db.insert(pointLedger).values({
       userId, amount: bonus, type: 'streak_bonus',
-      reason: `Streak bonus (${multiplier}x)`, taskId: task.id,
+      reason: `连续完成加成（${multiplier}x）`, taskId: task.id,
       streakLength, multiplier: multiplier * 100, updatedAt: now,
     })
   }
@@ -141,6 +143,8 @@ route.post('/:id/complete', async (c) => {
     })
   }
 
+  const companion = await awardCompanionExperience(userId, companionExperience)
+
   // Non-blocking summary refresh
   computeAndStoreDailySummary(userId, todayKey).catch(() => {})
   const monday = getWeekMonday(now)
@@ -148,7 +152,17 @@ route.post('/:id/complete', async (c) => {
 
   const [updatedTask] = await db.select().from(tasks).where(eq(tasks.id, id)).limit(1)
 
-  return c.json({ data: { task: updatedTask, points: { base, bonus, multiplier }, streakLength } })
+  return c.json({
+    data: {
+      task: updatedTask,
+      points: { base, bonus, multiplier },
+      streakLength,
+      companion: {
+        ...companion,
+        experienceGained: companionExperience,
+      },
+    },
+  })
 })
 
 // Uncomplete a task

@@ -1,9 +1,8 @@
-import { eq, desc, sql } from 'drizzle-orm'
+import { eq, desc } from 'drizzle-orm'
 import { db } from '../db/index.js'
 import { streakRecords } from '../db/schema.js'
 
 export async function computeCurrentStreak(userId: string, now: Date = new Date()): Promise<number> {
-  const todayKey = formatDateKey(now)
   const allRecords = await db.select()
     .from(streakRecords)
     .where(eq(streakRecords.userId, userId))

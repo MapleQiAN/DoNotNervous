@@ -1,0 +1,1 @@
+ALTER TABLE "rewards" ADD COLUMN IF NOT EXISTS "icon" varchar(50) DEFAULT 'gift' NOT NULL;

@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text, integer, boolean, timestamp, jsonb, primaryKey, date } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, varchar, text, integer, boolean, timestamp, jsonb, primaryKey, date, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -69,6 +69,7 @@ export const rewards = pgTable('rewards', {
   name: text('name').notNull(),
   description: text('description').notNull().default(''),
   pointCost: integer('point_cost').notNull(),
+  icon: varchar('icon', { length: 50 }).notNull().default('gift'),
   active: boolean('active').notNull().default(true),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
@@ -127,4 +128,59 @@ export const weeklySummaries = pgTable('weekly_summaries', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => [
   primaryKey({ columns: [table.userId, table.weekStart] }),
+])
+
+export const companionProfiles = pgTable('companion_profiles', {
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  displayName: text('display_name').notNull().default('圆圆'),
+  level: integer('level').notNull().default(1),
+  experience: integer('experience').notNull().default(0),
+  energy: integer('energy').notNull().default(80),
+  mood: varchar('mood', { length: 30 }).notNull().default('normal'),
+  activeCosmeticIds: jsonb('active_cosmetic_ids').notNull().$type<string[]>().default([]),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => [
+  primaryKey({ columns: [table.userId] }),
+])
+
+export const cosmeticUnlocks = pgTable('cosmetic_unlocks', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  cosmeticId: varchar('cosmetic_id', { length: 80 }).notNull(),
+  name: text('name').notNull(),
+  slot: varchar('slot', { length: 30 }).notNull(),
+  pointCost: integer('point_cost').notNull().default(0),
+  equipped: boolean('equipped').notNull().default(false),
+  unlockedAt: timestamp('unlocked_at', { withTimezone: true }).defaultNow().notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => [
+  uniqueIndex('cosmetic_unlocks_user_cosmetic_idx').on(table.userId, table.cosmeticId),
+])
+
+export const reminderPreferences = pgTable('reminder_preferences', {
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  enabled: boolean('enabled').notNull().default(false),
+  hour: integer('hour').notNull().default(20),
+  minute: integer('minute').notNull().default(30),
+  message: text('message').notNull().default('如果愿意，可以回来看看今天的小进步。'),
+  timezone: varchar('timezone', { length: 80 }).notNull().default('Asia/Shanghai'),
+  lastScheduledAt: timestamp('last_scheduled_at', { withTimezone: true }),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => [
+  primaryKey({ columns: [table.userId] }),
+])
+
+export const syncStates = pgTable('sync_states', {
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  deviceId: varchar('device_id', { length: 128 }).notNull(),
+  lastPulledAt: timestamp('last_pulled_at', { withTimezone: true }),
+  lastPushedAt: timestamp('last_pushed_at', { withTimezone: true }),
+  pendingLocalChangeCount: integer('pending_local_change_count').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => [
+  primaryKey({ columns: [table.userId, table.deviceId] }),
 ])

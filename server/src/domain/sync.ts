@@ -11,6 +11,10 @@ type TableName =
   | 'redemptions'
   | 'dailySummaries'
   | 'weeklySummaries'
+  | 'companionProfiles'
+  | 'cosmeticUnlocks'
+  | 'reminderPreferences'
+  | 'syncStates'
 
 const SYNC_TABLES: TableName[] = [
   'tasks',
@@ -21,6 +25,10 @@ const SYNC_TABLES: TableName[] = [
   'redemptions',
   'dailySummaries',
   'weeklySummaries',
+  'companionProfiles',
+  'cosmeticUnlocks',
+  'reminderPreferences',
+  'syncStates',
 ]
 
 /**
@@ -34,6 +42,7 @@ function sanitizeForUpdate(data: Record<string, unknown>): Record<string, unknow
   delete result.userId
   delete result.date
   delete result.weekStart
+  delete result.deviceId
 
   for (const [key, val] of Object.entries(result)) {
     if (typeof val === 'string' && (key.endsWith('At') || key === 'computedAt')) {
@@ -144,6 +153,38 @@ export async function pushChanges(
             target: [schema.weeklySummaries.userId, schema.weeklySummaries.weekStart],
             set: updateSet as any,
           })
+      } else if (tableName === 'companionProfiles') {
+        await db
+          .insert(schema.companionProfiles)
+          .values(data as any)
+          .onConflictDoUpdate({
+            target: schema.companionProfiles.userId,
+            set: updateSet as any,
+          })
+      } else if (tableName === 'cosmeticUnlocks') {
+        await db
+          .insert(schema.cosmeticUnlocks)
+          .values(data as any)
+          .onConflictDoUpdate({
+            target: [schema.cosmeticUnlocks.userId, schema.cosmeticUnlocks.cosmeticId],
+            set: updateSet as any,
+          })
+      } else if (tableName === 'reminderPreferences') {
+        await db
+          .insert(schema.reminderPreferences)
+          .values(data as any)
+          .onConflictDoUpdate({
+            target: schema.reminderPreferences.userId,
+            set: updateSet as any,
+          })
+      } else if (tableName === 'syncStates') {
+        await db
+          .insert(schema.syncStates)
+          .values({ ...data, deviceId: row.deviceId ?? 'default' } as any)
+          .onConflictDoUpdate({
+            target: [schema.syncStates.userId, schema.syncStates.deviceId],
+            set: updateSet as any,
+          })
       }
     }
   }
@@ -215,6 +256,40 @@ export async function pullChanges(
         eq(schema.weeklySummaries.userId, userId),
         gt(schema.weeklySummaries.updatedAt, sinceDate),
       ),
+    )
+
+  result.companionProfiles = await db
+    .select()
+    .from(schema.companionProfiles)
+    .where(
+      and(
+        eq(schema.companionProfiles.userId, userId),
+        gt(schema.companionProfiles.updatedAt, sinceDate),
+      ),
+    )
+
+  result.cosmeticUnlocks = await db
+    .select()
+    .from(schema.cosmeticUnlocks)
+    .where(
+      and(eq(schema.cosmeticUnlocks.userId, userId), gt(schema.cosmeticUnlocks.updatedAt, sinceDate)),
+    )
+
+  result.reminderPreferences = await db
+    .select()
+    .from(schema.reminderPreferences)
+    .where(
+      and(
+        eq(schema.reminderPreferences.userId, userId),
+        gt(schema.reminderPreferences.updatedAt, sinceDate),
+      ),
+    )
+
+  result.syncStates = await db
+    .select()
+    .from(schema.syncStates)
+    .where(
+      and(eq(schema.syncStates.userId, userId), gt(schema.syncStates.updatedAt, sinceDate)),
     )
 
   return result

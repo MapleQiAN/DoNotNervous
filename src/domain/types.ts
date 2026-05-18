@@ -17,7 +17,12 @@ export interface Task {
   archivedAt: Date | null
 }
 
-export type PointTransactionType = 'task_complete' | 'streak_bonus' | 'reward_spent' | 'adjustment'
+export type PointTransactionType =
+  | 'task_complete'
+  | 'streak_bonus'
+  | 'reward_spent'
+  | 'cosmetic_unlock'
+  | 'adjustment'
 
 export interface PointLedgerEntry {
   id: string
@@ -116,4 +121,48 @@ export interface SyncQueueEntry {
   operation: 'insert' | 'update' | 'delete'
   data: unknown
   updatedAt: string
+}
+
+export type CompanionMood = 'normal' | 'happy' | 'celebrating' | 'tired' | 'proud'
+export type CosmeticSlot = 'hat' | 'face' | 'body' | 'room' | 'effect'
+
+export interface CompanionProfile {
+  userId: string
+  displayName: string
+  level: number
+  experience: number
+  energy: number
+  mood: CompanionMood
+  activeCosmeticIds: string[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface CosmeticUnlock {
+  id: string
+  cosmeticId: string
+  name: string
+  slot: CosmeticSlot
+  pointCost: number
+  equipped: boolean
+  unlockedAt: Date
+  createdAt: Date
+}
+
+export interface ReminderPreference {
+  enabled: boolean
+  hour: number
+  minute: number
+  message: string
+  timezone: string
+  lastScheduledAt: Date | null
+  updatedAt: Date
+}
+
+export interface SyncState {
+  deviceId: string
+  lastPulledAt: Date | null
+  lastPushedAt: Date | null
+  pendingLocalChangeCount: number
+  updatedAt: Date
 }

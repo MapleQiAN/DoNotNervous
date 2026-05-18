@@ -23,6 +23,7 @@ const rewardUpdateSchema = z.object({
   name: z.string().min(1).optional(),
   description: z.string().optional(),
   pointCost: z.number().int().min(0).optional(),
+  icon: z.string().optional(),
   active: z.boolean().optional(),
 })
 
@@ -38,6 +39,16 @@ route.post('/', zValidator('json', rewardCreateSchema), async (c) => {
   const values = { ...input, userId, updatedAt: new Date() }
   const [reward] = await db.insert(rewards).values(values).returning()
   return c.json({ data: reward }, 201)
+})
+
+route.get('/redemptions', async (c) => {
+  const userId = c.get('userId')
+  const result = await db
+    .select()
+    .from(redemptions)
+    .where(eq(redemptions.userId, userId))
+    .orderBy(desc(redemptions.createdAt))
+  return c.json({ data: result })
 })
 
 route.get('/:id', async (c) => {
@@ -92,7 +103,7 @@ route.post('/:id/redeem', async (c) => {
   // Create negative ledger entry
   await db.insert(pointLedger).values({
     userId, amount: -reward.pointCost, type: 'reward_spent',
-    reason: `Redeemed: ${reward.name}`, streakLength: 0, multiplier: 100, updatedAt: now,
+    reason: `兑换奖励：${reward.name}`, streakLength: 0, multiplier: 100, updatedAt: now,
   })
 
   return c.json({ data: redemption }, 201)
