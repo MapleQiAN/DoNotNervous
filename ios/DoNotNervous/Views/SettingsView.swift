@@ -22,50 +22,119 @@ public struct SettingsView: View {
     public init() {}
 
     public var body: some View {
-        Form {
-            Section("可选登录") {
-                Text(authMessage)
-                    .font(.caption)
-                    .foregroundStyle(DNNColors.muted)
-                emailField
-                SecureField("密码", text: $password)
-                HStack {
-                    Button("登录") {
-                        authenticate(register: false)
-                    }
-                    Button("创建账户") {
-                        authenticate(register: true)
-                    }
-                }
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 20) {
+                header
+                authCard
+                reminderCard
+                syncCard
             }
-
-            Section("温和提醒") {
-                Toggle("开启每日轻提醒", isOn: $reminderEnabled)
-                DatePicker("提醒时间", selection: $reminderDate, displayedComponents: .hourAndMinute)
-                TextField("提醒文案", text: $reminderMessage, axis: .vertical)
-                Button("保存提醒") {
-                    saveReminder()
-                }
-            }
-
-            Section("同步") {
-                Text(syncMessage)
-                    .foregroundStyle(DNNColors.muted)
-                Button("登录后同步本机数据") {
-                    syncLocalData()
-                }
-                Text("当前实现会把本机快照推送到现有 Hono `/sync` 接口；未登录或无网络时，本地数据继续可用。")
-                    .font(.caption)
-                    .foregroundStyle(DNNColors.muted)
-            }
+            .padding(.horizontal, 20)
+            .padding(.top, 14)
+            .padding(.bottom, 42)
         }
+        .background(DNNBackground())
         .navigationTitle("设置")
         .toolbar {
             ToolbarItem(placement: doneToolbarPlacement) {
                 Button("完成") { dismiss() }
+                    .font(.system(.body, design: .rounded).weight(.bold))
+                    .foregroundStyle(DNNColors.sage)
             }
         }
         .onAppear(perform: hydrate)
+    }
+
+    private var header: some View {
+        DNNIllustratedHeader(
+            title: "把节奏\n调成自己的",
+            subtitle: "登录、提醒和同步都可以慢慢来，本地记录会一直保留。",
+            illustration: .window,
+            tint: DNNColors.sky,
+            imageWidth: 196
+        )
+    }
+
+    private var authCard: some View {
+        DNNCard(cornerRadius: 30, padding: 18) {
+            VStack(alignment: .leading, spacing: 14) {
+                DNNSectionHeader("可选登录", subtitle: authMessage)
+
+                VStack(spacing: 12) {
+                    emailField
+                        .settingsFieldStyle()
+
+                    SecureField("密码", text: $password)
+                        .settingsFieldStyle()
+                }
+
+                HStack(spacing: 10) {
+                    Button {
+                        authenticate(register: false)
+                    } label: {
+                        Label("登录", systemImage: "person.crop.circle.badge.checkmark")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .settingsActionStyle(tint: DNNColors.sage, filled: true)
+
+                    Button {
+                        authenticate(register: true)
+                    } label: {
+                        Label("创建账户", systemImage: "plus.circle.fill")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .settingsActionStyle(tint: DNNColors.lavender, filled: false)
+                }
+            }
+        }
+    }
+
+    private var reminderCard: some View {
+        DNNCard(cornerRadius: 30, padding: 18) {
+            VStack(alignment: .leading, spacing: 14) {
+                DNNSectionHeader("温和提醒", subtitle: "只在你允许时，轻轻提醒一次。")
+
+                Toggle("开启每日轻提醒", isOn: $reminderEnabled)
+                    .font(.system(.body, design: .rounded).weight(.bold))
+                    .tint(DNNColors.sage)
+                    .padding(14)
+                    .background(DNNColors.surfaceStrong, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+
+                DatePicker("提醒时间", selection: $reminderDate, displayedComponents: .hourAndMinute)
+                    .font(.system(.body, design: .rounded).weight(.bold))
+                    .padding(14)
+                    .background(DNNColors.surfaceStrong, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+
+                TextField("提醒文案", text: $reminderMessage, axis: .vertical)
+                    .lineLimit(2...4)
+                    .settingsFieldStyle(minHeight: 78)
+
+                PrimaryCapsuleButton("保存提醒", systemImage: "bell.badge.fill") {
+                    saveReminder()
+                }
+            }
+        }
+    }
+
+    private var syncCard: some View {
+        DNNCard(cornerRadius: 30, padding: 18) {
+            VStack(alignment: .leading, spacing: 14) {
+                DNNSectionHeader("同步", subtitle: syncMessage)
+
+                Button {
+                    syncLocalData()
+                } label: {
+                    Label("登录后同步本机数据", systemImage: "arrow.triangle.2.circlepath")
+                        .frame(maxWidth: .infinity)
+                }
+                .settingsActionStyle(tint: DNNColors.sky, filled: true)
+
+                Text("当前实现会把本机快照推送到现有 Hono `/sync` 接口；未登录或无网络时，本地数据继续可用。")
+                    .font(.caption)
+                    .foregroundStyle(DNNColors.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
     }
 
     private var emailField: some View {
@@ -162,5 +231,30 @@ public struct SettingsView: View {
                 authMessage = "登录暂时失败，本地数据不受影响"
             }
         }
+    }
+}
+
+private extension View {
+    func settingsFieldStyle(minHeight: CGFloat = 54) -> some View {
+        self
+            .font(.system(.body, design: .rounded).weight(.semibold))
+            .foregroundStyle(DNNColors.ink)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .frame(minHeight: minHeight)
+            .background(DNNColors.surfaceStrong, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .strokeBorder(DNNColors.sage.opacity(0.14), lineWidth: 1)
+            )
+    }
+
+    func settingsActionStyle(tint: Color, filled: Bool) -> some View {
+        self
+            .font(.system(.subheadline, design: .rounded).weight(.black))
+            .foregroundStyle(filled ? .white : tint)
+            .padding(.horizontal, 14)
+            .frame(minHeight: 48)
+            .background(filled ? tint : tint.opacity(0.12), in: Capsule())
     }
 }

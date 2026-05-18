@@ -16,6 +16,7 @@ targets:
       - path: DoNotNervous
         excludes:
           - Resources/Info.plist
+          - Resources/README.md
     configFiles:
       Debug: Config/Debug.xcconfig
       Release: Config/Release.xcconfig
