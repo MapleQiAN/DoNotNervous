@@ -51,6 +51,11 @@
 
 ## docs/plans/
 
+## docs/ios/
+
+- `figma-design-spec.md` — iOS v1 Figma frames, tokens, components, copy rules, implementation mapping (~1550 tok)
+- `native-ios-implementation.md` — Native iOS backend/iOS scope and environment notes (~330 tok)
+
 
 ## public/animations/
 
@@ -60,6 +65,7 @@
 
 ## server/drizzle/
 
+- `0001_reward_icon.sql` — Adds persisted reward icon column for reward customization (~20 tok)
 
 ## server/src/
 
@@ -70,6 +76,7 @@
 
 ## server/src/domain/
 
+- `companion.ts` — Companion level/experience helpers and profile upsert/award functions (~520 tok)
 - `points.ts` — Exports POINT_VALUES, STREAK_TIERS, calculateMultiplier, calculatePoints (~234 tok)
 - `streaks.ts` — Exports computeCurrentStreak (~291 tok)
 - `summary.ts` — Exports computeAndStoreDailySummary, computeAndStoreWeeklySummary (~1818 tok)
@@ -83,6 +90,7 @@
 ## server/src/routes/
 
 - `auth.ts` — API routes: POST, GET (4 endpoints) (~795 tok)
+- `companion.ts` — API routes for companion profile, experience, cosmetics, reminders, sync state (~2500 tok)
 - `mood.ts` — API routes: GET, POST, PATCH, DELETE (12 endpoints) (~923 tok)
 - `points.ts` — API routes: GET (6 endpoints) (~662 tok)
 - `rewards.ts` — API routes: GET, POST, PATCH, DELETE (12 endpoints) (~1076 tok)
@@ -202,3 +210,41 @@
 
 - `authStore.ts` — Exports useAuthStore (~473 tok)
 - `uiStore.ts` — Exports useUIStore (~371 tok)
+
+## ios/
+
+- `README.md` — Import and environment notes for native iOS scaffold (~190 tok)
+- `Package.swift` — Swift package wrapper for shared iOS source and tests (~120 tok)
+
+## ios/DoNotNervous/App/
+
+- `DoNotNervousApp.swift` — SwiftUI app entry and SwiftData model container (~170 tok)
+
+## ios/DoNotNervous/Models/
+
+- `DNNModels.swift` — SwiftData models and enums for tasks, points, mood, rewards, companion, cosmetics, reminders, sync state (~2500 tok)
+
+## ios/DoNotNervous/Services/
+
+- `APIClient.swift` — URLSession API wrapper and generic JSONValue sync response decoding (~760 tok)
+- `AuthService.swift` — Optional login/register using backend auth and Keychain token persistence (~520 tok)
+- `GameEconomy.swift` — Points, companion experience, level math, local complete/log mood actions (~820 tok)
+- `KeychainTokenStore.swift` — Keychain load/save/clear for access and refresh tokens (~620 tok)
+- `ReminderScheduler.swift` — UserNotifications daily gentle reminder scheduler (~520 tok)
+- `SyncEngine.swift` — SwiftData snapshot push to backend `/sync` (~900 tok)
+
+## ios/DoNotNervous/Views/
+
+- `DesignSystem.swift` — iOS colors, card/button components, rounded companion avatar (~960 tok)
+- `RootTabView.swift` — Five-tab SwiftUI navigation: 今日, 任务, 心情, 金库, 复盘 (~250 tok)
+- `TodayView.swift` — Daily raising hub with companion, quick task add, focus task completion (~1500 tok)
+- `TaskListView.swift` — Native task add/list/complete/delete screen (~950 tok)
+- `MoodView.swift` — Mood picker and recent mood history (~800 tok)
+- `VaultView.swift` — Reward and cosmetic unlock screen (~1100 tok)
+- `ReviewView.swift` — Simple local review stats and recent moods (~700 tok)
+- `SettingsView.swift` — Optional login, reminder preferences, sync trigger (~1100 tok)
+
+## ios/DoNotNervousTests/
+
+- `GameEconomyTests.swift` — Swift unit tests for points, experience, level progress (~180 tok)
+- `ReminderSchedulerTests.swift` — Swift unit tests for gentle reminder scheduling behavior (~420 tok)

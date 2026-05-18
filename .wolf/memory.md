@@ -710,3 +710,17 @@
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
 | 11:42 | Edited docker-compose.yml | 3001 → 5052 | ~18 |
+| 17:04 | Began comprehensive frontend/backend audit; read OpenWolf rules, cerebrum, anatomy, buglog, and coding/design skills | .wolf/OPENWOLF.md, .wolf/cerebrum.md, .wolf/anatomy.md, .wolf/buglog.json | Context loaded; UI language and dead-button rules confirmed | ~9000 |
+| 17:34 | Fixed reward redemption path, backup/restore, mood filtering, date hydration, Chinese UI/test drift, and missing CSS token aliases | src/components, src/hooks, server/src/routes, server/src/db/schema.ts, src/index.css | Frontend tests, lint, frontend build, and server build pass; design screenshots verified current login UI | ~18000 |
+| 17:25 | designqc: captured 2 screenshots (25KB, ~5000 tok) | / | ready for eval | ~0 |
+| 17:30 | designqc: captured 2 screenshots (24KB, ~5000 tok) | / | ready for eval | ~0 |
+| 17:32 | designqc: captured 2 screenshots (27KB, ~5000 tok) | / | ready for eval | ~0 |
+
+## Session: 2026-05-13 11:08
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 11:02 | Implemented backend companion growth extension | server/src/db/schema.ts, server/src/domain/companion.ts, server/src/routes/companion.ts, server/src/domain/sync.ts | Added companion, cosmetics, reminders, sync-state tables/routes and task completion experience award | ~9000 |
+| 11:05 | Added native iOS SwiftUI scaffold | ios/DoNotNervous, ios/DoNotNervousTests | Added local-first SwiftData models, five-tab UI, Keychain auth, reminders, sync snapshot, and unit tests | ~12000 |
+| 11:06 | Added iOS design documentation | docs/ios | Figma screen spec and implementation notes written | ~2500 |
+| 11:07 | Verified build/lint | root, server | npm build, npm lint, server tsc pass; Swift unavailable on Windows | ~1200 |

@@ -28,5 +28,53 @@
     "related_bugs": [],
     "occurrences": 1,
     "last_seen": "2026-05-09T00:07:00Z"
+  },
+  {
+    "id": "bug-004",
+    "timestamp": "2026-05-12T17:34:00+08:00",
+    "error_message": "Reward shop had no reachable redeem action and /rewards/redemptions was not implemented on the backend",
+    "file": "src/components/rewards/RewardCard.tsx, src/components/rewards/RewardShop.tsx, server/src/routes/rewards.ts",
+    "root_cause": "RewardShop kept redeemTarget state and frontend hooks requested /rewards/redemptions, but RewardCard never exposed an onRedeem control and the backend dynamic /:id route shadowed the missing redemptions endpoint.",
+    "fix": "Added a redeem button with confirmation wiring, added GET /rewards/redemptions before /:id, invalidated reward/point caches after imperative reward mutations, and localized redemption ledger reasons.",
+    "tags": ["rewards", "backend-route", "dead-state", "cache-invalidation"],
+    "related_bugs": ["bug-002"],
+    "occurrences": 1,
+    "last_seen": "2026-05-12T17:34:00+08:00"
+  },
+  {
+    "id": "bug-005",
+    "timestamp": "2026-05-12T17:34:00+08:00",
+    "error_message": "Settings backup and restore buttons only showed coming-soon toasts despite an existing sync backend",
+    "file": "src/components/layout/SettingsDrawer.tsx, server/src/domain/sync.ts, server/src/routes/sync.ts",
+    "root_cause": "Frontend settings UI was never connected to the existing /sync and /sync/initial endpoints.",
+    "fix": "Implemented JSON backup export through /sync and JSON restore through /sync/initial, with file validation and query invalidation after restore.",
+    "tags": ["settings", "sync", "backup", "restore"],
+    "related_bugs": [],
+    "occurrences": 1,
+    "last_seen": "2026-05-12T17:34:00+08:00"
+  },
+  {
+    "id": "bug-006",
+    "timestamp": "2026-05-12T17:34:00+08:00",
+    "error_message": "Login and action buttons rendered with missing accent/background variables and looked disabled or invisible",
+    "file": "src/index.css, src/components/auth/LoginPage.tsx",
+    "root_cause": "Components referenced --color-accent, --color-bg-primary, and --color-bg-secondary, but index.css only defined theme palette tokens, not these alias variables.",
+    "fix": "Defined root alias variables for accent, backgrounds, muted text, and danger colors; verified desktop and mobile screenshots show a readable green login button.",
+    "tags": ["css", "design-token", "visual-regression", "login"],
+    "related_bugs": [],
+    "occurrences": 1,
+    "last_seen": "2026-05-12T17:34:00+08:00"
+  },
+  {
+    "id": "bug-007",
+    "timestamp": "2026-05-13T11:07:00+08:00",
+    "error_message": "npm --prefix server test -- companion.test.ts failed with ECONNREFUSED ::1:3001",
+    "file": "server/src/routes/__tests__/companion.test.ts",
+    "root_cause": "New route integration test used the same external-server assumption as existing route tests, but no local server was running in the default test environment.",
+    "fix": "Gated the new companion route test behind TEST_BASE_URL or RUN_SERVER_TESTS and changed its fallback base URL to the current backend port 5052.",
+    "tags": ["test", "integration", "server", "companion"],
+    "related_bugs": [],
+    "occurrences": 1,
+    "last_seen": "2026-05-13T11:07:00+08:00"
   }
 ]
