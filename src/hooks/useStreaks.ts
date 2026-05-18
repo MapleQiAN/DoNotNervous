@@ -131,6 +131,7 @@ export async function computeCurrentStreak(): Promise<number> {
 export async function checkAndApplyFreezes(
   _showToast: (message: string) => void,
 ): Promise<void> {
+  void _showToast
   // Server handles streak freeze logic on task completion
 }
 

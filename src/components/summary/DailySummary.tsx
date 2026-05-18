@@ -77,6 +77,7 @@ function buildFillPath(points: Array<{ x: number; y: number }>, bottom: number):
 }
 
 export function DailySummary({ showToast: _showToast }: DailySummaryProps) {
+  void _showToast
   const [selectedDate, setSelectedDate] = useState(() => new Date())
   const dayKey = toDayKey(selectedDate)
   const [streakDays, setStreakDays] = useState(0)

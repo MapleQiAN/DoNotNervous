@@ -3,20 +3,51 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Download, Upload, LogOut, User } from 'lucide-react'
 import { Button } from '../common/Button'
 import { useAuthStore } from '../../stores/authStore'
+import { api } from '../../lib/api'
+import { queryClient } from '../../lib/queryClient'
+
+type SyncChanges = Record<string, unknown[]>
+
+function downloadJson(filename: string, payload: unknown) {
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.style.display = 'none'
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  window.setTimeout(() => URL.revokeObjectURL(url), 0)
+}
 
 interface SettingsDrawerProps {
   isOpen: boolean
   onClose: () => void
-  showToast: (message: string, type: 'success' | 'error') => void
+  showToast: (message: string, type?: 'success' | 'error') => void
 }
 
 export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const user = useAuthStore((s) => s.user)
+  const token = useAuthStore((s) => s.accessToken)
   const logout = useAuthStore((s) => s.logout)
 
   async function handleExport() {
-    showToast('备份功能开发中，敬请期待', 'error')
+    if (!token) {
+      showToast('请先登录后再备份', 'error')
+      return
+    }
+    try {
+      const backup = await api.post<{
+        serverTimestamp: string
+        changes: SyncChanges
+      }>('/sync', { lastSyncTimestamp: '1970-01-01T00:00:00.000Z', changes: {} }, token)
+      downloadJson(`donotnervous-backup-${backup.serverTimestamp.slice(0, 10)}.json`, backup)
+      showToast('备份已保存')
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : '备份失败', 'error')
+    }
   }
 
   async function handleImport() {
@@ -24,8 +55,23 @@ export function SettingsDrawer({ isOpen, onClose, showToast }: SettingsDrawerPro
   }
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
     e.target.value = ''
-    showToast('恢复功能开发中，敬请期待', 'error')
+    if (!file || !token) return
+    try {
+      const text = await file.text()
+      const parsed = JSON.parse(text) as { changes?: SyncChanges }
+      const changes = parsed.changes
+      if (!changes || typeof changes !== 'object') {
+        showToast('备份文件格式不正确', 'error')
+        return
+      }
+      await api.post('/sync/initial', { changes }, token)
+      await queryClient.invalidateQueries()
+      showToast('备份已恢复')
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : '恢复失败', 'error')
+    }
   }
 
   return (

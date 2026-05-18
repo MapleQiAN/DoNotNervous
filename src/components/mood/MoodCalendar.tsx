@@ -16,6 +16,8 @@ interface MoodCalendarProps {
   activeView?: 'mood' | 'data'
 }
 
+const positiveMoods = new Set(['😊', '😌', '🥳', '💪'])
+
 export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarProps) {
   const [showStandalonePicker, setShowStandalonePicker] = useState(false)
   const [selectedEmoji, setSelectedEmoji] = useState<MoodEmoji | null>(null)
@@ -26,11 +28,11 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
 
   const trend = useMemo(() => {
     if (allMoods.length === 0) return []
-    const recent = allMoods.slice(-7)
+    const recent = allMoods.slice(0, 7).reverse()
     return recent.map((entry) => MOOD_SCORE[entry.emoji])
   }, [allMoods])
 
-  const recentEntries = useMemo(() => allMoods.slice(-7), [allMoods])
+  const recentEntries = useMemo(() => allMoods.slice(0, 7).reverse(), [allMoods])
 
   const path = trend.length > 1
     ? trend.map((value, index) => {
@@ -44,8 +46,15 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
   const recentWeekMoods = useMemo(() => {
     const weekAgo = new Date()
     weekAgo.setDate(weekAgo.getDate() - 7)
-    return allMoods.filter(m => m.createdAt >= weekAgo)
+    return allMoods.filter(m => new Date(m.createdAt) >= weekAgo)
   }, [allMoods])
+
+  const visibleRecords = useMemo(() => {
+    const records = moodFilter === 'positive'
+      ? allMoods.filter((entry) => positiveMoods.has(entry.emoji))
+      : allMoods
+    return records.slice(0, 4)
+  }, [allMoods, moodFilter])
 
   const avgMoodScore = recentWeekMoods.length > 0
     ? (recentWeekMoods.reduce((sum, m) => sum + MOOD_SCORE[m.emoji], 0) / recentWeekMoods.length).toFixed(1)
@@ -139,15 +148,23 @@ export function MoodCalendar({ showToast, activeView = 'mood' }: MoodCalendarPro
         <section className="content-card mood-records">
           <div className="section-title-row">
             <h2>心情与任务记录</h2>
-            <button type="button" className="small-select" onClick={() => setMoodFilter(moodFilter === "all" ? "positive" : "all")}>'{moodFilter === "all" ? "全部情绪" : "正面情绪"}</button>
+            <button
+              type="button"
+              className="small-select"
+              onClick={() => setMoodFilter(moodFilter === 'all' ? 'positive' : 'all')}
+            >
+              {moodFilter === 'all' ? '全部情绪' : '正面情绪'}
+            </button>
           </div>
           {allMoods.length === 0 ? (
             <p className="empty-hint">暂无心情记录，点击右侧记录今日心情</p>
+          ) : visibleRecords.length === 0 ? (
+            <p className="empty-hint">还没有正面情绪记录，切回全部情绪看看。</p>
           ) : (
-            allMoods.slice(-4).reverse().map((entry) => (
+            visibleRecords.map((entry) => (
               <div key={entry.id} className="record-row">
                 <span className="record-emoji">{entry.emoji}</span>
-                <span>{format(entry.createdAt, 'M/d')}</span>
+                <span>{format(new Date(entry.createdAt), 'M/d')}</span>
                 <p>{entry.journal || '记录了今天的心情'}</p>
               </div>
             ))

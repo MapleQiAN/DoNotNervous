@@ -11,7 +11,6 @@ export function useInitAuth() {
 
   useEffect(() => {
     if (!accessToken || user) {
-      setLoading(false)
       return
     }
 
@@ -33,5 +32,5 @@ export function useInitAuth() {
     return () => { cancelled = true }
   }, [accessToken, user, setUser, logout])
 
-  return { loading }
+  return { loading: loading && !!accessToken && !user }
 }

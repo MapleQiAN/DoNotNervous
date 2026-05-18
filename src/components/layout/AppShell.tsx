@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Bell, ChevronDown, Leaf } from 'lucide-react'
+import { ChevronDown, Leaf, Settings } from 'lucide-react'
 import { useAuthStore } from '../../stores/authStore'
 import { Header } from './Header'
 import { useUIStore } from '../../stores/uiStore'
@@ -93,8 +93,8 @@ export function AppShell({ children, showToast }: AppShellProps) {
                   </div>
                 </div>
               )}
-              <button type="button" className="icon-button" aria-label="通知" onClick={() => setSettingsOpen(true)}>
-                <Bell size={21} />
+              <button type="button" className="icon-button" aria-label="设置" onClick={() => setSettingsOpen(true)}>
+                <Settings size={21} />
               </button>
               <div className="avatar-lockup">
                 <div className="avatar">{avatarChar}</div>

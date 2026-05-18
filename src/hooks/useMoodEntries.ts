@@ -4,14 +4,22 @@ import { moodKeys } from '../lib/queryKeys'
 import { useAuthStore } from '../stores/authStore'
 import { moodCreateSchema, MOODS } from '../domain/mood'
 import { summaryKeys } from '../lib/queryKeys'
+import { queryClient } from '../lib/queryClient'
 import type { MoodEntry } from '../domain/types'
+
+function hydrateMoodEntry(entry: MoodEntry): MoodEntry {
+  return {
+    ...entry,
+    createdAt: new Date(entry.createdAt),
+  }
+}
 
 export function useMoodEntries(): MoodEntry[] {
   const token = useAuthStore((s) => s.accessToken)
   return useQuery({
     queryKey: moodKeys.list(),
     queryFn: () =>
-      api.get<{ data: MoodEntry[] }>('/mood', token!).then((r) => r.data),
+      api.get<{ data: MoodEntry[] }>('/mood', token!).then((r) => r.data.map(hydrateMoodEntry)),
     enabled: !!token,
   }).data ?? []
 }
@@ -21,7 +29,7 @@ export function useMoodEntriesForTask(taskId: string): MoodEntry[] {
   return useQuery({
     queryKey: moodKeys.forTask(taskId),
     queryFn: () =>
-      api.get<{ data: MoodEntry[] }>(`/mood?taskId=${taskId}`, token!).then((r) => r.data),
+      api.get<{ data: MoodEntry[] }>(`/mood?taskId=${taskId}`, token!).then((r) => r.data.map(hydrateMoodEntry)),
     enabled: !!token && !!taskId,
   }).data ?? []
 }
@@ -31,7 +39,7 @@ export function useMoodEntriesForDate(dayKey: string): MoodEntry[] {
   return useQuery({
     queryKey: moodKeys.forDate(dayKey),
     queryFn: () =>
-      api.get<{ data: MoodEntry[] }>(`/mood?date=${dayKey}`, token!).then((r) => r.data),
+      api.get<{ data: MoodEntry[] }>(`/mood?date=${dayKey}`, token!).then((r) => r.data.map(hydrateMoodEntry)),
     enabled: !!token && !!dayKey,
   }).data ?? []
 }
@@ -48,7 +56,7 @@ export function useCreateMoodEntry() {
         ...validated,
         label: moodMeta?.label ?? '',
       }
-      return api.post<{ data: MoodEntry }>('/mood', payload, token!).then((r) => r.data)
+      return api.post<{ data: MoodEntry }>('/mood', payload, token!).then((r) => hydrateMoodEntry(r.data))
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: moodKeys.all })
@@ -69,5 +77,7 @@ export async function createMoodEntry(input: unknown): Promise<MoodEntry> {
   }
 
   const result = await api.post<{ data: MoodEntry }>('/mood', payload, token)
-  return result.data
+  await queryClient.invalidateQueries({ queryKey: moodKeys.all })
+  await queryClient.invalidateQueries({ queryKey: summaryKeys.daily(new Date().toISOString().slice(0, 10)) })
+  return hydrateMoodEntry(result.data)
 }

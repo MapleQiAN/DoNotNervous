@@ -7,7 +7,7 @@ import '../../../test-setup'
 
 // Mock date-fns
 vi.mock('date-fns', () => ({
-  formatDistanceToNow: () => 'less than a minute ago',
+  formatDistanceToNow: () => '不到 1 分钟',
 }))
 
 // Mutable mock data for useRecentTransactions
@@ -41,7 +41,7 @@ describe('TransactionPopover', () => {
   it('returns null when isPointsPopoverOpen is false', () => {
     render(<TransactionPopover />)
 
-    expect(screen.queryByText('Recent Points')).not.toBeInTheDocument()
+    expect(screen.queryByText('最近积分')).not.toBeInTheDocument()
   })
 
   it('renders Recent Points heading when open', () => {
@@ -49,7 +49,7 @@ describe('TransactionPopover', () => {
 
     render(<TransactionPopover />)
 
-    expect(screen.getByText('Recent Points')).toBeInTheDocument()
+    expect(screen.getByText('最近积分')).toBeInTheDocument()
   })
 
   it('renders empty state message when no transactions', () => {
@@ -57,7 +57,7 @@ describe('TransactionPopover', () => {
 
     render(<TransactionPopover />)
 
-    expect(screen.getByText('Complete a task to start earning points!')).toBeInTheDocument()
+    expect(screen.getByText('完成任务即可获得奖励金！')).toBeInTheDocument()
   })
 
   it('renders transaction rows with amount, reason, and time when transactions exist', () => {
@@ -86,7 +86,7 @@ describe('TransactionPopover', () => {
     expect(screen.getByText('+25')).toBeInTheDocument()
     expect(screen.getByText('Streak bonus (1.5x)')).toBeInTheDocument()
     expect(screen.getByText('+12')).toBeInTheDocument()
-    expect(screen.getAllByText('less than a minute ago')).toHaveLength(2)
+    expect(screen.getAllByText('不到 1 分钟')).toHaveLength(2)
   })
 
   it('close button sets isPointsPopoverOpen to false', async () => {
@@ -94,7 +94,7 @@ describe('TransactionPopover', () => {
 
     render(<TransactionPopover />)
 
-    const closeButton = screen.getByRole('button', { name: /close/i })
+    const closeButton = screen.getByRole('button', { name: '关闭' })
     await fireEvent.click(closeButton)
 
     expect(useUIStore.getState().isPointsPopoverOpen).toBe(false)
@@ -111,7 +111,7 @@ describe('TransactionPopover', () => {
     )
 
     // Verify popover is open
-    expect(screen.getByText('Recent Points')).toBeInTheDocument()
+    expect(screen.getByText('最近积分')).toBeInTheDocument()
 
     // Click outside
     const outsideElement = screen.getByTestId('outside')

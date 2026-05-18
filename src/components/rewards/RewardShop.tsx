@@ -37,6 +37,7 @@ export function RewardShop({ showToast }: RewardShopProps) {
   const [selectedIcon, setSelectedIcon] = useState<RewardIconKey>('gift')
 
   const [editingId, setEditingId] = useState<string | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<Reward | null>(null)
 
   async function handleCreate() {
     const cost = parseInt(newCost, 10)
@@ -78,12 +79,15 @@ export function RewardShop({ showToast }: RewardShopProps) {
     }
   }
 
-  async function handleDelete(id: string) {
+  async function handleConfirmDelete() {
+    if (!deleteTarget) return
     try {
-      await deleteReward(id)
+      await deleteReward(deleteTarget.id)
       showToast('已删除')
     } catch {
       showToast('删除失败', 'error')
+    } finally {
+      setDeleteTarget(null)
     }
   }
 
@@ -184,8 +188,9 @@ export function RewardShop({ showToast }: RewardShopProps) {
                       key={reward.id}
                       reward={reward}
                       balance={balance}
-                      onDelete={handleDelete}
+                      onDelete={() => setDeleteTarget(reward)}
                       onEdit={handleEdit}
+                      onRedeem={setRedeemTarget}
                     />
                   ))}
                 </AnimatePresence>
@@ -341,6 +346,16 @@ export function RewardShop({ showToast }: RewardShopProps) {
           cancelLabel="再攒攒"
           onConfirm={handleRedeem}
           onCancel={() => setRedeemTarget(null)}
+        />
+      )}
+      {deleteTarget && (
+        <ConfirmDialog
+          title="确认删除奖励？"
+          message={`删除「${deleteTarget.name}」后无法恢复。`}
+          confirmLabel="确认删除"
+          cancelLabel="取消"
+          onConfirm={handleConfirmDelete}
+          onCancel={() => setDeleteTarget(null)}
         />
       )}
     </div>

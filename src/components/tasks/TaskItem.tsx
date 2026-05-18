@@ -110,7 +110,7 @@ export function TaskItem({ task }: TaskItemProps) {
           onClick={() => void handleComplete()}
           disabled={isCompleted || isArchived}
           className="flex-shrink-0 cursor-pointer"
-          aria-label={isCompleted ? 'Task completed' : 'Complete task'}
+          aria-label={isCompleted ? '任务已完成' : '完成任务'}
         >
           <motion.div
             className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
@@ -191,7 +191,7 @@ export function TaskItem({ task }: TaskItemProps) {
             type="button"
             onClick={() => setShowMenu(!showMenu)}
             className="flex min-h-[38px] min-w-[38px] items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-cream-100 hover:text-text-primary"
-            aria-label="Task actions"
+            aria-label="任务操作"
           >
             <MoreVertical className="w-5 h-5" />
           </button>
@@ -208,7 +208,6 @@ export function TaskItem({ task }: TaskItemProps) {
                 }}
               >
                 <Pencil className="w-4 h-4" />
-                <span className="sr-only">Edit</span>
                 编辑
               </button>
               <button
@@ -220,7 +219,6 @@ export function TaskItem({ task }: TaskItemProps) {
                 }}
               >
                 <Trash2 className="w-4 h-4" />
-                <span className="sr-only">Delete</span>
                 删除
               </button>
               {isCompleted && (
@@ -230,7 +228,6 @@ export function TaskItem({ task }: TaskItemProps) {
                   onClick={() => void handleArchive()}
                 >
                   <Archive className="w-4 h-4" />
-                  <span className="sr-only">Archive</span>
                   归档
                 </button>
               )}
@@ -241,7 +238,6 @@ export function TaskItem({ task }: TaskItemProps) {
                   onClick={() => void handleUnarchive()}
                 >
                   <RotateCcw className="w-4 h-4" />
-                  <span className="sr-only">Restore</span>
                   恢复
                 </button>
               )}

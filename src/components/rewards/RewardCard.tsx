@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Gift, Pencil, Trash2 } from 'lucide-react'
 import type { Reward } from '../../domain/types'
 
 const categoryTone: Record<string, string> = {
@@ -17,12 +18,14 @@ interface RewardCardProps {
   balance: number
   onDelete: (id: string) => void
   onEdit: (reward: Reward) => void
+  onRedeem: (reward: Reward) => void
 }
 
-export function RewardCard({ reward, balance, onDelete, onEdit }: RewardCardProps) {
+export function RewardCard({ reward, balance, onDelete, onEdit, onRedeem }: RewardCardProps) {
   const progressPercent = Math.min(100, Math.round((balance / reward.pointCost) * 100))
   const currentSaved = Math.min(balance, reward.pointCost)
   const tone = categoryTone[reward.description] ?? defaultTone
+  const canRedeem = balance >= reward.pointCost
 
   return (
     <motion.div
@@ -58,21 +61,32 @@ export function RewardCard({ reward, balance, onDelete, onEdit }: RewardCardProp
         </div>
       </div>
 
-      {/* Hover actions */}
+      <button
+        type="button"
+        className="reward-redeem-button"
+        disabled={!canRedeem}
+        onClick={(e) => { e.stopPropagation(); onRedeem(reward) }}
+      >
+        <Gift size={14} />
+        {canRedeem ? '兑换' : '继续攒'}
+      </button>
+
       <div className="reward-hover-actions">
         <button
+          type="button"
           onClick={(e) => { e.stopPropagation(); onEdit(reward) }}
           className="reward-action-btn"
           aria-label="编辑"
         >
-          ✎
+          <Pencil size={13} />
         </button>
         <button
+          type="button"
           onClick={(e) => { e.stopPropagation(); onDelete(reward.id) }}
           className="reward-action-btn reward-action-delete"
           aria-label="删除"
         >
-          ✕
+          <Trash2 size={13} />
         </button>
       </div>
     </motion.div>

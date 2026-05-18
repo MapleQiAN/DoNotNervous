@@ -48,6 +48,15 @@
 }
 
 @layer base {
+  :root {
+    --color-accent: var(--color-sage-500);
+    --color-bg-primary: #faf7f0;
+    --color-bg-secondary: rgba(255, 253, 248, 0.92);
+    --color-muted: var(--color-text-tertiary);
+    --color-danger: #dc5f4f;
+    --color-danger-bg: #fff1ee;
+  }
+
   * { box-sizing: border-box; }
 
   html {
@@ -1819,6 +1828,40 @@
     min-width: 110px;
     display: grid;
     gap: 6px;
+  }
+
+  .reward-redeem-button {
+    display: inline-flex;
+    min-width: 74px;
+    min-height: 34px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6f9f58, #4f8d56);
+    color: white;
+    font-size: 13px;
+    font-weight: 800;
+    box-shadow: 0 8px 18px rgba(79, 141, 86, 0.20);
+    transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+  }
+
+  .reward-redeem-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(79, 141, 86, 0.24);
+  }
+
+  .reward-redeem-button:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .reward-redeem-button:disabled {
+    cursor: not-allowed;
+    color: var(--color-text-secondary);
+    background: #edf0eb;
+    box-shadow: none;
+    opacity: 0.85;
   }
 
   .progress-bar-track {

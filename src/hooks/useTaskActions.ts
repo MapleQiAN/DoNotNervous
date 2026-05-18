@@ -4,6 +4,7 @@ import { queryClient } from '../lib/queryClient'
 import { taskKeys, pointKeys, streakKeys, summaryKeys } from '../lib/queryKeys'
 import { useAuthStore } from '../stores/authStore'
 import { useMascotStore } from '../stores/mascotStore'
+import { useUIStore } from '../stores/uiStore'
 import { celebrateTaskComplete } from '../lib/celebrate'
 import { checkStreakMilestone } from './useStreaks'
 import { taskCreateSchema } from '../domain/task'
@@ -44,6 +45,7 @@ export function useCompleteTask() {
 
       // Mascot celebration
       useMascotStore.getState().setAnimation('celebrate')
+      useUIStore.getState().setMoodPickerTaskId(_taskId)
       celebrateTaskComplete()
       checkStreakMilestone().catch(() => {})
     },
@@ -104,11 +106,15 @@ export async function createTask(input: unknown): Promise<Task> {
   return result.data
 }
 
-export async function completeTask(id: string): Promise<Task> {
+export async function completeTask(id: string, options: { promptMood?: boolean } = {}): Promise<Task> {
+  const { promptMood = true } = options
   const result = await api.post<{ data: { task: Task } }>(`/tasks/${id}/complete`, {}, getToken())
 
   await invalidateTaskCaches()
   useMascotStore.getState().setAnimation('celebrate')
+  if (promptMood) {
+    useUIStore.getState().setMoodPickerTaskId(id)
+  }
   celebrateTaskComplete()
   checkStreakMilestone().catch(() => {})
 

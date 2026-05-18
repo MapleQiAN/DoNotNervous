@@ -6,11 +6,11 @@ interface HeaderProps {
 }
 
 const navItems = [
-  { path: '/' as const, label: '首页', ariaLabel: 'Home', Icon: Home },
-  { path: '/tasks' as const, label: '任务清单', ariaLabel: 'Tasks', Icon: CheckSquare },
-  { path: '/mood' as const, label: '心情记录', ariaLabel: 'Mood', Icon: Smile },
-  { path: '/rewards' as const, label: '奖励金库', ariaLabel: 'Rewards', Icon: Gift },
-  { path: '/data' as const, label: '数据复盘', ariaLabel: 'Data', Icon: BarChart3 },
+  { path: '/' as const, label: '首页', ariaLabel: '首页', Icon: Home },
+  { path: '/tasks' as const, label: '任务清单', ariaLabel: '任务清单', Icon: CheckSquare },
+  { path: '/mood' as const, label: '心情记录', ariaLabel: '心情记录', Icon: Smile },
+  { path: '/rewards' as const, label: '奖励金库', ariaLabel: '奖励金库', Icon: Gift },
+  { path: '/data' as const, label: '数据复盘', ariaLabel: '数据复盘', Icon: BarChart3 },
 ]
 
 export function Header({ onSettingsClick }: HeaderProps) {

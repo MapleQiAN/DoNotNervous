@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useActiveTasks } from '../../hooks/useTaskQueries'
-import { CalendarClock, CheckCircle2, ChevronDown, Leaf, X } from 'lucide-react'
+import { CalendarClock, CheckCircle2, Leaf, X } from 'lucide-react'
 import { completeTask } from '../../hooks/useTaskActions'
+import { createMoodEntry } from '../../hooks/useMoodEntries'
 import { useUIStore } from '../../stores/uiStore'
-import type { Task, TaskDifficulty } from '../../domain/types'
+import type { MoodEmoji, Task, TaskDifficulty } from '../../domain/types'
 
 interface DetailModel {
   title: string
@@ -16,12 +17,12 @@ interface DetailModel {
 }
 
 const moods = [
-  { icon: '😊', label: '开心' },
-  { icon: '😌', label: '平静' },
-  { icon: '🧠', label: '专注' },
-  { icon: '😆', label: '期待' },
-  { icon: '☺️', label: '放松' },
-  { icon: '😟', label: '低落' },
+  { icon: '😊' as MoodEmoji, label: '开心' },
+  { icon: '😌' as MoodEmoji, label: '平静' },
+  { icon: '💪' as MoodEmoji, label: '专注' },
+  { icon: '🥳' as MoodEmoji, label: '期待' },
+  { icon: '😌' as MoodEmoji, label: '放松' },
+  { icon: '😔' as MoodEmoji, label: '低落' },
 ]
 
 function rewardFor(task: Task) {
@@ -71,7 +72,6 @@ export function TaskDetailPanel() {
   const [note, setNote] = useState('')
   const selectedTaskId = useUIStore((s) => s.selectedTaskId)
   const setSelectedTaskId = useUIStore((s) => s.setSelectedTaskId)
-  const setMoodPickerTaskId = useUIStore((s) => s.setMoodPickerTaskId)
 
   const activeTasks = useActiveTasks()
 
@@ -95,8 +95,13 @@ export function TaskDetailPanel() {
 
   const handleComplete = async () => {
     if (!detail.task) return
-    await completeTask(detail.task.id)
-    setMoodPickerTaskId(detail.task.id)
+    const selectedMood = moods.find((mood) => mood.label === activeMood) ?? moods[0]
+    await completeTask(detail.task.id, { promptMood: false })
+    await createMoodEntry({
+      emoji: selectedMood.icon,
+      journal: note,
+      taskId: detail.task.id,
+    })
     setNote('')
   }
 
@@ -130,9 +135,7 @@ export function TaskDetailPanel() {
           <div>
             <dt>分类</dt>
             <dd>
-              <span className="detail-select">
-                {detail.mood} <ChevronDown size={15} />
-              </span>
+              <span className="soft-pill tone-focus">{detail.mood}</span>
             </dd>
           </div>
           {detail.note && (

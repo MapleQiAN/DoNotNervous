@@ -78,7 +78,7 @@ describe('ConfirmDialog', () => {
         onCancel={handleCancel}
       />
     )
-    await user.click(screen.getByText('Cancel'))
+    await user.click(screen.getByText('取消'))
     expect(handleCancel).toHaveBeenCalledOnce()
   })
 })
@@ -106,7 +106,7 @@ describe('Toast', () => {
 describe('DifficultyBadge', () => {
   it('renders easy/medium/hard variants', () => {
     const difficulties = ['easy', 'medium', 'hard'] as const
-    const labels = ['Easy', 'Medium', 'Hard']
+    const labels = ['低优先级', '中优先级', '高优先级']
 
     for (let i = 0; i < difficulties.length; i++) {
       const { unmount } = render(
@@ -125,8 +125,8 @@ describe('Header', () => {
         <Header onSettingsClick={() => {}} />
       </MemoryRouter>
     )
-    expect(screen.getByLabelText('Home')).toBeInTheDocument()
-    expect(screen.getByLabelText('Tasks')).toBeInTheDocument()
+    expect(screen.getAllByLabelText('首页').length).toBeGreaterThan(0)
+    expect(screen.getAllByLabelText('任务清单').length).toBeGreaterThan(0)
   })
 })
 

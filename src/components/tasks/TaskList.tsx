@@ -13,7 +13,7 @@ import {
   X,
 } from 'lucide-react'
 import { useActiveTasks, useCompletedTasksForDate } from '../../hooks/useTaskQueries'
-import { completeTask, createTask, deleteTask, updateTask } from '../../hooks/useTaskActions'
+import { completeTask, createTask, deleteTask, uncompleteTask, updateTask } from '../../hooks/useTaskActions'
 import { useFilterStore } from '../../stores/filterStore'
 import { useTaskCount } from '../../hooks/useTaskCount'
 import { useUIStore } from '../../stores/uiStore'
@@ -97,7 +97,12 @@ function TaskRow({ row, selected, onSelect }: TaskRowProps) {
 
   const handleComplete = async () => {
     onSelect()
-    if (row.task && !row.completed) await completeTask(row.task.id)
+    if (!row.task) return
+    if (row.completed) {
+      await uncompleteTask(row.task.id)
+    } else {
+      await completeTask(row.task.id)
+    }
   }
 
   const startEdit = (e: React.MouseEvent) => {
@@ -190,8 +195,8 @@ function TaskRow({ row, selected, onSelect }: TaskRowProps) {
     <div className={`task-row screenshot-row ${row.completed ? 'is-completed' : ''} ${selected ? 'is-selected' : ''}`} onClick={onSelect}>
       <button
         type="button"
-        className={row.completed || selected ? 'check-active' : 'check-muted clickable'}
-        aria-label={row.completed ? 'Task completed' : 'Complete task'}
+        className={row.completed ? 'check-active' : 'check-muted clickable'}
+        aria-label={row.completed ? '撤销完成任务' : '完成任务'}
         onClick={(event) => {
           event.stopPropagation()
           void handleComplete()

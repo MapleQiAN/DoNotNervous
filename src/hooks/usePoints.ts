@@ -4,6 +4,13 @@ import { pointKeys } from '../lib/queryKeys'
 import { useAuthStore } from '../stores/authStore'
 import type { PointLedgerEntry } from '../domain/types'
 
+function hydratePointEntry(entry: PointLedgerEntry): PointLedgerEntry {
+  return {
+    ...entry,
+    createdAt: new Date(entry.createdAt),
+  }
+}
+
 export function usePointBalance(): number {
   const token = useAuthStore((s) => s.accessToken)
   return useQuery({
@@ -19,7 +26,7 @@ export function usePointLedgerForDate(dayKey: string): PointLedgerEntry[] {
   return useQuery({
     queryKey: pointKeys.forDate(dayKey),
     queryFn: () =>
-      api.get<{ data: PointLedgerEntry[] }>(`/points?date=${dayKey}`, token!).then((r) => r.data),
+      api.get<{ data: PointLedgerEntry[] }>(`/points?date=${dayKey}`, token!).then((r) => r.data.map(hydratePointEntry)),
     enabled: !!token && !!dayKey,
   }).data ?? []
 }
@@ -29,7 +36,7 @@ export function useRecentTransactions(limit = 10): PointLedgerEntry[] {
   return useQuery({
     queryKey: pointKeys.transactions(limit),
     queryFn: () =>
-      api.get<{ data: PointLedgerEntry[] }>(`/points?limit=${limit}`, token!).then((r) => r.data),
+      api.get<{ data: PointLedgerEntry[] }>(`/points?limit=${limit}`, token!).then((r) => r.data.map(hydratePointEntry)),
     enabled: !!token,
   }).data ?? []
 }

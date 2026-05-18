@@ -34,7 +34,7 @@ describe('LoginPage', () => {
 
   it('renders login form', () => {
     render(<LoginPage />)
-    expect(screen.getByText('Welcome Back')).toBeDefined()
+    expect(screen.getByText('欢迎回来')).toBeDefined()
     expect(getEmailInput()).toBeDefined()
     expect(getPasswordInput()).toBeDefined()
   })
@@ -42,8 +42,8 @@ describe('LoginPage', () => {
   it('toggles to register mode', async () => {
     const user = userEvent.setup()
     render(<LoginPage />)
-    await user.click(screen.getByText('Register'))
-    expect(screen.getByText('Create Account')).toBeDefined()
+    await user.click(screen.getByText('创建一个'))
+    expect(screen.getByRole('heading', { name: '创建账户' })).toBeDefined()
   })
 
   it('shows error on failed login', async () => {
@@ -53,7 +53,7 @@ describe('LoginPage', () => {
 
     await user.type(getEmailInput(), 'test@example.com')
     await user.type(getPasswordInput(), 'wrongpass')
-    await user.click(screen.getByRole('button', { name: /login/i }))
+    await user.click(screen.getByRole('button', { name: '登录' }))
 
     await waitFor(() => {
       expect(screen.getByText('Invalid credentials')).toBeDefined()
@@ -71,7 +71,7 @@ describe('LoginPage', () => {
 
     await user.type(getEmailInput(), 'test@example.com')
     await user.type(getPasswordInput(), 'password123')
-    await user.click(screen.getByRole('button', { name: /login/i }))
+    await user.click(screen.getByRole('button', { name: '登录' }))
 
     await waitFor(() => {
       expect(mockSetUser).toHaveBeenCalledWith(

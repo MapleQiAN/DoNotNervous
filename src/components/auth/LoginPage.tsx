@@ -23,7 +23,7 @@ export function LoginPage() {
       }>(endpoint, { email, password })
       setUser(data.user, data.accessToken, data.refreshToken)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Authentication failed')
+      setError(err instanceof Error ? err.message : '认证失败，请稍后重试')
     } finally {
       setLoading(false)
     }
@@ -37,10 +37,10 @@ export function LoginPage() {
             <span className="text-3xl">🌿</span>
           </div>
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
-            {isRegister ? 'Create Account' : 'Welcome Back'}
+            {isRegister ? '创建账户' : '欢迎回来'}
           </h1>
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-            {isRegister ? 'Start your calm journey today' : 'Take a breath and continue'}
+            {isRegister ? '从今天开始，慢慢建立自己的节奏。' : '深呼吸一下，继续照顾好自己。'}
           </p>
         </div>
 
@@ -48,7 +48,7 @@ export function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">
-                Email
+                邮箱
               </label>
               <input
                 type="email"
@@ -61,7 +61,7 @@ export function LoginPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">
-                Password
+                密码
               </label>
               <input
                 type="password"
@@ -70,7 +70,7 @@ export function LoginPage() {
                 required
                 minLength={8}
                 className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors"
-                placeholder="Min. 8 characters"
+                placeholder="至少 8 个字符"
               />
             </div>
             {error && (
@@ -81,17 +81,17 @@ export function LoginPage() {
               disabled={loading}
               className="w-full py-2.5 px-4 rounded-xl bg-[var(--color-accent)] text-white font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
             >
-              {loading ? 'Please wait...' : isRegister ? 'Create Account' : 'Sign In'}
+              {loading ? '请稍候...' : isRegister ? '创建账户' : '登录'}
             </button>
           </form>
 
           <p className="text-sm text-center mt-5 text-[var(--color-text-secondary)]">
-            {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
+            {isRegister ? '已经有账户了？' : '还没有账户？'}{' '}
             <button
               onClick={() => { setIsRegister(!isRegister); setError('') }}
               className="text-[var(--color-accent)] font-medium hover:underline"
             >
-              {isRegister ? 'Sign In' : 'Create one'}
+              {isRegister ? '去登录' : '创建一个'}
             </button>
           </p>
         </div>
