@@ -215,6 +215,13 @@
 
 - `README.md` — Import and environment notes for native iOS scaffold (~190 tok)
 - `Package.swift` — Swift package wrapper for shared iOS source and tests (~120 tok)
+- `project.yml` — XcodeGen project definition for native iOS app/unit-test targets, preserving Chinese product name with DoNotNervousIOS module name (~450 tok)
+- `DoNotNervous.xcodeproj` — Generated Xcode project for the native iOS app and unit tests (~project metadata)
+
+## ios/Config/
+
+- `Debug.xcconfig` — Debug build settings with local development API base URL (~40 tok)
+- `Release.xcconfig` — Release build settings with production API placeholder (~50 tok)
 
 ## ios/DoNotNervous/App/
 
@@ -224,8 +231,13 @@
 
 - `DNNModels.swift` — SwiftData models and enums for tasks, points, mood, rewards, companion, cosmetics, reminders, sync state (~2500 tok)
 
+## ios/DoNotNervous/Resources/
+
+- `Info.plist` — App display name, API base URL build setting bridge, and launch screen declaration for full-screen iOS sizing (~110 tok)
+
 ## ios/DoNotNervous/Services/
 
+- `AppConfiguration.swift` — Resolves API base URL from environment, Info.plist, or local fallback (~280 tok)
 - `APIClient.swift` — URLSession API wrapper and generic JSONValue sync response decoding (~760 tok)
 - `AuthService.swift` — Optional login/register using backend auth and Keychain token persistence (~520 tok)
 - `GameEconomy.swift` — Points, companion experience, level math, local complete/log mood actions (~820 tok)
@@ -246,5 +258,6 @@
 
 ## ios/DoNotNervousTests/
 
+- `AppConfigurationTests.swift` — Unit tests for API base URL resolution precedence and sanitization (~260 tok)
 - `GameEconomyTests.swift` — Swift unit tests for points, experience, level progress (~180 tok)
 - `ReminderSchedulerTests.swift` — Swift unit tests for gentle reminder scheduling behavior (~420 tok)

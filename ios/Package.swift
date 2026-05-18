@@ -15,7 +15,7 @@ let package = Package(
         .target(
             name: "DoNotNervousIOS",
             path: "DoNotNervous",
-            exclude: ["App/DoNotNervousApp.swift", "Resources/README.md"]
+            exclude: ["App/DoNotNervousApp.swift", "Resources/Info.plist", "Resources/README.md"]
         ),
         .testTarget(
             name: "DoNotNervousIOSTests",

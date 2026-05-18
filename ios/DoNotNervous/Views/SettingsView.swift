@@ -27,9 +27,7 @@ public struct SettingsView: View {
                 Text(authMessage)
                     .font(.caption)
                     .foregroundStyle(DNNColors.muted)
-                TextField("邮箱", text: $email)
-                    .textInputAutocapitalization(.never)
-                    .keyboardType(.emailAddress)
+                emailField
                 SecureField("密码", text: $password)
                 HStack {
                     Button("登录") {
@@ -63,11 +61,30 @@ public struct SettingsView: View {
         }
         .navigationTitle("设置")
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: doneToolbarPlacement) {
                 Button("完成") { dismiss() }
             }
         }
         .onAppear(perform: hydrate)
+    }
+
+    private var emailField: some View {
+        let field = TextField("邮箱", text: $email)
+        #if os(iOS)
+        return field
+            .textInputAutocapitalization(.never)
+            .keyboardType(.emailAddress)
+        #else
+        return field
+        #endif
+    }
+
+    private var doneToolbarPlacement: ToolbarItemPlacement {
+        #if os(iOS)
+        .topBarTrailing
+        #else
+        .automatic
+        #endif
     }
 
     private func hydrate() {

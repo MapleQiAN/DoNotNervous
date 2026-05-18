@@ -710,11 +710,27 @@
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
 | 11:42 | Edited docker-compose.yml | 3001 → 5052 | ~18 |
+
+## Session: 2026-05-18 10:42
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 10:42 | Resumed native iOS build work after code pull | ios/, .wolf/cerebrum.md | found SwiftUI + SwiftData scaffold under ios/ | ~4500 |
+| 10:42 | Ran Swift package validation | ios/Package.swift, ios/DoNotNervous/Models/DNNModels.swift | blocked by missing full Xcode/SwiftDataMacros in CLT toolchain | ~2000 |
+| 10:53 | Added iOS API configuration and XcodeGen project | ios/DoNotNervous/Services, ios/Config, ios/project.yml, ios/DoNotNervous.xcodeproj | project generated; verification blocked by unaccepted Xcode license | ~3500 |
 | 17:04 | Began comprehensive frontend/backend audit; read OpenWolf rules, cerebrum, anatomy, buglog, and coding/design skills | .wolf/OPENWOLF.md, .wolf/cerebrum.md, .wolf/anatomy.md, .wolf/buglog.json | Context loaded; UI language and dead-button rules confirmed | ~9000 |
 | 17:34 | Fixed reward redemption path, backup/restore, mood filtering, date hydration, Chinese UI/test drift, and missing CSS token aliases | src/components, src/hooks, server/src/routes, server/src/db/schema.ts, src/index.css | Frontend tests, lint, frontend build, and server build pass; design screenshots verified current login UI | ~18000 |
 | 17:25 | designqc: captured 2 screenshots (25KB, ~5000 tok) | / | ready for eval | ~0 |
 | 17:30 | designqc: captured 2 screenshots (24KB, ~5000 tok) | / | ready for eval | ~0 |
 | 17:32 | designqc: captured 2 screenshots (27KB, ~5000 tok) | / | ready for eval | ~0 |
+
+## Session: 2026-05-18 14:56
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 14:56 | Completed native iOS app build/run validation after Xcode install | ios/DoNotNervous.xcodeproj, ios/project.yml | swift test, xcodebuild test, xcodebuild build, and simulator build_run_sim passed | ~9000 |
+| 14:56 | Fixed iOS full-screen letterboxing and Today layout density | ios/DoNotNervous/Resources/Info.plist, ios/DoNotNervous/Views/TodayView.swift | simulator UI hierarchy root is 402x874 with no 320x480 letterbox | ~3500 |
+| 14:56 | Fixed Xcode test target module/product settings | ios/project.yml, ios/Config/Debug.xcconfig, ios/Config/Release.xcconfig | `@testable import DoNotNervousIOS` resolves and all 9 Xcode tests pass | ~2500 |
 
 ## Session: 2026-05-13 11:08
 

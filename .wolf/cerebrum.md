@@ -16,6 +16,10 @@
 - `src/index.css` must define alias variables like `--color-accent`, `--color-bg-primary`, and `--color-bg-secondary`; several components depend on them
 - Native iOS work lives under `ios/`; Windows workspace can scaffold SwiftUI files but cannot run Swift/Xcode validation
 - iOS light-raising backend data uses `/companion` plus companionProfiles, cosmeticUnlocks, reminderPreferences, and syncStates in `/sync`
+- Native iOS project is generated from `ios/project.yml` with XcodeGen; run `xcodegen generate` inside `ios/` after project config changes
+- Xcode command-line validation requires accepting the Apple SDK license after install before `swift test`, `xcodebuild`, or command-line git will run
+- iOS app must keep `PRODUCT_MODULE_NAME: DoNotNervousIOS` in `ios/project.yml` so Xcode unit tests can `@testable import DoNotNervousIOS` while the visible product name remains `不要紧张`
+- Modern iOS full-screen sizing requires a launch screen declaration; this app uses `UILaunchScreen` in `ios/DoNotNervous/Resources/Info.plist` to avoid 320x480 letterboxing on simulators
 
 ## Do-Not-Repeat
 - (2026-05-12) Never leave buttons without onClick handlers — dead buttons = broken UX. Every interactive element needs behavior or should be removed
@@ -24,6 +28,7 @@
 - (2026-05-12) handleEdit that only populates form without saving is not an edit — must call update API
 - (2026-05-12) Do not let `/rewards/:id` shadow static reward routes — place `/rewards/redemptions` before dynamic `/:id`
 - (2026-05-12) Root `npm test` and `npm run lint` must ignore generated browser captures and server dist output
+- (2026-05-18) Do not put target-specific `PRODUCT_NAME` in shared iOS xcconfig files; it makes app and test targets emit duplicate Swift module products
 
 ## Decision Log
 - (2026-05-12) Removed grid view toggle from TaskList since only list view exists — dead toggle is misleading
@@ -34,3 +39,4 @@
 - (2026-05-12) Reward cards now expose a first-class redeem button plus confirmation; edit/delete remain secondary actions
 - (2026-05-13) iOS v1 uses native SwiftUI + SwiftData with local-first optional sync, not WebView/Capacitor
 - (2026-05-13) Companion identity is a new rounded original character named "圆圆" in scaffold and design docs
+- (2026-05-18) iOS services resolve API base URL from `DNN_API_BASE_URL` environment or `DNNAPIBaseURL` Info.plist build setting, falling back to localhost for debug

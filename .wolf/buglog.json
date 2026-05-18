@@ -76,5 +76,65 @@
     "related_bugs": [],
     "occurrences": 1,
     "last_seen": "2026-05-13T11:07:00+08:00"
+  },
+  {
+    "id": "bug-008",
+    "timestamp": "2026-05-18T10:42:40+08:00",
+    "error_message": "swift build/swift test failed: external macro implementation type 'SwiftDataMacros.PersistentModelMacro' could not be found; xcodebuild requires Xcode but active developer directory is /Library/Developer/CommandLineTools",
+    "file": "ios/DoNotNervous/Models/DNNModels.swift",
+    "root_cause": "The machine has only Apple Command Line Tools selected and no /Applications/Xcode*.app installed, so SwiftData macro plugins and xcodebuild iOS app validation are unavailable.",
+    "fix": "No code fix applied; install/select full Xcode before running SwiftData package tests or iOS simulator builds.",
+    "tags": ["ios", "swiftdata", "xcode", "build-error", "environment"],
+    "related_bugs": [],
+    "occurrences": 1,
+    "last_seen": "2026-05-18T10:42:40+08:00"
+  },
+  {
+    "id": "bug-009",
+    "timestamp": "2026-05-18T10:53:58+08:00",
+    "error_message": "You have not agreed to the Xcode license agreements. Please run 'sudo xcodebuild -license' from within a Terminal window to review and agree to the Xcode and Apple SDKs license.",
+    "file": "ios/DoNotNervous.xcodeproj",
+    "root_cause": "Xcode is installed and selected, but the Apple SDK license has not been accepted, so command-line developer tools exit before build/test commands run.",
+    "fix": "No code fix possible from Codex; user must accept the license in Terminal, then rerun Swift/iOS validation.",
+    "tags": ["ios", "xcode", "license", "build-error", "environment"],
+    "related_bugs": ["bug-008"],
+    "occurrences": 1,
+    "last_seen": "2026-05-18T10:53:58+08:00"
+  },
+  {
+    "id": "bug-010",
+    "timestamp": "2026-05-18T14:56:26+08:00",
+    "error_message": "User reported the iOS UI did not cover the whole screen; simulator showed the app letterboxed at 320x480 inside a modern device.",
+    "file": "ios/DoNotNervous/Resources/Info.plist, ios/DoNotNervous/Views/TodayView.swift",
+    "root_cause": "The native iOS app Info.plist lacked a modern launch screen declaration, so iOS ran it in legacy compatibility sizing. The Today screen also used a large title and bottom content padding that made the first screen feel cramped after full-screen sizing.",
+    "fix": "Added UILaunchScreen to Info.plist and tightened TodayView with inline navigation title, tab-bar bottom padding, and a compact companion panel. Verified the simulator UI hierarchy root is 402x874.",
+    "tags": ["ios", "swiftui", "fullscreen", "launch-screen", "visual-regression"],
+    "related_bugs": [],
+    "occurrences": 1,
+    "last_seen": "2026-05-18T14:56:26+08:00"
+  },
+  {
+    "id": "bug-011",
+    "timestamp": "2026-05-18T14:56:26+08:00",
+    "error_message": "xcodebuild test failed with Multiple commands produce ... 不要紧张.swiftmodule and duplicate module outputs.",
+    "file": "ios/Config/Debug.xcconfig, ios/Config/Release.xcconfig, ios/project.yml",
+    "root_cause": "PRODUCT_NAME was defined in shared xcconfig files, so both the app and unit-test targets inherited the same Chinese product/module output names.",
+    "fix": "Removed PRODUCT_NAME from the shared xcconfig files and set target-specific product names in project.yml, then regenerated the Xcode project.",
+    "tags": ["ios", "xcode", "xcodegen", "unit-test", "module-name"],
+    "related_bugs": [],
+    "occurrences": 1,
+    "last_seen": "2026-05-18T14:56:26+08:00"
+  },
+  {
+    "id": "bug-012",
+    "timestamp": "2026-05-18T14:56:26+08:00",
+    "error_message": "xcodebuild test failed with Unable to resolve module dependency: 'DoNotNervousIOS'.",
+    "file": "ios/project.yml",
+    "root_cause": "The Xcode app target display/product name was Chinese, causing its Swift module name to be generated as 不要紧张 while the tests import DoNotNervousIOS to match the SwiftPM package.",
+    "fix": "Set PRODUCT_MODULE_NAME to DoNotNervousIOS on the app target while keeping PRODUCT_NAME and CFBundleDisplayName as 不要紧张. Regenerated the Xcode project and xcodebuild test passed.",
+    "tags": ["ios", "xcode", "xcodegen", "unit-test", "swift-module"],
+    "related_bugs": ["bug-011"],
+    "occurrences": 1,
+    "last_seen": "2026-05-18T14:56:26+08:00"
   }
 ]

@@ -16,7 +16,7 @@ public actor AuthService {
     private let tokenStore: KeychainTokenStore
 
     public init(
-        baseURL: URL = URL(string: "http://localhost:5052")!,
+        baseURL: URL = AppConfiguration().apiBaseURL,
         tokenStore: KeychainTokenStore = KeychainTokenStore()
     ) {
         self.baseURL = baseURL

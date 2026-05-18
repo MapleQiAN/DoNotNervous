@@ -22,11 +22,13 @@ public struct TodayView: View {
                 focusTasks
             }
             .padding(20)
+            .padding(.bottom, 112)
         }
         .background(DNNColors.canvas.ignoresSafeArea())
         .navigationTitle("今日")
+        .inlineNavigationTitleOnIOS()
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: settingsToolbarPlacement) {
                 Button {
                     showSettings = true
                 } label: {
@@ -43,6 +45,14 @@ public struct TodayView: View {
         .task {
             _ = LocalStoreActions.ensureCompanion(in: modelContext)
         }
+    }
+
+    private var settingsToolbarPlacement: ToolbarItemPlacement {
+        #if os(iOS)
+        .topBarTrailing
+        #else
+        .automatic
+        #endif
     }
 
     private var profile: CompanionProfile {
@@ -78,24 +88,30 @@ public struct TodayView: View {
 
     private var companionPanel: some View {
         DNNCard {
-            HStack(spacing: 18) {
+            HStack(spacing: 14) {
                 CompanionAvatar(mood: profile.mood)
+                    .scaleEffect(0.74)
+                    .frame(width: 110, height: 96)
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
                         Text(profile.displayName)
                             .font(.title2.bold())
+                            .lineLimit(1)
                         Text("Lv.\(profile.level)")
                             .font(.caption.bold())
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
                             .background(DNNColors.lavender.opacity(0.18), in: Capsule())
+                        Spacer()
                     }
                     ProgressView(value: Double(levelProgress.progress), total: Double(levelProgress.nextLevelExperience))
                         .tint(DNNColors.amber)
                     Text("今日完成 \(completedTodayCount) 项，余额 \(balance) 分")
-                        .font(.subheadline.weight(.semibold))
+                        .font(.caption.weight(.semibold))
                         .foregroundStyle(DNNColors.muted)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
@@ -182,5 +198,16 @@ private struct TaskRow: View {
                 Spacer()
             }
         }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func inlineNavigationTitleOnIOS() -> some View {
+        #if os(iOS)
+        navigationBarTitleDisplayMode(.inline)
+        #else
+        self
+        #endif
     }
 }
